@@ -10,5 +10,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //follow the lab and make an adapter + use recycler view?
+        //i added a listview into the xml
     }
 }
