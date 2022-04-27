@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final List<String> animalList = Arrays.asList("Bird", "Tiger", "Baboon", "Snake");
+    public final List<String> animalList = Arrays.asList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
