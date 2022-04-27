@@ -19,7 +19,7 @@ public interface ExhibitDao {
     Exhibit getById(String id);
 
     @Query("SELECT * FROM `exhibit_list` WHERE `tags`=:tags")
-    Exhibit getTags(String[] tags);
+    String[] getTags(String[] tags);
 
     @Query("SELECT * FROM `exhibit_list` ORDER BY `id`")
     List<Exhibit> getAll();
