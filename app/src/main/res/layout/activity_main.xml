@@ -6,25 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/searchBar"
-        android:layout_width="334dp"
-        android:layout_height="67dp"
-        android:ems="10"
-        android:hint="search"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024" />
-
     <Button
         android:id="@+id/plan_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Plan"
+        style="@android:style/Widget.DeviceDefault.Light.Button"
+        android:layout_width="74dp"
+        android:layout_height="30dp"
+        android:background="@android:color/holo_green_dark"
+        android:backgroundTint="#8BC34A"
+        android:fontFamily="monospace"
+        android:text="plan"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -58,12 +49,12 @@
 
     <ListView
         android:id="@+id/added_animals_list"
-        android:layout_width="339dp"
-        android:layout_height="374dp"
+        android:layout_width="359dp"
+        android:layout_height="385dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.431" />
+        app:layout_constraintVertical_bias="0.434" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
