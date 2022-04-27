@@ -15,6 +15,10 @@ public class Exhibit {
         this.tags = tags;
     }
 
+    public void randFunction() {
+        // This does nothing
+    }
+
     public String[] getTags() {
         return tags;
     }
