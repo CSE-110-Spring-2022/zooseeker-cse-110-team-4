@@ -15,7 +15,7 @@ public class Exhibit {
         this.tags = tags;
     }
 
-    public void randFunction() {
+    public void randFunction(int a) {
         // This does nothing
     }
 
