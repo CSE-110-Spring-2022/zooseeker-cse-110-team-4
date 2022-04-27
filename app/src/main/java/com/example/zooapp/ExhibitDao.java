@@ -13,17 +13,20 @@ public interface ExhibitDao {
     long insert(Exhibit exhibit);
 
     @Insert
-    List<Long> insertAll(List<Exhibit> exhibitList);
+    long insert(ZooNode zooNode);
 
-    @Query("SELECT * FROM `exhibit_list` WHERE `id`=:id")
-    Exhibit getById(String id);
+    @Insert
+    List<Long> insertAll(List<ZooNode> zooNodeList);
 
-    @Query("SELECT * FROM `exhibit_list` ORDER BY `id`")
-    List<Exhibit> getAll();
+    @Query("SELECT * FROM `zoo_node_list` WHERE `id`=:id")
+    ZooNode getById(String id);
+
+    @Query("SELECT * FROM `zoo_node_list` ORDER BY `id`")
+    List<ZooNode> getAll();
 
     @Update
-    int update(Exhibit exhibit);
+    int update(ZooNode exhibit);
 
     @Delete
-    int delete(Exhibit exhibit);
+    int delete(ZooNode exhibit);
 }
