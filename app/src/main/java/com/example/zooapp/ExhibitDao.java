@@ -15,36 +15,19 @@ public interface ExhibitDao {
     @Insert
     List<Long> insertAll(List<Exhibit> exhibitList);
 
-<<<<<<< HEAD
-    @Query("SELECT * FROM Exhibit WHERE `id`=:id")
-    Exhibit get(long id);
-
-    @Query("SELECT * FROM Exhibit ORDER BY `animalName`")
-    List<Exhibit> getAll();
-
-    @Update
-    int update(Exhibit todoListItem);
-
-    @Delete
-    int delete(Exhibit todoListItem);
-=======
     @Query("SELECT * FROM `exhibit_list` WHERE `id`=:id")
-    Exhibit getById(long id);
+    Exhibit getById(String id);
 
-    @Query("SELECT * FROM `exhibit_list` WHERE `itemType`=:itemType")
-    Exhibit getByName(String animalName);
+    @Query("SELECT * FROM `exhibit_list` WHERE `tags`=:tags")
+    Exhibit getTags(String[] tags);
 
-    @Query("SELECT * FROM `exhibit_list` WHERE `tag`=:tag")
-    Exhibit getByClassification(String animalClassification);
-
-    //@Query("SELECT * FROM `exhibit_list` ORDER BY `order`")
-    //List<Exhibit> getAll();
+    @Query("SELECT * FROM `exhibit_list` ORDER BY `id`")
+    List<Exhibit> getAll();
 
     @Update
     int update(Exhibit exhibit);
 
     @Delete
     int delete(Exhibit exhibit);
->>>>>>> 276ab6ebe86550bcde847a2afebc574bffb13fa1
 
 }
