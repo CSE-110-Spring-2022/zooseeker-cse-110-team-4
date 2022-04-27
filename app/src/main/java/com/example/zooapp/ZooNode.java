@@ -15,4 +15,8 @@ public class ZooNode {
         this.itemType = itemType;
         this.tags = tags;
     }
+
+    public String[] getTags() {
+        return tags;
+    }
 }
