@@ -2,16 +2,20 @@ package com.example.zooapp;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 @Entity(tableName = "zoo_node_list")
 public class ZooNode {
+    @PrimaryKey(autoGenerate = true)
+    public long id;
+
     @NonNull
-    public String id;
+    public String name;
     public String itemType;
     public String[] tags;
 
-    public ZooNode(@NonNull String id, String itemType, String[] tags ) {
-        this.id = id;
+    public ZooNode(@NonNull String name, String itemType, String[] tags ) {
+        this.name = name;
         this.itemType = itemType;
         this.tags = tags;
     }
