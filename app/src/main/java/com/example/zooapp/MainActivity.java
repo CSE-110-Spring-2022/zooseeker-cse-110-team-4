@@ -3,6 +3,9 @@ package com.example.zooapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,5 +13,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        List<Exhibit> exhibitList = Exhibit.loadJSON(this, "exhibit_list.json");
+        Log.d("Exhibit List Activity", exhibitList.toString());
     }
 }
