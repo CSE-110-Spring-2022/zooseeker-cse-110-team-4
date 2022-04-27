@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,11 +7,29 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <SearchView
+        android:id="@+id/searchBar"
+        android:layout_width="413dp"
+        android:layout_height="64dp"
+        android:background="@color/zoogreendark"
+        android:fontFamily="monospace"
+        android:iconifiedByDefault="false"
+        android:queryHint="search"
+        app:defaultQueryHint="search"
+        app:iconifiedByDefault="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:queryHint="search" />
+
     <Button
         android:id="@+id/plan_button"
         style="@android:style/Widget.DeviceDefault.Light.Button"
-        android:layout_width="74dp"
-        android:layout_height="30dp"
+        android:layout_width="125dp"
+        android:layout_height="54dp"
         android:background="@android:color/holo_green_dark"
         android:backgroundTint="#8BC34A"
         android:fontFamily="monospace"
@@ -21,40 +40,49 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.822" />
+        app:layout_constraintVertical_bias="0.867" />
 
     <TextView
         android:id="@+id/added_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Added"
+        android:layout_width="66dp"
+        android:layout_height="48dp"
+        android:fontFamily="monospace"
+        android:text="ADDED"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.144" />
+        app:layout_constraintTop_toBottomOf="@+id/searchBar"
+        app:layout_constraintVertical_bias="0.045" />
 
     <TextView
         android:id="@+id/added_counter"
-        android:layout_width="58dp"
-        android:layout_height="34dp"
+        android:layout_width="38dp"
+        android:layout_height="51dp"
+        android:fontFamily="monospace"
         android:text="(0)"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.246"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.146" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/added_text"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar"
+        app:layout_constraintVertical_bias="0.044" />
 
     <ListView
-        android:id="@+id/added_animals_list"
-        android:layout_width="359dp"
-        android:layout_height="385dp"
+        android:id="@+id/listView"
+        android:layout_width="374dp"
+        android:layout_height="448dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.434" />
+        app:layout_constraintTop_toBottomOf="@+id/searchBar"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
