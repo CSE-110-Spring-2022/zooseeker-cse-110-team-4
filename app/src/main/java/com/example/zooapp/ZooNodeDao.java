@@ -16,7 +16,7 @@ public interface ZooNodeDao {
     @Insert
     List<Long> insertAll(List<Exhibit> exhibitList);
 
-    @Query("SELECT * FROM `exhibit_list` WHERE `id`=:id")
+    @Query("SELECT * FROM `zoo_node_list` WHERE `id`=:id")
     Exhibit getById(String id);
 
     @Query("SELECT * FROM `zoo_node_list` ORDER BY `id`")
