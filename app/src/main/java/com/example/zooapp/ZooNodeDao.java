@@ -19,7 +19,7 @@ public interface ZooNodeDao {
     @Query("SELECT * FROM `exhibit_list` WHERE `id`=:id")
     Exhibit getById(String id);
 
-    @Query("SELECT * FROM `exhibit_list` ORDER BY `id`")
+    @Query("SELECT * FROM `zoo_node_list` ORDER BY `id`")
     List<Exhibit> getAll();
 
     @Update
