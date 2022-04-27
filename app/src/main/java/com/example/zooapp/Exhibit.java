@@ -14,4 +14,8 @@ public class Exhibit {
         this.id = id;
         this.tags = tags;
     }
+
+    public String[] getTags() {
+        return tags;
+    }
 }
