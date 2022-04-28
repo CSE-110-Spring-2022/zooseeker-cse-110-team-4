@@ -26,14 +26,16 @@ public class ZooNode {
 
     @NonNull
     public String id;
-    public String itemType;
+    public String kind;
+    public String name;
 
     @TypeConverters(TagsConverter.class)
     public String[] tags;
 
-    public ZooNode(@NonNull String id, String itemType, String[] tags ) {
+    public ZooNode(@NonNull String id, String kind, String name, String[] tags ) {
         this.id = id;
-        this.itemType = itemType;
+        this.kind = kind;
+        this.name = name;
         this.tags = tags;
     }
 
@@ -54,7 +56,8 @@ public class ZooNode {
     public String toString() {
         return "ZooNode{" +
                 "id='" + id + '\'' +
-                ", itemType='" + itemType + '\'' +
+                ", kind='" + kind + '\'' +
+                ", name='" + name + '\'' +
                 ", tags=" + Arrays.toString(tags) +
                 '}';
     }

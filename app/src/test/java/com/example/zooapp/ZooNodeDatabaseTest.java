@@ -37,8 +37,8 @@ public class ZooNodeDatabaseTest {
 
     @Test
     public void testInsert() {
-        ZooNode item1 = new ZooNode("gorilla_exhibit", "exhibit", gorillaTags);
-        ZooNode item2 = new ZooNode("fish_exhibit", "exhibit", fishTags);
+        ZooNode item1 = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
+        ZooNode item2 = new ZooNode("fish_exhibit", "exhibit", "Fish", fishTags);
 
         long id1 = dao.insert(item1);
         long id2 = dao.insert(item2);
@@ -48,13 +48,14 @@ public class ZooNodeDatabaseTest {
 
     @Test
     public void testGet() {
-        ZooNode insertedItem = new ZooNode("gorilla_exhibit", "exhibit", gorillaTags);
+        ZooNode insertedItem = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
         long value = dao.insert(insertedItem);
 
         ZooNode item = dao.getById(value);
         assertEquals(value, item.value);
         assertEquals(insertedItem.id, item.id);
-        assertEquals(insertedItem.itemType, item.itemType);
+        assertEquals(insertedItem.kind, item.kind);
+        assertEquals(insertedItem.name, item.name);
         for( int i = 0; i < gorillaTags.length; i++ ) {
             assertEquals(insertedItem.tags[i], item.tags[i]);
         }
@@ -62,24 +63,26 @@ public class ZooNodeDatabaseTest {
 
     @Test
     public void testUpdate() {
-        ZooNode insertItem = new ZooNode("gorilla_exhibit", "exhibit", gorillaTags);
+        ZooNode insertItem = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
         long value = dao.insert(insertItem);
 
         ZooNode item = dao.getById(value);
         item.id = "fish_exhibit";
-        item.itemType = "gate";
+        item.kind = "gate";
+        item.name = "Fish";
         int itemsUpdated = dao.update(item);
         assertEquals(1, itemsUpdated);
 
         item = dao.getById(value);
         assertNotNull(item);
         assertEquals("fish_exhibit", item.id);
-        assertEquals("gate", item.itemType);
+        assertEquals("gate", item.kind);
+        assertEquals("Fish", item.name);
     }
 
     @Test
     public void testDelete() {
-        ZooNode insertItem = new ZooNode("gorilla_exhibit", "exhibit", gorillaTags);
+        ZooNode insertItem = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
         long value = dao.insert(insertItem);
 
         ZooNode item = dao.getById(value);
