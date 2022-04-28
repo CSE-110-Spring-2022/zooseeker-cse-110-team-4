@@ -25,6 +25,9 @@ public interface ZooNodeDao {
     @Query("SELECT * FROM `zoo_node_list` ORDER BY `value`")
     List<ZooNode> getAll();
 
+    @Query("SELECT * FROM `zoo_node_list` WHERE `kind` IN (:kind) ORDER BY `value`")
+    List<ZooNode> getZooNodeKind(String kind);
+
     @Update
     int update(ZooNode exhibit);
 

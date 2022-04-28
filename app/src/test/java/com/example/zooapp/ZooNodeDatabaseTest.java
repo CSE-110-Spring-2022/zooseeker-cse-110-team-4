@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
+import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class ZooNodeDatabaseTest {
@@ -31,7 +32,7 @@ public class ZooNodeDatabaseTest {
                 .allowMainThreadQueries()
                 .build();
         dao = db.ZooNodeDao();
-        gorillaTags = new String[] {"gorilla", "ape"};
+        gorillaTags = new String[] {"gorilla", "ape", "mammal"};
         fishTags = new String[] {"fish", "ocean"};
     }
 
@@ -44,6 +45,32 @@ public class ZooNodeDatabaseTest {
         long id2 = dao.insert(item2);
 
         assertNotEquals(id1, id2);
+    }
+
+    @Test
+    public void testGetExhibit() {
+        ZooNode item1 = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
+        ZooNode item2 = new ZooNode("fish_exhibit", "exhibit", "Fish", fishTags);
+        ZooNode item3 = new ZooNode("entrance", "gate", "Entrance Gate", new String[]{});
+
+        long value1 = dao.insert(item1);
+        long value2 = dao.insert(item2);
+        long value3 = dao.insert(item3);
+
+        List<ZooNode> exhibits = dao.getZooNodeKind("exhibit");
+        assertEquals(2, exhibits.size());
+        ZooNode itemOneCheck = exhibits.get(0);
+        ZooNode itemTwoCheck = exhibits.get(1);
+        assertEquals(item1.id, itemOneCheck.id);
+        assertEquals(item1.name, itemOneCheck.name);
+        for( int i = 0; i < gorillaTags.length; i++ ) {
+            assertEquals(item1.tags[i], itemOneCheck.tags[i]);
+        }
+        assertEquals(item2.id, itemTwoCheck.id);
+        assertEquals(item2.name, itemTwoCheck.name);
+        for( int i = 0; i < fishTags.length; i++ ) {
+            assertEquals(item2.tags[i], itemTwoCheck.tags[i]);
+        }
     }
 
     @Test
