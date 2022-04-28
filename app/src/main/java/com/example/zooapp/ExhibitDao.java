@@ -15,13 +15,13 @@ public interface ExhibitDao {
     @Insert
     List<Long> insertAll(List<Exhibit> zooNodeList);
 
+    @Query("SELECT * FROM `exhibit_list` WHERE `value`=:value")
+    Exhibit getbyId(long value);
+
     @Query("SELECT * FROM `exhibit_list` WHERE `id`=:id")
-    Exhibit getbyId(long id);
+    Exhibit getByName(String id);
 
-    @Query("SELECT * FROM `exhibit_list` WHERE `name`=:name")
-    Exhibit getByName(String name);
-
-    @Query("SELECT * FROM `exhibit_list` ORDER BY `id`")
+    @Query("SELECT * FROM `exhibit_list` ORDER BY `value`")
     List<Exhibit> getAll();
 
     @Update

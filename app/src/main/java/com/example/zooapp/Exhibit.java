@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,14 +24,16 @@ import java.util.List;
 public class Exhibit {
     // Public Fields
     @PrimaryKey(autoGenerate = true)
-    public long id;
+    public long value;
 
     @NonNull
-    public String name;
+    public String id;
+
+    @TypeConverters(TagsConverter.class)
     public String[] tags;
 
-    public Exhibit(@NonNull String name, String[] tags) {
-        this.name = name;
+    public Exhibit(@NonNull String id, String[] tags) {
+        this.id = id;
         this.tags = tags;
     }
 
@@ -49,7 +53,7 @@ public class Exhibit {
     @Override
     public String toString() {
         return "Exhibit{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
                 ", tags=" + Arrays.toString(tags) +
                 '}';
     }

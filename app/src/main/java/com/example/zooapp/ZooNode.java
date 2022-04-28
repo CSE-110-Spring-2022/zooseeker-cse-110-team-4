@@ -25,9 +25,9 @@ public class ZooNode {
     @NonNull
     public String name;
     public String itemType;
-    public String[] tags;
+    public String tags;
 
-    public ZooNode(@NonNull String name, String itemType, String[] tags ) {
+    public ZooNode(@NonNull String name, String itemType, String tags ) {
         this.name = name;
         this.itemType = itemType;
         this.tags = tags;

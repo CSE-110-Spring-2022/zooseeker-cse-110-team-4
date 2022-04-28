@@ -1,7 +1,6 @@
 [
   {
     "id": "gorilla-viewpoint-1",
-    "itemType": "exhibit",
     "tags": [
       "gorilla",
       "monkey",
@@ -11,7 +10,6 @@
   },
   {
     "id": "gator-viewpoint-1",
-    "itemType": "exhibit",
     "tags": [
       "alligator",
       "reptile",
@@ -20,7 +18,6 @@
   },
   {
     "id": "elephant-odyssey",
-    "itemType": "exhibit",
     "tags": [
       "elephant",
       "mammal"
@@ -28,7 +25,6 @@
   },
   {
     "id": "arctic-fox-viewpoint",
-    "itemType": "exhibit",
     "tags": [
       "arctic",
       "fox",

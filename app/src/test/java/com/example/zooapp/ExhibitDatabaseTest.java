@@ -22,6 +22,7 @@ import java.io.IOException;
 public class ExhibitDatabaseTest {
     private ExhibitDao dao;
     private ExhibitDatabase db;
+    private String[] gorillaTags, fishTags;
 
     @Before
     public void createDb() {
@@ -30,12 +31,14 @@ public class ExhibitDatabaseTest {
                 .allowMainThreadQueries()
                 .build();
         dao = db.ExhibitDao();
+        gorillaTags = new String[] {"gorilla", "ape"};
+        fishTags = new String[] {"fish", "ocean"};
     }
 
     @Test
     public void testInsert() {
-        Exhibit item1 = new Exhibit("gorilla_exhibit", new String[] {"gorilla, ape"});
-        Exhibit item2 = new Exhibit("fish_exhibit", new String[] {"fish, ocean"});
+        Exhibit item1 = new Exhibit("gorilla_exhibit", gorillaTags);
+        Exhibit item2 = new Exhibit("fish_exhibit", fishTags);
 
         long id1 = dao.insert(item1);
         long id2 = dao.insert(item2);
@@ -45,41 +48,41 @@ public class ExhibitDatabaseTest {
 
     @Test
     public void testGet() {
-        Exhibit insertedItem = new Exhibit("gorilla_exhibit", new String[] {"gorilla, ape"});
-        long id = dao.insert(insertedItem);
+        Exhibit insertedItem = new Exhibit("gorilla_exhibit", gorillaTags);
+        long value = dao.insert(insertedItem);
 
-        Exhibit item = dao.getbyId(id);
-        assertEquals(id, item.id);
-        assertEquals(insertedItem.name, item.name);
-        for( int i = 0; i < insertedItem.tags.length; i++ ) {
+        Exhibit item = dao.getbyId(value);
+        assertEquals(value, item.value);
+        assertEquals(insertedItem.id, item.id);
+        for( int i = 0; i < gorillaTags.length; i++ ) {
             assertEquals(insertedItem.tags[i], item.tags[i]);
         }
     }
 
     @Test
     public void testUpdate() {
-        Exhibit insertItem = new Exhibit("gorilla_exhibit", new String[] {"gorilla, ape"});
-        long id = dao.insert(insertItem);
+        Exhibit insertItem = new Exhibit("gorilla_exhibit", gorillaTags);
+        long value = dao.insert(insertItem);
 
-        Exhibit item = dao.getbyId(id);
-        item.name = "fish_exhibit";
+        Exhibit item = dao.getbyId(value);
+        item.id = "fish_exhibit";
         int itemsUpdated = dao.update(item);
         assertEquals(1, itemsUpdated);
 
-        item = dao.getbyId(id);
+        item = dao.getbyId(value);
         assertNotNull(item);
-        assertEquals("fish_exhibit", item.name);
+        assertEquals("fish_exhibit", item.id);
     }
 
     @Test
     public void testDelete() {
-        Exhibit insertItem = new Exhibit("gorilla_exhibit", new String[] {"gorilla, ape"});
-        long id = dao.insert(insertItem);
+        Exhibit insertItem = new Exhibit("gorilla_exhibit", gorillaTags);
+        long value = dao.insert(insertItem);
 
-        Exhibit item = dao.getbyId(id);
+        Exhibit item = dao.getbyId(value);
         int itemsDeleted = dao.delete(item);
         assertEquals(1, itemsDeleted);
-        assertNull(dao.getbyId(id));
+        assertNull(dao.getbyId(value));
     }
 
     @After
