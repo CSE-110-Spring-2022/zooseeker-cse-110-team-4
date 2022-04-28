@@ -8,8 +8,8 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-
 import java.util.Arrays;
+import android.util.Log;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+      
+        List<ZooNode> zooNodeList = ZooNode.loadJSON(this, "zoo_node_list.json");
+        Log.d("Zoo Node List Activity", zooNodeList.toString());
 
         SearchView searchBar = findViewById(R.id.searchBar);
         ListView listView = findViewById(R.id.listView);
@@ -41,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
 
     /*public boolean onCreatedOptionMenu(Menu menu)
