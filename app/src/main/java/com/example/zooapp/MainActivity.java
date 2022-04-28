@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
         List<ZooNode> zooNodeList = ZooNode.loadJSON(this, "zoo_node_list.json");
         Log.d("Zoo Node List Activity", zooNodeList.toString());
 
+
+        // Search bar
         SearchView searchBar = findViewById(R.id.searchBar);
         ListView listView = findViewById(R.id.listView);
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, animalList);
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
                 searchBar.clearFocus();
                 if (animalList.contains(s))
                     adapter.getFilter().filter(s);
-
                 return false;
             }
 
