@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         List<Exhibit> exhibitList = Exhibit.loadJSON(this, "exhibit_list.json");
         Log.d("Exhibit List Activity", exhibitList.toString());
 
-//        List<ZooNode> zooNodeList = ZooNode.loadJSON(this, "zoo_node_list.json");
-//        Log.d("Zoo Node List Activity", zooNodeList.toString());
+        List<ZooNode> zooNodeList = ZooNode.loadJSON(this, "zoo_node_list.json");
+        Log.d("Zoo Node List Activity", zooNodeList.toString());
     }
 }
