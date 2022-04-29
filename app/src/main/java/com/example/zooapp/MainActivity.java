@@ -8,8 +8,12 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import android.util.Log;
+
+import java.util.Hashtable;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,21 +24,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
       
-        List<ZooNode> zooNodeList = ZooNode.loadJSON(this, "zoo_node_list.json");
-        Log.d("Zoo Node List Activity", zooNodeList.toString());
+        ZooNodeDao zooNodeDao = ZooNodeDatabase.getSingleton(this).ZooNodeDao();
+        List<ZooNode> exhibits = zooNodeDao.getZooNodeKind("exhibit");
+        List<String> animalNames = new ArrayList<>();
+        Hashtable<String, List<String>> searchAnimals = new Hashtable<>();
+        for( ZooNode zooNode: exhibits ) {
+            animalNames.add(zooNode.name);
+            for( String tag: zooNode.tags ) {
+                if( !searchAnimals.contains(tag) ) {
+                    searchAnimals.put(tag, new ArrayList<String>(){});
+                }
+                List<String> animals = searchAnimals.get(tag);
+                animals.add(zooNode.name);
+                searchAnimals.put(tag, animals);
+            }
+        }
 
 
         // Search bar
         SearchView searchBar = findViewById(R.id.searchBar);
         ListView listView = findViewById(R.id.listView);
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, animalList);
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, animalNames);
 
         listView.setAdapter(adapter);
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             public boolean onQueryTextSubmit(String s)
             {
                 searchBar.clearFocus();
-                if (animalList.contains(s))
+                if (animalNames.contains(s))
                     adapter.getFilter().filter(s);
                 return false;
             }
