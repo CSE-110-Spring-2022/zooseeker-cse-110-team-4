@@ -118,6 +118,24 @@ public class ZooNodeDatabaseTest {
         assertNull(dao.getById(value));
     }
 
+    @Test
+    public void testGetByName() {
+        ZooNode item1 = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
+        ZooNode item2 = new ZooNode("fish_exhibit", "exhibit", "Fish", fishTags);
+
+        long value = dao.insert(item1);
+        long value2 = dao.insert(item2);
+
+        ZooNode item = dao.getByName("Gorillas");
+        assertEquals(value, item.value);
+        assertEquals(item1.id, item.id);
+        assertEquals(item1.kind, item.kind);
+        assertEquals(item1.name, item.name);
+        for( int i = 0; i < gorillaTags.length; i++ ) {
+            assertEquals(item1.tags[i], item.tags[i]);
+        }
+    }
+
     @After
     public void closeDb() throws IOException {
         db.close();
