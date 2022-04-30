@@ -3,6 +3,7 @@ package com.example.zooapp;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -39,5 +40,13 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
                     }
                 })
                 .build();
+    }
+
+    @VisibleForTesting
+    public static void injectTestDatabase(ZooNodeDatabase testDatabase) {
+        if( singleton != null ) {
+            singleton.close();
+        }
+        singleton = testDatabase;
     }
 }
