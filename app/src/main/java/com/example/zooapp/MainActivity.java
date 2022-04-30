@@ -18,6 +18,7 @@ import android.widget.SearchView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import java.util.Collections;
@@ -25,7 +26,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AnimalListViewAdapter.ClickListener {
-    private List<ZooNode> exhibits;
+    private List<ZooNode> exhibits, userExhibits;
     private AnimalListViewAdapter adapter;
     private RecyclerView recyclerView;
 
@@ -33,7 +34,9 @@ public class MainActivity extends AppCompatActivity implements AnimalListViewAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      
+
+        userExhibits = new ArrayList<>();
+
         ZooNodeDao dao = ZooNodeDatabase.getSingleton(this).ZooNodeDao();
         exhibits = dao.getZooNodeKind("exhibit");
         List<String> toSort = new ArrayList<>();
@@ -85,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements AnimalListViewAda
 
     @Override
     public void onItemClick(int position) {
+        if( !userExhibits.contains(exhibits.get(position)) ) {
+            userExhibits.add(exhibits.get(position));
+        }
         Log.d("Item Click", "Item has been clicked at position = " + position);
+        Log.d("Item Click", "userExhibits size = " + userExhibits.size() + " Contents = " +
+                userExhibits.toString());
     }
 }
