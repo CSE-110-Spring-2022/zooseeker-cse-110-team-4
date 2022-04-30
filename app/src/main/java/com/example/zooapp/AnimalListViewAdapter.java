@@ -17,10 +17,12 @@ import java.util.List;
 
 public class AnimalListViewAdapter extends RecyclerView.Adapter<AnimalListViewAdapter.ViewHolder> implements Filterable {
     private List<ZooNode> zooNodeList, zooNodeListFull;
+    private ClickListener clickListener;
 
-    AnimalListViewAdapter(List<ZooNode> zooNodeList) {
+    AnimalListViewAdapter(List<ZooNode> zooNodeList, ClickListener clickListener) {
         this.zooNodeList = zooNodeList;
         this.zooNodeListFull = new ArrayList<>(zooNodeList);
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -30,7 +32,7 @@ public class AnimalListViewAdapter extends RecyclerView.Adapter<AnimalListViewAd
                 .from(parent.getContext())
                 .inflate(R.layout.zoo_node_item,parent,false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, clickListener);
     }
 
     @Override
@@ -81,18 +83,31 @@ public class AnimalListViewAdapter extends RecyclerView.Adapter<AnimalListViewAd
         }
     };
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView zooAnimalName;
         ZooNode zooNode;
+        ClickListener clickListener;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, ClickListener clickListener) {
             super(itemView);
             zooAnimalName = itemView.findViewById(R.id.zooAnimalName);
+            this.clickListener = clickListener;
+
+            itemView.setOnClickListener(this);
         }
 
         public void setZooAnimalName(ZooNode zooNode) {
             this.zooNode = zooNode;
             this.zooAnimalName.setText(this.zooNode.name);
         }
+
+        @Override
+        public void onClick(View view) {
+            clickListener.onItemClick(getAdapterPosition());
+        }
+    }
+
+    public interface ClickListener {
+        void onItemClick(int position);
     }
 }

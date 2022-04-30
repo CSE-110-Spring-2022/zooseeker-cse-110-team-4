@@ -1,5 +1,6 @@
 package com.example.zooapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -22,9 +24,10 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AnimalListViewAdapter.ClickListener {
     private List<ZooNode> exhibits;
     private AnimalListViewAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +48,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setUpRecyclerView();
+
     }
 
     private void setUpRecyclerView() {
-        adapter = new AnimalListViewAdapter(exhibits);
+        adapter = new AnimalListViewAdapter(exhibits, this);
 
-        RecyclerView recyclerView = findViewById(R.id.animalListView);
+        recyclerView = findViewById(R.id.animalListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -77,5 +81,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Log.d("Item Click", "Item has been clicked at position = " + position);
     }
 }
