@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     public final List<SampleAnimal> samplelist = Arrays.asList(tiger,bear,bird,lion,walrus);
     public RecyclerView recyclerView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
