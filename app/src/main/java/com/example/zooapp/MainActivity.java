@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity{
     private PlannedAnimalAdapter plannedAnimalAdapter;
     private TextView userExhibitsSize;
     public ActionBar actionBar;
+    private int plannedCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity{
 
         userExhibits = new ArrayList<>();
         userExhibitsSize = findViewById(R.id.added_counter);
-        userExhibitsSize.setText("(" + userExhibits.size() + ")");
+        userExhibitsSize.setText("(" + plannedCount + ")");
 
         setUpRecyclerView();
     }
