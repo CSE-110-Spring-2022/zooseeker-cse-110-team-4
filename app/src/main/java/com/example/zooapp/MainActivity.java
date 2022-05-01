@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity{
     public List<ZooNode> userExhibits;
     private List<ZooNode> exhibits;
     public RecyclerView recyclerView;
+    private int plannedCount = 0;
 
 
     @Override
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity{
         searchIntent.putExtra("userExhibitsJSON", gson.toJson(userExhibits));
         searchIntent.putExtra("exhibitsJSON", gson.toJson(exhibits));
         startActivity(searchIntent);
+        plannedCount++;
+
         return super.onOptionsItemSelected(item);
     }
 }
