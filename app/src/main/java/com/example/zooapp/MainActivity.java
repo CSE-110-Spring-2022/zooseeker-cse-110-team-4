@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -28,12 +29,41 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
     public List<ZooNode> userExhibits;
     private List<ZooNode> exhibits;
+    public RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        /*
+        PlannedAnimalAdapter adaptertest = new PlannedAnimalAdapter();
+        adaptertest.setHasStableIds(true);
+
+        recyclerView = findViewById(R.id.planned_animals);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adaptertest);
+
+        adaptertest.setAnimalList(samplelist);
+
+        TextView count = findViewById(R.id.added_counter);
+        count.setText("(" +Integer.toString(samplelist.size()) +")");
+
+        SearchView searchBar = findViewById(R.id.searchBar);
+        ListView listView = findViewById(R.id.listView);
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, animalList);
+
+        listView.setAdapter(adapter);
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            public boolean onQueryTextSubmit(String s)
+            {
+                searchBar.clearFocus();
+                if (animalList.contains(s))
+                    adapter.getFilter().filter(s);
+======= 
+  */
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Zoo Seeker");
 
