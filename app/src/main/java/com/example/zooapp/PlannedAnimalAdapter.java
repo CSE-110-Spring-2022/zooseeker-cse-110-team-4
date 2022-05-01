@@ -12,9 +12,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class PlannedAnimalAdapter extends RecyclerView.Adapter<PlannedAnimalAdapter.ViewHolder> {
-    private List<SampleAnimal> sampleAnimals = Collections.emptyList();
+    private List<ZooNode> sampleAnimals = Collections.emptyList();
 
-    public void setAnimalList(List<SampleAnimal> newSampleAnimals){
+    public void setAnimalList(List<ZooNode> newSampleAnimals){
         this.sampleAnimals.clear();
         this.sampleAnimals = newSampleAnimals;
         notifyDataSetChanged();
@@ -37,21 +37,18 @@ public class PlannedAnimalAdapter extends RecyclerView.Adapter<PlannedAnimalAdap
     public int getItemCount() {
         return sampleAnimals.size();
     }
-    @Override
-    public long getItemId(int position){ return sampleAnimals.get(position).id;}
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final TextView textView;
-        private SampleAnimal sampleAnimal;
+        private ZooNode sampleAnimal;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             this.textView = itemView.findViewById(R.id.planned_animal_text);
         }
-        public SampleAnimal getAnimal(){return sampleAnimal;}
+        public ZooNode getAnimal(){return sampleAnimal;}
 
-        public void setAnimal(SampleAnimal sampleAnimal){
+        public void setAnimal(ZooNode sampleAnimal){
             this.sampleAnimal = sampleAnimal;
             this.textView.setText(sampleAnimal.name);
         }

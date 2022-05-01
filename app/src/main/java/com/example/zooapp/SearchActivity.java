@@ -36,7 +36,19 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         Gson gson = new Gson();
         Type type = new TypeToken<List<ZooNode>>(){}.getType();
         userExhibits = gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type);
-        exhibits = gson.fromJson(getIntent().getStringExtra("exhibitsJSON"), type);
+
+        ZooNodeDao dao = ZooNodeDatabase.getSingleton(this).ZooNodeDao();
+        exhibits = dao.getZooNodeKind("exhibit");
+        List<String> toSort = new ArrayList<>();
+
+        for( int i = 0; i < exhibits.size(); i++ ) {
+            toSort.add(exhibits.get(i).name);
+        }
+        Collections.sort(toSort);
+        exhibits.clear();
+        for( int i = 0; i < toSort.size(); i++ ) {
+            exhibits.add(dao.getByName(toSort.get(i)));
+        }
 
         setUpRecyclerView();
 
@@ -55,6 +67,8 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
             }
         });
     }
+
+
 
     private void setUpRecyclerView() {
         adapter = new AnimalListViewAdapter(exhibits, this);

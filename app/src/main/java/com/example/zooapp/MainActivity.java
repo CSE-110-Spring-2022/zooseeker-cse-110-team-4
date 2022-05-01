@@ -28,35 +28,33 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
     public List<ZooNode> userExhibits;
-    private List<ZooNode> exhibits;
     public RecyclerView recyclerView;
-
+    private PlannedAnimalAdapter plannedAnimalAdapter;
+    private TextView userExhibitsSize;
+    public ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setTitle("Zoo Seeker");
 
         userExhibits = new ArrayList<>();
+        userExhibitsSize = findViewById(R.id.added_counter);
+        userExhibitsSize.setText("(" + userExhibits.size() + ")");
 
-        ZooNodeDao dao = ZooNodeDatabase.getSingleton(this).ZooNodeDao();
-        exhibits = dao.getZooNodeKind("exhibit");
-        List<String> toSort = new ArrayList<>();
-
-        for( int i = 0; i < exhibits.size(); i++ ) {
-            toSort.add(exhibits.get(i).name);
-        }
-        Collections.sort(toSort);
-        exhibits.clear();
-        for( int i = 0; i < toSort.size(); i++ ) {
-            exhibits.add(dao.getByName(toSort.get(i)));
-        }
+        setUpRecyclerView();
     }
 
-
+    private void setUpRecyclerView() {
+        plannedAnimalAdapter = new PlannedAnimalAdapter();
+        plannedAnimalAdapter.setAnimalList(userExhibits);
+        recyclerView = findViewById(R.id.planned_animals);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(plannedAnimalAdapter);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,7 +70,6 @@ public class MainActivity extends AppCompatActivity{
         Gson gson = new Gson();
         Intent searchIntent = new Intent(this, SearchActivity.class);
         searchIntent.putExtra("userExhibitsJSON", gson.toJson(userExhibits));
-        searchIntent.putExtra("exhibitsJSON", gson.toJson(exhibits));
         startActivity(searchIntent);
         return super.onOptionsItemSelected(item);
     }
