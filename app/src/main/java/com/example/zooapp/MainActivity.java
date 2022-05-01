@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity{
         Intent searchIntent = new Intent(this, SearchActivity.class);
         searchIntent.putExtra("userExhibitsJSON", gson.toJson(userExhibits));
         startActivity(searchIntent);
+        plannedCount++;
+
         return super.onOptionsItemSelected(item);
     }
 }
