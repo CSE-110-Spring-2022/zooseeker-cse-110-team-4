@@ -1,57 +1,79 @@
 package com.example.zooapp;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
-import java.util.Arrays;
+import android.widget.TextView;
+
+import java.sql.Array;
+import java.util.ArrayList;
 import android.util.Log;
+
+import com.google.gson.Gson;
+
+import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
+    public List<ZooNode> userExhibits;
+    private List<ZooNode> exhibits;
+    public RecyclerView recyclerView;
 
-    public final List<String> animalList = Arrays.asList("Bird", "Tiger", "Baboon", "Snake");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      
-        List<ZooNode> zooNodeList = ZooNode.loadJSON(this, "zoo_node_list.json");
-        Log.d("Zoo Node List Activity", zooNodeList.toString());
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Zoo Seeker");
 
-        // Search bar
-        SearchView searchBar = findViewById(R.id.searchBar);
-        ListView listView = findViewById(R.id.listView);
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, animalList);
+        userExhibits = new ArrayList<>();
 
-        listView.setAdapter(adapter);
-        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
-            public boolean onQueryTextSubmit(String s)
-            {
-                searchBar.clearFocus();
-                if (animalList.contains(s))
-                    adapter.getFilter().filter(s);
-                return false;
-            }
+        ZooNodeDao dao = ZooNodeDatabase.getSingleton(this).ZooNodeDao();
+        exhibits = dao.getZooNodeKind("exhibit");
+        List<String> toSort = new ArrayList<>();
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                adapter.getFilter().filter(s);
-                return false;
-            }
-        });
+        for( int i = 0; i < exhibits.size(); i++ ) {
+            toSort.add(exhibits.get(i).name);
+        }
+        Collections.sort(toSort);
+        exhibits.clear();
+        for( int i = 0; i < toSort.size(); i++ ) {
+            exhibits.add(dao.getByName(toSort.get(i)));
+        }
     }
 
-    /*public boolean onCreatedOptionMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem menuItems = menu.findItem(R.id.searchBar);
 
-        return super.onCreateOptionsMenu(menu);
-    } */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.zoo_node_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.d("Menu Click", "Search has been clicked");
+        Gson gson = new Gson();
+        Intent searchIntent = new Intent(this, SearchActivity.class);
+        searchIntent.putExtra("userExhibitsJSON", gson.toJson(userExhibits));
+        searchIntent.putExtra("exhibitsJSON", gson.toJson(exhibits));
+        startActivity(searchIntent);
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -8,24 +8,11 @@
     tools:context=".MainActivity">
 
 
-
-    <SearchView
-        android:id="@+id/searchBar"
-        android:layout_width="372dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="19dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/plan_button"
         style="@android:style/Widget.DeviceDefault.Light.Button"
-        android:layout_width="74dp"
-        android:layout_height="30dp"
+        android:layout_width="125dp"
+        android:layout_height="54dp"
         android:background="@android:color/holo_green_dark"
         android:backgroundTint="#8BC34A"
         android:fontFamily="monospace"
@@ -33,54 +20,52 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.822" />
+        app:layout_constraintVertical_bias="0.83" />
 
     <TextView
         android:id="@+id/added_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Added"
+        android:layout_width="232dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="72dp"
+        android:fontFamily="monospace"
+        android:paddingTop="4pt"
+        android:text="PLANNED ANIMALS"
+        android:textColor="#000000"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.102"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.144" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <TextView
         android:id="@+id/added_counter"
-        android:layout_width="58dp"
-        android:layout_height="34dp"
+        android:layout_width="75dp"
+        android:layout_height="38dp"
+        android:fontFamily="monospace"
+        android:paddingTop="4pt"
         android:text="(0)"
+        android:textColor="#000000"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.246"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/added_text"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.146" />
+        app:layout_constraintVertical_bias="0.007" />
 
-    <ListView
-        android:id="@+id/added_animals_list"
-        android:layout_width="359dp"
-        android:layout_height="385dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/planned_animals"
+        android:layout_width="386dp"
+        android:layout_height="489dp"
+        android:paddingTop="8pt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.36"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.434" />
+        app:layout_constraintTop_toBottomOf="@+id/added_text"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="369dp"
-        android:layout_height="467dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="22dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
