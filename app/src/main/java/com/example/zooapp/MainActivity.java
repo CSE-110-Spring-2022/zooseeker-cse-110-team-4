@@ -1,57 +1,98 @@
 package com.example.zooapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
-import java.util.Arrays;
+import android.widget.TextView;
+
+import java.lang.reflect.Type;
+import java.sql.Array;
+import java.util.ArrayList;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
+    public List<ZooNode> userExhibits;
+    public RecyclerView recyclerView;
+    private PlannedAnimalAdapter plannedAnimalAdapter;
+    private TextView userExhibitsSize;
+    public ActionBar actionBar;
+    private static final int REQUEST_USER_CHOSEN_ANIMAL = 0;
 
-    public final List<String> animalList = Arrays.asList("Bird", "Tiger", "Baboon", "Snake");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      
-        List<ZooNode> zooNodeList = ZooNode.loadJSON(this, "zoo_node_list.json");
-        Log.d("Zoo Node List Activity", zooNodeList.toString());
 
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Zoo Seeker");
 
-        // Search bar
-        SearchView searchBar = findViewById(R.id.searchBar);
-        ListView listView = findViewById(R.id.listView);
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, animalList);
+        userExhibits = new ArrayList<>();
 
-        listView.setAdapter(adapter);
-        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
-            public boolean onQueryTextSubmit(String s)
-            {
-                searchBar.clearFocus();
-                if (animalList.contains(s))
-                    adapter.getFilter().filter(s);
-                return false;
-            }
+        setUpRecyclerView();
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                adapter.getFilter().filter(s);
-                return false;
-            }
-        });
+        userExhibitsSize = findViewById(R.id.added_counter);
+        userExhibitsSize.setText("(" + userExhibits.size() + ")");
     }
 
-    /*public boolean onCreatedOptionMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem menuItems = menu.findItem(R.id.searchBar);
+    private void setUpRecyclerView() {
+        plannedAnimalAdapter = new PlannedAnimalAdapter();
+        plannedAnimalAdapter.setAnimalList(userExhibits);
+        recyclerView = findViewById(R.id.planned_animals);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(plannedAnimalAdapter);
+    }
 
-        return super.onCreateOptionsMenu(menu);
-    } */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if( requestCode == REQUEST_USER_CHOSEN_ANIMAL && resultCode == Activity.RESULT_OK ) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<ZooNode>>(){}.getType();
+            userExhibits = gson.fromJson(data.getStringExtra("userExhibitsJSONUpdated"), type);
+            plannedAnimalAdapter.setAnimalList(userExhibits);
+            updateCount();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.zoo_node_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.d("Menu Click", "Search has been clicked");
+        Gson gson = new Gson();
+        Intent searchIntent = new Intent(this, SearchActivity.class);
+        searchIntent.putExtra("userExhibitsJSON", gson.toJson(userExhibits));
+        startActivityForResult(searchIntent, REQUEST_USER_CHOSEN_ANIMAL);
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void updateCount() {
+        userExhibitsSize.setText("(" + userExhibits.size() + ")");
+    }
 }
