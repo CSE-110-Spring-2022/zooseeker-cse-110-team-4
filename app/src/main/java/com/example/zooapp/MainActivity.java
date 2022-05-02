@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity{
             Type type = new TypeToken<List<ZooNode>>(){}.getType();
             userExhibits = gson.fromJson(data.getStringExtra("userExhibitsJSONUpdated"), type);
             plannedAnimalAdapter.setAnimalList(userExhibits);
-            userExhibitsSize.setText("(" + userExhibits.size() + ")");
+            updateCount();
         }
     }
 
@@ -92,5 +92,9 @@ public class MainActivity extends AppCompatActivity{
         startActivityForResult(searchIntent, REQUEST_USER_CHOSEN_ANIMAL);
         plannedCount++;
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateCount() {
+        userExhibitsSize.setText("(" + userExhibits.size() + ")");
     }
 }

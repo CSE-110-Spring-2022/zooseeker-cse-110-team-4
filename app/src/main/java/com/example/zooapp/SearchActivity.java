@@ -25,7 +25,6 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
     public List<ZooNode> userExhibits;
     private AnimalListViewAdapter adapter;
     public RecyclerView recyclerView;
-    private PlannedAnimalAdapter plannedAnimalAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
