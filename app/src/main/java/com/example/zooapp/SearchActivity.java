@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -23,6 +24,7 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
     public List<ZooNode> userExhibits;
     private AnimalListViewAdapter adapter;
     public RecyclerView recyclerView;
+    private PlannedAnimalAdapter plannedAnimalAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,10 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         });
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     private void setUpRecyclerView() {
         adapter = new AnimalListViewAdapter(exhibits, this);
@@ -82,11 +87,19 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         if( !userExhibits.contains(exhibits.get(position)) ) {
             userExhibits.add(exhibits.get(position));
         }
+        Gson gson = new Gson();
+        Intent refresh = new Intent(this, MainActivity.class);
+        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(userExhibits));
+        setResult(RESULT_OK, refresh);
         finish();
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Gson gson = new Gson();
+        Intent refresh = new Intent(this, MainActivity.class);
+        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(userExhibits));
+        setResult(RESULT_OK, refresh);
         finish();
         return super.onOptionsItemSelected(item);
     }
