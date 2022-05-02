@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity{
     private TextView userExhibitsSize;
     public ActionBar actionBar;
     private static final int REQUEST_USER_CHOSEN_ANIMAL = 0;
-    private int plannedCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity{
         Intent searchIntent = new Intent(this, SearchActivity.class);
         searchIntent.putExtra("userExhibitsJSON", gson.toJson(userExhibits));
         startActivityForResult(searchIntent, REQUEST_USER_CHOSEN_ANIMAL);
-        plannedCount++;
         return super.onOptionsItemSelected(item);
     }
 
