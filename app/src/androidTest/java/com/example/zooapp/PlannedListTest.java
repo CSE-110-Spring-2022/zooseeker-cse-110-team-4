@@ -95,23 +95,6 @@ public class PlannedListTest {
     @Test
     public void testAddedAnimalCounter() {
 
-//        ActivityScenario<SearchActivity> scenario = ActivityScenario.launch(SearchActivity.class);
-//        scenario.moveToState(Lifecycle.State.CREATED);
-//        scenario.moveToState(Lifecycle.State.STARTED);
-//        scenario.moveToState(Lifecycle.State.RESUMED);
-//
-//        scenario.onActivity(activity -> {
-//
-//            RecyclerView recyclerView = activity.recyclerView;
-//            RecyclerView.ViewHolder firstVH = recyclerView.findViewHolderForAdapterPosition(0);
-//            assertNotNull(firstVH);
-//            activity.userExhibits = new ArrayList<>();
-//            firstVH.itemView.performClick();
-//
-//            assertEquals(activity.userExhibits.size(), 1);
-//
-//        });
-
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.moveToState(Lifecycle.State.STARTED);
