@@ -1,7 +1,6 @@
 package com.example.zooapp;
 
 
-import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
