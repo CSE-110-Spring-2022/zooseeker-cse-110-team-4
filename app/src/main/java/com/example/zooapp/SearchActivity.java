@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
@@ -84,8 +85,15 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
 
     @Override
     public void onItemClick(int position) {
-        if( !userExhibits.contains(exhibits.get(position)) ) {
+        boolean animalExists = false;
+        for( ZooNode zooNode: userExhibits ) {
+            if( zooNode.name.equals(exhibits.get(position).name) ) {
+                animalExists = true;
+            }
+        }
+        if( !animalExists ) {
             userExhibits.add(exhibits.get(position));
+            Log.d("Added Animal", "Unique animal added");
         }
         Gson gson = new Gson();
         Intent refresh = new Intent(this, MainActivity.class);
