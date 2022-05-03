@@ -16,6 +16,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public final String head = "Directions to ";
     public final String proceed = "Proceed to ";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
