@@ -27,8 +27,13 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity{
     public List<ZooNode> userExhibits;
@@ -99,5 +104,19 @@ public class MainActivity extends AppCompatActivity{
     public void onPlanButtonClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
         startActivity(intent);
+
+        Context context = getApplication().getApplicationContext();
+
+        // "source" and "sink" are graph terms for the start and end
+        String start = "entrance_exit_gate";
+        String goal = "elephant_odyssey";
+
+        // 1. Load the graph...
+        Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
+        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
+
+        // 2. Load the information about our nodes and edges...
+        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
+        Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
     }
 }
