@@ -95,4 +95,9 @@ public class MainActivity extends AppCompatActivity{
     public void updateCount() {
         userExhibitsSize.setText("(" + userExhibits.size() + ")");
     }
+
+    public void onPlanButtonClicked(View view) {
+        Intent intent = new Intent(this, DirectionsActivity.class);
+        startActivity(intent);
+    }
 }
