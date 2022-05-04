@@ -23,6 +23,11 @@ public class DirectionsActivity extends AppCompatActivity {
     public final String head = "Directions to ";
     public final String proceed = "Proceed to ";
 
+    // Graph Information Files
+    final String ZOO_GRAPH_JSON = "sample_zoo_graph.json";
+    final String NODE_INFO_JSON = "sample_node_info.json";
+    final String EDGE_INFO_JSON = "sample_edge_info.json";
+
     // Variable for the graph and path
     private Graph<String, IdentifiedWeightedEdge> graph;
     //private GraphPath<String, IdentifiedWeightedEdge> path;
@@ -108,11 +113,11 @@ public class DirectionsActivity extends AppCompatActivity {
         Context context = getApplication().getApplicationContext();
 
         // 1. Load the graph...
-        graph = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
+        graph = ZooData.loadZooGraphJSON(context, ZOO_GRAPH_JSON);
 
         // 2. Load the information about our nodes and edges...
-        vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
-        eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
+        vInfo = ZooData.loadVertexInfoJSON(context, NODE_INFO_JSON);
+        eInfo = ZooData.loadEdgeInfoJSON(context, EDGE_INFO_JSON);
     }
 
     private GraphPath<String, IdentifiedWeightedEdge> getDijkstraExamplePath(Graph<String, IdentifiedWeightedEdge> graph) {
