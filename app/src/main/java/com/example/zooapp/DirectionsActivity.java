@@ -39,7 +39,7 @@ public class DirectionsActivity extends AppCompatActivity {
         TextView header = findViewById(R.id.directions_header);
         TextView directions = findViewById(R.id.directions_text);
         header.setText(head + sample2[currIndex]);
-        directions.setText(proceed + sample[currIndex]);
+
 
 
         // --Created for implementing Dijkstra's path--
@@ -59,6 +59,18 @@ public class DirectionsActivity extends AppCompatActivity {
 
         // create ArrayList for all edges in path
         pathEdgeList = path.getEdgeList();
+        IdentifiedWeightedEdge edge = pathEdgeList.get(currIndex);
+        double distanceInMeters = graph.getEdgeWeight(edge);
+        String streetName = eInfo.get(edge.getId()).street;
+        String fromNode = vInfo.get(graph.getEdgeSource(edge).toString()).name;
+        String toNode = vInfo.get(graph.getEdgeTarget(edge).toString()).name;
+        String text = String.format("Walk %.0f meters along %s from '%s' to '%s'",
+                distanceInMeters,
+                streetName,
+                fromNode,
+                toNode
+        );
+        directions.setText(text);
     }
 
     public void onNextButtonClicked(View view) {
@@ -79,13 +91,13 @@ public class DirectionsActivity extends AppCompatActivity {
         String streetName = eInfo.get(edge.getId()).street;
         String fromNode = vInfo.get(graph.getEdgeSource(edge).toString()).name;
         String toNode = vInfo.get(graph.getEdgeTarget(edge).toString()).name;
-
-        String text = String.format("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
+        String text = String.format("Walk %.0f meters along %s from '%s' to '%s'",
                 distanceInMeters,
                 streetName,
                 fromNode,
                 toNode
         );
+
 
         TextView directions = findViewById(R.id.directions_text);
         TextView header = findViewById(R.id.directions_header);
@@ -108,10 +120,22 @@ public class DirectionsActivity extends AppCompatActivity {
         if (currIndex > 0){
             currIndex--;
         }
+        // Getting information about current edge from Path
+        IdentifiedWeightedEdge edge = pathEdgeList.get(currIndex);
+        double distanceInMeters = graph.getEdgeWeight(edge);
+        String streetName = eInfo.get(edge.getId()).street;
+        String fromNode = vInfo.get(graph.getEdgeSource(edge).toString()).name;
+        String toNode = vInfo.get(graph.getEdgeTarget(edge).toString()).name;
+        String text = String.format("Walk %.0f meters along %s from '%s' to '%s'",
+                distanceInMeters,
+                streetName,
+                fromNode,
+                toNode
+        );
 
         TextView directions = findViewById(R.id.directions_text);
         TextView header = findViewById(R.id.directions_header);
         header.setText(head + sample2[currIndex]);
-        directions.setText(proceed +sample[currIndex]);
+        directions.setText(text);
     }
 }
