@@ -12,7 +12,6 @@ import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -43,11 +42,12 @@ public class DirectionsActivity extends AppCompatActivity {
 
         // Get string of directions at edge of currIndex from PathEdgeList
         String directionsText = getDirectionsAtEdge(currIndex);
+        String nextNode = nextNodeNameAtEdge(currIndex);
 
         // Set Text
         TextView header = findViewById(R.id.directions_header);
         TextView directions = findViewById(R.id.directions_text);
-        header.setText(head + sample2[currIndex]);
+        header.setText(head + nextNode);
         directions.setText(directionsText);
     }
 
@@ -66,10 +66,11 @@ public class DirectionsActivity extends AppCompatActivity {
 
         // Get string of directions at edge of currIndex from pathEdgeList
         String directionsText = getDirectionsAtEdge(currIndex);
+        String nextNode = nextNodeNameAtEdge(currIndex);
 
         TextView directions = findViewById(R.id.directions_text);
         TextView header = findViewById(R.id.directions_header);
-        header.setText(head + sample2[currIndex]);
+        header.setText(head + nextNode);
         directions.setText(directionsText);
         //directions.setText(proceed +sample[currIndex]);
     }
@@ -91,10 +92,11 @@ public class DirectionsActivity extends AppCompatActivity {
 
         // Get string of directions at edge of currIndex from pathEdgeList
         String directionsText = getDirectionsAtEdge(currIndex);
+        String nextNode = nextNodeNameAtEdge(currIndex);
 
         TextView directions = findViewById(R.id.directions_text);
         TextView header = findViewById(R.id.directions_header);
-        header.setText(head + sample2[currIndex]);
+        header.setText(head + nextNode);
         directions.setText(directionsText);
     }
 
@@ -128,8 +130,8 @@ public class DirectionsActivity extends AppCompatActivity {
      */
     private String getDirectionsAtEdge(int currIndex) {
         IdentifiedWeightedEdge edge = pathEdgeList.get(currIndex);
-        double distanceInMeters = graph.getEdgeWeight(edge);
 
+        double distanceInMeters = graph.getEdgeWeight(edge);
         String streetName = Objects.requireNonNull(eInfo.get(edge.getId())).street;
         String fromNode = Objects.requireNonNull(vInfo.get(graph.getEdgeSource(edge).toString())).name;
         String toNode = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(edge).toString())).name;
@@ -140,5 +142,16 @@ public class DirectionsActivity extends AppCompatActivity {
                 fromNode,
                 toNode
         );
+    }
+
+    /**
+     * NOTE: Requires graph, vInfo, and pathEdgeList to be class variables
+     * @param currIndex the index of the edge in the path you want directions for
+     * @return String of the toNode (next Exhibit) along the edge
+     */
+    private String nextNodeNameAtEdge(int currIndex) {
+        IdentifiedWeightedEdge edge = pathEdgeList.get(currIndex);
+        String toNode = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(edge).toString())).name;
+        return toNode;
     }
 }
