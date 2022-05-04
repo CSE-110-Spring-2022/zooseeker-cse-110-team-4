@@ -36,7 +36,7 @@ public class DirectionsActivity extends AppCompatActivity {
     final String NODE_INFO_JSON = "sample_node_info.json";
     final String EDGE_INFO_JSON = "sample_edge_info.json";
 
-    private List<ZooNode> userExhibits;
+    public List<ZooNode> userExhibits;
 
     // Variable for the graph and path
     private Graph<String, IdentifiedWeightedEdge> graph;
@@ -60,6 +60,11 @@ public class DirectionsActivity extends AppCompatActivity {
         loadGraph(); // will initialize graph, vInfo, and eInfo variables
         // Inputs to algorith: context, usersList
 
+        // Our algorithm
+//        ShortestPathZooAlgorithm algorithm = new ShortestPathZooAlgorithm(getApplication().getApplicationContext(), userExhibits);
+//        List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths = algorithm.runAlgorithm(graph);
+
+        // Dijkstra's Example
         GraphPath<String, IdentifiedWeightedEdge> path = getDijkstraExamplePath(graph); // Can replace this with our algorithm
         pathEdgeList = path.getEdgeList();
 

@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.sql.Array;
 import java.util.ArrayList;
