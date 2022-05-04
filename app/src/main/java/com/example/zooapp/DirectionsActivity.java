@@ -5,16 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +52,10 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
-        Bundle extras = getIntent().getExtras();
+        // grabbing planned animals from planned list and inputting to new activity
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<ZooNode>>(){}.getType();
+        userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
 
         loadGraph(); // will initialize graph, vInfo, and eInfo variables
         // Inputs to algorith: context, usersList
