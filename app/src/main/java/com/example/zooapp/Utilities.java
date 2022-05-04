@@ -6,7 +6,7 @@ import android.app.AlertDialog;
 import java.util.Optional;
 
 public class Utilities {
-    public static void showAlert(Activity activity, String message){
+    public static AlertDialog showAlert(Activity activity, String message){
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(activity);
 
         alertBuilder
@@ -18,7 +18,7 @@ public class Utilities {
                 .setCancelable(true);
 
         AlertDialog alertDialog = alertBuilder.create();
-        alertDialog.show();
+        return alertDialog;
 
     }
 
