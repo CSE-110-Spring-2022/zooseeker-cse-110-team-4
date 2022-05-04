@@ -2,6 +2,7 @@ package com.example.zooapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +30,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
     private List<IdentifiedWeightedEdge> pathEdgeList;
+    public AlertDialog alertMessage;
 
 
     @Override
@@ -76,7 +78,9 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onNextButtonClicked(View view) {
         if(currIndex == sample.length -1){
             runOnUiThread(() -> {
-                Utilities.showAlert(this,"The Route is Completed");
+                alertMessage = Utilities.showAlert(this,"The Route is Completed");
+                alertMessage.show();
+                //alertMessage.isShowing();
             });
         }
         if (currIndex < sample.length - 1){
