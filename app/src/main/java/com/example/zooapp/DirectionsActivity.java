@@ -54,8 +54,8 @@ public class DirectionsActivity extends AppCompatActivity {
         // Inputs to algorith: context, usersList
 
         // Our algorithm
-//        ShortestPathZooAlgorithm algorithm = new ShortestPathZooAlgorithm(getApplication().getApplicationContext(), userExhibits);
-//        List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths = algorithm.runAlgorithm(graph);
+        ShortestPathZooAlgorithm algorithm = new ShortestPathZooAlgorithm(getApplication().getApplicationContext(), userExhibits);
+        List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths = algorithm.runAlgorithm(graph);
 
         // Dijkstra's Example
         GraphPath<String, IdentifiedWeightedEdge> path = getDijkstraExamplePath(graph); // Can replace this with our algorithm
