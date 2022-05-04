@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -104,19 +105,5 @@ public class MainActivity extends AppCompatActivity{
     public void onPlanButtonClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
         startActivity(intent);
-
-        Context context = getApplication().getApplicationContext();
-
-        // "source" and "sink" are graph terms for the start and end
-        String start = "entrance_exit_gate";
-        String goal = "elephant_odyssey";
-
-        // 1. Load the graph...
-        Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
-        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
-
-        // 2. Load the information about our nodes and edges...
-        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
-        Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
     }
 }
