@@ -71,7 +71,7 @@ public class DirectionButtonsTest {
             Button next = activity.findViewById(R.id.next_button);
 
             //set the curr index to the last animal
-            activity.currIndex = activity.sample.length-1;
+            activity.currIndex = activity.pathEdgeList.size()-1;
 
             //check next button is visible
             assertEquals(next.getVisibility(), View.VISIBLE);

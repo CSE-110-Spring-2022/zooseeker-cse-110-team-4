@@ -2,11 +2,8 @@ package com.example.zooapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-<<<<<<< HEAD
 import android.annotation.SuppressLint;
-=======
 import android.app.AlertDialog;
->>>>>>> 21e410c5d39047bd4fb1353cd90cf7dedb919d7e
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -38,7 +35,7 @@ public class DirectionsActivity extends AppCompatActivity {
     //private GraphPath<String, IdentifiedWeightedEdge> path;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
-    private List<IdentifiedWeightedEdge> pathEdgeList;
+    public List<IdentifiedWeightedEdge> pathEdgeList;
     public AlertDialog alertMessage;
 
 
