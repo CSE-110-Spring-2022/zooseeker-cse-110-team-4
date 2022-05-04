@@ -2,6 +2,7 @@ package com.example.zooapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -17,11 +18,11 @@ import java.util.Map;
 import java.util.Objects;
 
 public class DirectionsActivity extends AppCompatActivity {
+    //index that is incremented/decremented by next/back buttons
+    //used to traverse through planned exhibits
     int currIndex = 0;
-    String[] sample = {"Polar Bear Street", "Alligator Street", "Tiger Street"};
-    String[] sample2 = {"Polar Bears", "Alligators", "Tigers"};
+    //string used to format the directions
     public final String head = "Directions to ";
-    public final String proceed = "Proceed to ";
 
     // Variable for the graph and path
     private Graph<String, IdentifiedWeightedEdge> graph;
@@ -53,14 +54,17 @@ public class DirectionsActivity extends AppCompatActivity {
 
 
     public void onNextButtonClicked(View view) {
-        if(currIndex == sample.length -1){
+        //check to see if index is at the end
+        if(currIndex == pathEdgeList.size() -1){
             runOnUiThread(() -> {
                 Utilities.showAlert(this,"The Route is Completed");
             });
         }
-        if (currIndex < sample.length - 1){
+        //else if index is not at end, increment
+        if (currIndex < pathEdgeList.size()  - 1){
             currIndex++;
         }
+        //making previous button visible after 1st exhbit
         Button previous = findViewById(R.id.previous_button);
         previous.setVisibility(View.VISIBLE);
 
@@ -68,24 +72,20 @@ public class DirectionsActivity extends AppCompatActivity {
         String directionsText = getDirectionsAtEdge(currIndex);
         String nextNode = nextNodeNameAtEdge(currIndex);
 
+        // set text
         TextView directions = findViewById(R.id.directions_text);
         TextView header = findViewById(R.id.directions_header);
         header.setText(head + nextNode);
         directions.setText(directionsText);
-        //directions.setText(proceed +sample[currIndex]);
     }
 
     public void onPreviousButtonClicked(View view) {
+        // make previous button invisible if we go back to 1st exhibit
         Button previous = findViewById(R.id.previous_button);
-        if(currIndex == 0){
-            runOnUiThread(() -> {
-                Utilities.showAlert(this,"Can't go back!");
-            });
-
-        }
         if (currIndex == 1){
             previous.setVisibility(View.INVISIBLE);
         }
+        // else if curr index is not 0, decrement on click
         if (currIndex > 0){
             currIndex--;
         }
@@ -94,6 +94,7 @@ public class DirectionsActivity extends AppCompatActivity {
         String directionsText = getDirectionsAtEdge(currIndex);
         String nextNode = nextNodeNameAtEdge(currIndex);
 
+        //set Text
         TextView directions = findViewById(R.id.directions_text);
         TextView header = findViewById(R.id.directions_header);
         header.setText(head + nextNode);
@@ -117,9 +118,7 @@ public class DirectionsActivity extends AppCompatActivity {
         // "source" and "sink" are graph terms for the start and end
         String start = "entrance_exit_gate";
         String goal = "elephant_odyssey";
-
-        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(graph, start, goal);
-        return path;
+        return DijkstraShortestPath.findPathBetween(graph, start, goal);
     }
 
     /**
@@ -128,6 +127,7 @@ public class DirectionsActivity extends AppCompatActivity {
      * @param currIndex the index of the edge in the path you want directions for
      * @return String of the directions at this path
      */
+    @SuppressLint("DefaultLocale")
     private String getDirectionsAtEdge(int currIndex) {
         IdentifiedWeightedEdge edge = pathEdgeList.get(currIndex);
 
@@ -151,7 +151,6 @@ public class DirectionsActivity extends AppCompatActivity {
      */
     private String nextNodeNameAtEdge(int currIndex) {
         IdentifiedWeightedEdge edge = pathEdgeList.get(currIndex);
-        String toNode = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(edge).toString())).name;
-        return toNode;
+        return Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(edge).toString())).name;
     }
 }
