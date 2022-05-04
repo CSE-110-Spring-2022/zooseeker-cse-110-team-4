@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ public class DirectionsActivity extends AppCompatActivity {
     final String NODE_INFO_JSON = "sample_node_info.json";
     final String EDGE_INFO_JSON = "sample_edge_info.json";
 
+    private List<ZooNode> userExhibits;
+
     // Variable for the graph and path
     private Graph<String, IdentifiedWeightedEdge> graph;
     //private GraphPath<String, IdentifiedWeightedEdge> path;
@@ -44,7 +47,11 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
+        Bundle extras = getIntent().getExtras();
+
         loadGraph(); // will initialize graph, vInfo, and eInfo variables
+        // Inputs to algorith: context, usersList
+
         GraphPath<String, IdentifiedWeightedEdge> path = getDijkstraExamplePath(graph); // Can replace this with our algorithm
         pathEdgeList = path.getEdgeList();
 
