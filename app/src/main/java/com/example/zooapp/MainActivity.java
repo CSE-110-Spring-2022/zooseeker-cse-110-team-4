@@ -105,7 +105,8 @@ public class MainActivity extends AppCompatActivity{
 
     public void onPlanButtonClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
-        intent.putExtra("userExhibits", (Serializable) userExhibits);
+        Gson gson = new Gson();
+        intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));
         startActivity(intent);
     }
 }
