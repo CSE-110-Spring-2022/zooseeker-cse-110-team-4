@@ -48,6 +48,7 @@ public class DirectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_directions);
 
         Bundle extras = getIntent().getExtras();
+        List<ZooNode> userExhibits = (List<ZooNode>) getIntent().getSerializableExtra("userExhibits");
 
         loadGraph(); // will initialize graph, vInfo, and eInfo variables
         // Inputs to algorith: context, usersList

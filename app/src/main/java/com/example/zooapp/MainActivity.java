@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.sql.Array;
 import java.util.ArrayList;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void onPlanButtonClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
+        intent.putExtra("userExhibits", (Serializable) userExhibits);
         startActivity(intent);
     }
 }
