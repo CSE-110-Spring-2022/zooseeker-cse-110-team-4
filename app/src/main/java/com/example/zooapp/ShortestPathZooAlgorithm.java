@@ -39,6 +39,7 @@ public class ShortestPathZooAlgorithm {
             resultPath.add(minDistPath);
             start = shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
+            minDistance = Double.POSITIVE_INFINITY;
         }
         resultPath.add(DijkstraShortestPath.findPathBetween(g, start, entranceExitGate));
         return resultPath;
