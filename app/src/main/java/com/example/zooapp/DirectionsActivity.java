@@ -100,7 +100,9 @@ public class DirectionsActivity extends AppCompatActivity {
         directions.setText(directionsText);
     }
 
-    // Initializes graph, vInfo, and eInfo instance variables
+    /**
+     * Loads graph information from files. Initializes graph, vInfo, and eInfo instance variables.
+     */
     private void loadGraph() {
         // For loading in resources
         Context context = getApplication().getApplicationContext();
