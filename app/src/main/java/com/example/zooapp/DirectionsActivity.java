@@ -15,6 +15,7 @@ import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DirectionsActivity extends AppCompatActivity {
     int currIndex = 0;
@@ -23,9 +24,9 @@ public class DirectionsActivity extends AppCompatActivity {
     public final String head = "Directions to ";
     public final String proceed = "Proceed to ";
 
-    // --Created for implementing Dijkstra's path--
+    // Variable for the graph and path
     private Graph<String, IdentifiedWeightedEdge> graph;
-    private GraphPath<String, IdentifiedWeightedEdge> path;
+    //private GraphPath<String, IdentifiedWeightedEdge> path;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
     private List<IdentifiedWeightedEdge> pathEdgeList;
@@ -36,42 +37,20 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
+        loadGraph(); // will initialize graph, vInfo, and eInfo variables
+        GraphPath<String, IdentifiedWeightedEdge> path = getDijkstraExamplePath(graph); // Can replace this with our algorithm
+        pathEdgeList = path.getEdgeList();
+
+        // Get string of directions at edge of currIndex from PathEdgeList
+        String directionsText = getDirectionsAtEdge(currIndex);
+
+        // Set Text
         TextView header = findViewById(R.id.directions_header);
         TextView directions = findViewById(R.id.directions_text);
         header.setText(head + sample2[currIndex]);
-
-
-
-        // --Created for implementing Dijkstra's path--
-        Context context = getApplication().getApplicationContext();
-
-        // "source" and "sink" are graph terms for the start and end
-        String start = "entrance_exit_gate";
-        String goal = "elephant_odyssey";
-
-        // 1. Load the graph...
-        graph = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
-        path = DijkstraShortestPath.findPathBetween(graph, start, goal);
-
-        // 2. Load the information about our nodes and edges...
-        vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
-        eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
-
-        // create ArrayList for all edges in path
-        pathEdgeList = path.getEdgeList();
-        IdentifiedWeightedEdge edge = pathEdgeList.get(currIndex);
-        double distanceInMeters = graph.getEdgeWeight(edge);
-        String streetName = eInfo.get(edge.getId()).street;
-        String fromNode = vInfo.get(graph.getEdgeSource(edge).toString()).name;
-        String toNode = vInfo.get(graph.getEdgeTarget(edge).toString()).name;
-        String text = String.format("Walk %.0f meters along %s from '%s' to '%s'",
-                distanceInMeters,
-                streetName,
-                fromNode,
-                toNode
-        );
-        directions.setText(text);
+        directions.setText(directionsText);
     }
+
 
     public void onNextButtonClicked(View view) {
         if(currIndex == sample.length -1){
@@ -85,24 +64,13 @@ public class DirectionsActivity extends AppCompatActivity {
         Button previous = findViewById(R.id.previous_button);
         previous.setVisibility(View.VISIBLE);
 
-        // Getting information about current edge from Path
-        IdentifiedWeightedEdge edge = pathEdgeList.get(currIndex);
-        double distanceInMeters = graph.getEdgeWeight(edge);
-        String streetName = eInfo.get(edge.getId()).street;
-        String fromNode = vInfo.get(graph.getEdgeSource(edge).toString()).name;
-        String toNode = vInfo.get(graph.getEdgeTarget(edge).toString()).name;
-        String text = String.format("Walk %.0f meters along %s from '%s' to '%s'",
-                distanceInMeters,
-                streetName,
-                fromNode,
-                toNode
-        );
-
+        // Get string of directions at edge of currIndex from pathEdgeList
+        String directionsText = getDirectionsAtEdge(currIndex);
 
         TextView directions = findViewById(R.id.directions_text);
         TextView header = findViewById(R.id.directions_header);
         header.setText(head + sample2[currIndex]);
-        directions.setText(text);
+        directions.setText(directionsText);
         //directions.setText(proceed +sample[currIndex]);
     }
 
@@ -120,22 +88,57 @@ public class DirectionsActivity extends AppCompatActivity {
         if (currIndex > 0){
             currIndex--;
         }
-        // Getting information about current edge from Path
+
+        // Get string of directions at edge of currIndex from pathEdgeList
+        String directionsText = getDirectionsAtEdge(currIndex);
+
+        TextView directions = findViewById(R.id.directions_text);
+        TextView header = findViewById(R.id.directions_header);
+        header.setText(head + sample2[currIndex]);
+        directions.setText(directionsText);
+    }
+
+    // Initializes graph, vInfo, and eInfo instance variables
+    private void loadGraph() {
+        // For loading in resources
+        Context context = getApplication().getApplicationContext();
+
+        // 1. Load the graph...
+        graph = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
+
+        // 2. Load the information about our nodes and edges...
+        vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
+        eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
+    }
+
+    private GraphPath<String, IdentifiedWeightedEdge> getDijkstraExamplePath(Graph<String, IdentifiedWeightedEdge> graph) {
+        // "source" and "sink" are graph terms for the start and end
+        String start = "entrance_exit_gate";
+        String goal = "elephant_odyssey";
+
+        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(graph, start, goal);
+        return path;
+    }
+
+    /**
+     * Get's a formatted string of directions
+     * NOTE: Requires graph, eInfo, vInfo, and pathEdgeList to be class variables
+     * @param currIndex the index of the edge in the path you want directions for
+     * @return String of the directions at this path
+     */
+    private String getDirectionsAtEdge(int currIndex) {
         IdentifiedWeightedEdge edge = pathEdgeList.get(currIndex);
         double distanceInMeters = graph.getEdgeWeight(edge);
-        String streetName = eInfo.get(edge.getId()).street;
-        String fromNode = vInfo.get(graph.getEdgeSource(edge).toString()).name;
-        String toNode = vInfo.get(graph.getEdgeTarget(edge).toString()).name;
-        String text = String.format("Walk %.0f meters along %s from '%s' to '%s'",
+
+        String streetName = Objects.requireNonNull(eInfo.get(edge.getId())).street;
+        String fromNode = Objects.requireNonNull(vInfo.get(graph.getEdgeSource(edge).toString())).name;
+        String toNode = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(edge).toString())).name;
+
+        return String.format("Walk %.0f meters along %s from '%s' to '%s'",
                 distanceInMeters,
                 streetName,
                 fromNode,
                 toNode
         );
-
-        TextView directions = findViewById(R.id.directions_text);
-        TextView header = findViewById(R.id.directions_header);
-        header.setText(head + sample2[currIndex]);
-        directions.setText(text);
     }
 }
