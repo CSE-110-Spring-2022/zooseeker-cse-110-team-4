@@ -31,11 +31,13 @@ public class ZooGraphTest {
 
         // 1. Load the graph...
         Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
-        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
+
 
         // 2. Load the information about our nodes and edges...
         Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
         Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
+
+        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
 
         //System.out.printf("The shortest path from '%s' to '%s' is:\n", start, goal);
         assertEquals("The shortest path from 'entrance_exit_gate' to 'elephant_odyssey' is:\n",
