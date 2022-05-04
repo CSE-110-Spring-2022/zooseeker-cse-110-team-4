@@ -19,13 +19,17 @@ public class ShortestPathZooAlgorithm {
     }
 
     public List<GraphPath<String, IdentifiedWeightedEdge>> runAlgorithm() {
+        Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
+        return runAlgorithm(g);
+    }
+
+    public List<GraphPath<String, IdentifiedWeightedEdge>> runAlgorithm(Graph<String, IdentifiedWeightedEdge> g) {
         List<GraphPath<String, IdentifiedWeightedEdge>> resultPath = new ArrayList<>();
         GraphPath<String, IdentifiedWeightedEdge> minDistPath = null;
         String entranceExitGate = "entrance_exit_gate";
         String start = entranceExitGate;
         double minDistance = Double.POSITIVE_INFINITY;
         ZooNode shortestZooNodeStart = null;
-        Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
 
         while( !userListExhibits.isEmpty() ) {
             for( ZooNode zooNode: userListExhibits ) {
