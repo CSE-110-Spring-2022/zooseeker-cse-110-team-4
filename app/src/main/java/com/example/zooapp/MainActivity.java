@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -139,7 +140,8 @@ public class MainActivity extends AppCompatActivity{
      * Method used to update the selected animals list size
      */
     public void updateCount() {
-        userExhibitsSize.setText("(" + userExhibits.size() + ")");
+        String userListSize = "(" + userExhibits.size() + ")";
+        userExhibitsSize.setText(userListSize);
     }
 
     /**
@@ -148,6 +150,12 @@ public class MainActivity extends AppCompatActivity{
      * @param view The current view
      */
     public void onPlanButtonClicked(View view) {
+        if( userExhibits.size() == 0 ) {
+            AlertDialog alertMessage = Utilities.showAlert(this,
+                    "Please Enter at least One Animal");
+            alertMessage.show();
+            return;
+        }
         Intent intent = new Intent(this, DirectionsActivity.class);
         Gson gson = new Gson();
         intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));

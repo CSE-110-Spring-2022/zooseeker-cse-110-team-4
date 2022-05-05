@@ -14,8 +14,9 @@ import java.util.List;
  */
 public class ShortestPathZooAlgorithm {
     // Private data fields
-    private List<ZooNode> userListExhibits;
+    private List<ZooNode> userListExhibits, userListShortestOrder;
     private Context context;
+    private ZooNodeDao dao;
 
     /**
      * Constructor
@@ -25,7 +26,10 @@ public class ShortestPathZooAlgorithm {
      */
     public ShortestPathZooAlgorithm(Context context, List<ZooNode> userListExhibits) {
         this.context = context;
-        this.userListExhibits = new ArrayList<>(userListExhibits);
+        this.userListExhibits = (userListExhibits == null) ? new ArrayList<>() :
+                new ArrayList<>(userListExhibits);
+        this.userListShortestOrder = new ArrayList<>();
+        this.dao = ZooNodeDatabase.getSingleton(context).ZooNodeDao();
     }
 
     /**
@@ -74,10 +78,18 @@ public class ShortestPathZooAlgorithm {
             resultPath.add(minDistPath);
             start = shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
+            userListShortestOrder.add(shortestZooNodeStart);
             minDistance = Double.POSITIVE_INFINITY;
         }
         resultPath.add(DijkstraShortestPath.findPathBetween(g, start, entranceExitGate));
         // Return a list of all shortest paths to complete cycle
         return resultPath;
+    }
+
+    public List<ZooNode> getUserListShortestOrder() {
+        ZooNode entrance = dao.getByName("Entrance and Exit Gate");
+        userListShortestOrder.add(0, entrance);
+        userListShortestOrder.add(userListShortestOrder.size(), entrance);
+        return userListShortestOrder;
     }
 }
