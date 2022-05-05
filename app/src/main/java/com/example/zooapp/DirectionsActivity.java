@@ -136,19 +136,30 @@ public class DirectionsActivity extends AppCompatActivity {
      */
     @SuppressLint("DefaultLocale")
     private void setDirectionsText(GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
+        // Get the needed zoo node information
         ZooNode current = userListShortestOrder.get(currIndex);
         ZooNode display = userListShortestOrder.get(currIndex+1);
+
+        // Set the header to the correct display name
         header.setText(display.name);
+
+        // Set up for getting all the directions
         int i = 1;
         String source, target, correctTarget, start, direction = "";
         start = current.name;
+
+        // Testing purposes
         Log.d("Edge Format", start);
+
+        // Get all the directions from current zoo node to the next zoo node
         for(IdentifiedWeightedEdge e: directionsToExhibit.getEdgeList()) {
             Log.d("Edge Format", e.toString());
             source = Objects.requireNonNull(vInfo.get(graph.getEdgeSource(e).toString())).name;
             target = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(e).toString())).name;
             correctTarget = (source.equals(start)) ? target : source;
             Log.d("Edge Format", correctTarget);
+
+            // Format directions to proper format
             direction += String.format(" %d. Walk %.0f meters along %s towards the '%s'\n",
                     i,
                     graph.getEdgeWeight(e),
@@ -157,6 +168,8 @@ public class DirectionsActivity extends AppCompatActivity {
             start = correctTarget;
             i++;
         }
+
+        // Set the directions text
         directions.setText(direction);
     }
 
