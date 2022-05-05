@@ -15,6 +15,7 @@ import java.util.List;
 public class ShortestPathZooAlgorithm {
     // Private data fields
     private List<ZooNode> userListExhibits, userListShortestOrder;
+    private List<Double> exhibitDistanceFromStart;
     private Context context;
     private ZooNodeDao dao;
 
@@ -76,6 +77,7 @@ public class ShortestPathZooAlgorithm {
             }
             // Finalize shortest path and add to result
             resultPath.add(minDistPath);
+            exhibitDistanceFromStart.add(minDistance);
             start = shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
             userListShortestOrder.add(shortestZooNodeStart);
@@ -86,10 +88,38 @@ public class ShortestPathZooAlgorithm {
         return resultPath;
     }
 
+    /**
+     * Gives the zoo nodes in order of the algorithm result for the user to follow
+     *
+     * @return List of zoo nodes in the approximate shortest path
+     */
     public List<ZooNode> getUserListShortestOrder() {
         ZooNode entrance = dao.getByName("Entrance and Exit Gate");
         userListShortestOrder.add(0, entrance);
         userListShortestOrder.add(userListShortestOrder.size(), entrance);
         return userListShortestOrder;
+    }
+
+    /**
+     * Get the distance of each exhibit from the start along the path generated
+     *
+     * @return List of distances
+     */
+    public List<Double> getExhibitDistance() {
+        correctExhibitDistanceList();
+        return exhibitDistanceFromStart;
+    }
+
+    /**
+     * Used to correct the distance list
+     */
+    private void correctExhibitDistanceList() {
+        double total = 0;
+        int i = 0;
+        for( Double distance: exhibitDistanceFromStart ) {
+            total += distance;
+            exhibitDistanceFromStart.set(i, total);
+            i++;
+        }
     }
 }
