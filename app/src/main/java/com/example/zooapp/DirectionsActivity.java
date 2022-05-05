@@ -1,6 +1,7 @@
 package com.example.zooapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -48,6 +49,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private Map<String, ZooData.EdgeInfo> eInfo;
     public List<IdentifiedWeightedEdge> pathEdgeList;
     public AlertDialog alertMessage;
+    public ActionBar actionBar;
 
     /**
      * Method for onCreate of the activity
@@ -58,6 +60,10 @@ public class DirectionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
+
+        // Set the Title Bar to Zoo Seeker
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Directions");
 
         // grabbing planned animals from planned list and inputting to new activity
         Gson gson = new Gson();
