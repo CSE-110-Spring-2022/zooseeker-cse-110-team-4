@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This class is for when the user is now seeing the directions for each exhibit
+ */
 public class DirectionsActivity extends AppCompatActivity {
     //index that is incremented/decremented by next/back buttons
     //used to traverse through planned exhibits
@@ -46,7 +49,11 @@ public class DirectionsActivity extends AppCompatActivity {
     public List<IdentifiedWeightedEdge> pathEdgeList;
     public AlertDialog alertMessage;
 
-
+    /**
+     * Method for onCreate of the activity
+     *
+     * @param savedInstanceState State of activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +86,11 @@ public class DirectionsActivity extends AppCompatActivity {
         directions.setText(directionsText);
     }
 
-
+    /**
+     * Method for when the next button is clicked
+     *
+     * @param view The current view
+     */
     public void onNextButtonClicked(View view) {
         //check to see if index is at the end
         if(currIndex == pathEdgeList.size() -1){
@@ -108,6 +119,11 @@ public class DirectionsActivity extends AppCompatActivity {
         directions.setText(directionsText);
     }
 
+    /**
+     * Method to handle when the previous button is clicked
+     *
+     * @param view The current view
+     */
     public void onPreviousButtonClicked(View view) {
         // make previous button invisible if we go back to 1st exhibit
         Button previous = findViewById(R.id.previous_button);
@@ -155,6 +171,7 @@ public class DirectionsActivity extends AppCompatActivity {
     /**
      * Get's a formatted string of directions
      * NOTE: Requires graph, eInfo, vInfo, and pathEdgeList to be class variables
+     *
      * @param currIndex the index of the edge in the path you want directions for
      * @return String of the directions at this path
      */
@@ -177,6 +194,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
     /**
      * NOTE: Requires graph, vInfo, and pathEdgeList to be class variables
+     *
      * @param currIndex the index of the edge in the path you want directions for
      * @return String of the toNode (next Exhibit) along the edge
      */
