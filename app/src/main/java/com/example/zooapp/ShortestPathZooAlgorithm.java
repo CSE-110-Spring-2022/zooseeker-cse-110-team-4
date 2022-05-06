@@ -77,7 +77,7 @@ public class ShortestPathZooAlgorithm {
             }
             // Finalize shortest path and add to result
             resultPath.add(minDistPath);
-            exhibitDistanceFromStart.add(minDistance);
+            //exhibitDistanceFromStart.add(minDistance);
             start = shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
             userListShortestOrder.add(shortestZooNodeStart);
