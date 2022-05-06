@@ -66,6 +66,7 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         for( int i = 0; i < toSort.size(); i++ ) {
             exhibits.add(dao.getByName(toSort.get(i)));
         }
+        Log.d("Search View", "Exhibits sorted");
 
         setUpRecyclerView();
 
@@ -94,6 +95,7 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         recyclerView = findViewById(R.id.animalListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        Log.d("Search View", "View has been set up");
     }
 
     /**
@@ -108,12 +110,13 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         for( ZooNode zooNode: userExhibits ) {
             if( zooNode.name.equals(exhibits.get(position).name) ) {
                 animalExists = true;
+                Log.d("Search View", "Appear if the animal is already in the list");
             }
         }
         // Only add if the animal hasn't been added
         if( !animalExists ) {
             userExhibits.add(exhibits.get(position));
-            Log.d("Added Animal", "Unique animal added");
+            Log.d("Search View", "Unique animal added");
         }
         Gson gson = new Gson();
         Intent refresh = new Intent(this, MainActivity.class);
@@ -134,6 +137,7 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         Intent refresh = new Intent(this, MainActivity.class);
         refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(userExhibits));
         setResult(RESULT_OK, refresh);
+        Log.d("Search View", "Back button has been clicked");
         finish();
         return super.onOptionsItemSelected(item);
     }
