@@ -20,29 +20,44 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This activity is for when we search for an animal to add into our list
+ */
 public class SearchActivity extends AppCompatActivity implements AnimalListViewAdapter.ClickListener{
-    private List<ZooNode> exhibits;
+    // Public fields
     public List<ZooNode> userExhibits;
-    private AnimalListViewAdapter adapter;
     public RecyclerView recyclerView;
 
+    // Private fields
+    private AnimalListViewAdapter adapter;
+    private List<ZooNode> exhibits;
+
+    /**
+     * Method for onCreate of the activity
+     *
+     * @param savedInstanceState State of activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // Sets up the title of the menu bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Search for an Animal Exhibit");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        // Gather information from the main activity
         Gson gson = new Gson();
         Type type = new TypeToken<List<ZooNode>>(){}.getType();
         userExhibits = gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type);
 
+        // Get all the animals available in the zoo, exhibits
         ZooNodeDao dao = ZooNodeDatabase.getSingleton(this).ZooNodeDao();
         exhibits = dao.getZooNodeKind("exhibit");
         List<String> toSort = new ArrayList<>();
 
+        // Sort the animals in alphabetical order
         for( int i = 0; i < exhibits.size(); i++ ) {
             toSort.add(exhibits.get(i).name);
         }
@@ -51,9 +66,11 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         for( int i = 0; i < toSort.size(); i++ ) {
             exhibits.add(dao.getByName(toSort.get(i)));
         }
+        Log.d("Search View", "Exhibits sorted");
 
         setUpRecyclerView();
 
+        // Set up for the search view
         SearchView searchView = findViewById(R.id.searchAnimalBar);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -70,29 +87,36 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
+    /**
+     * Sets up the recycler view
+     */
     private void setUpRecyclerView() {
         adapter = new AnimalListViewAdapter(exhibits, this);
         recyclerView = findViewById(R.id.animalListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        Log.d("Search View", "View has been set up");
     }
 
+    /**
+     * For when an item is clicked on the recycler view
+     *
+     * @param position Position of the view holder that is clicked
+     */
     @Override
     public void onItemClick(int position) {
         boolean animalExists = false;
+        // Checks if the zoo node has already been added
         for( ZooNode zooNode: userExhibits ) {
             if( zooNode.name.equals(exhibits.get(position).name) ) {
                 animalExists = true;
+                Log.d("Search View", "Appear if the animal is already in the list");
             }
         }
+        // Only add if the animal hasn't been added
         if( !animalExists ) {
             userExhibits.add(exhibits.get(position));
-            Log.d("Added Animal", "Unique animal added");
+            Log.d("Search View", "Unique animal added");
         }
         Gson gson = new Gson();
         Intent refresh = new Intent(this, MainActivity.class);
@@ -101,12 +125,19 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         finish();
     }
 
+    /**
+     * When the options are created
+     *
+     * @param item Item that is created
+     * @return Not used
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Gson gson = new Gson();
         Intent refresh = new Intent(this, MainActivity.class);
         refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(userExhibits));
         setResult(RESULT_OK, refresh);
+        Log.d("Search View", "Back button has been clicked");
         finish();
         return super.onOptionsItemSelected(item);
     }

@@ -24,11 +24,24 @@ import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class DirectionButtonsTest {
+    Context context;
+    ZooNodeDao dao;
     /*
     1. test initial visibility
     2. test alert message pops up
     3. previous appears and disappears properly
      */
+
+    @Before
+    public void setup() {
+        context = ApplicationProvider.getApplicationContext();
+        dao = Room.inMemoryDatabaseBuilder(context, ZooNodeDatabase.class)
+                .allowMainThreadQueries()
+                .build()
+                .ZooNodeDao();
+        List<ZooNode> allZooNodes = ZooNode.loadJSON(context, "sample_node_info.json");
+        dao.insertAll(allZooNodes);
+    }
 
     /**
      * Test when opening the directions page, the previous button should be invisible and the next
@@ -36,9 +49,8 @@ public class DirectionButtonsTest {
      */
     @Test
     public void testInitialButtonVisibility(){
-        //TODO
-//        //go to directions activity
-//        ActivityScenario<DirectionsActivity> scenario = ActivityScenario.launch(DirectionsActivity.class);
+        //go to directions activity
+//        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
 //        scenario.moveToState(Lifecycle.State.CREATED);
 //        scenario.moveToState(Lifecycle.State.STARTED);
 //        scenario.moveToState(Lifecycle.State.RESUMED);
@@ -46,12 +58,16 @@ public class DirectionButtonsTest {
 //        //next button should be visible
 //        //previous button should not be visible
 //        scenario.onActivity(activity -> {
-//            Button next = activity.findViewById(R.id.next_button);
-//            Button previous = activity.findViewById(R.id.previous_button);
+//            activity.userExhibits.add(dao.getById(0));
 //
-//            assertEquals(next.getVisibility(), View.VISIBLE);
-//            assertEquals(previous.getVisibility(), View.INVISIBLE);
+//            Button planButton = activity.findViewById(R.id.plan_button);
+//            planButton.performClick();
 //
+//            Button nextButton = activity.findViewById(R.id.next_button);
+//            Button previousButton = activity.findViewById(R.id.previous_button);
+//
+//            assertEquals(nextButton.getVisibility(), View.VISIBLE);
+//            assertEquals(previousButton.getVisibility(), View.INVISIBLE);
 //        });
     }
 
