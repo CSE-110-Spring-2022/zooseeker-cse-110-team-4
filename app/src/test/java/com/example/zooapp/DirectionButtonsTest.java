@@ -39,10 +39,9 @@ public class DirectionButtonsTest {
     4. alert message on plan if empty list - passed
      */
 
-<<<<<<< HEAD
     @Rule
     public ActivityScenarioRule directionsRule = new ActivityScenarioRule(DirectionsActivity.class);
-=======
+
     @Before
     public void setup() {
         context = ApplicationProvider.getApplicationContext();
@@ -53,7 +52,6 @@ public class DirectionButtonsTest {
         List<ZooNode> allZooNodes = ZooNode.loadJSON(context, "sample_node_info.json");
         dao.insertAll(allZooNodes);
     }
->>>>>>> e53bded0fb46f6aaf32e4aa898089ea4aa887b14
 
     /**
      * Test when opening the directions page, the previous button should be invisible and the next
@@ -61,7 +59,7 @@ public class DirectionButtonsTest {
      */
     @Test
     public void testInitialButtonVisibility(){
-<<<<<<< HEAD
+
 //        //go to directions activity
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
@@ -106,7 +104,6 @@ public class DirectionButtonsTest {
             assertEquals(true, activity.alertMessage.isShowing());
         });
 
-=======
         //go to directions activity
 //        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
 //        scenario.moveToState(Lifecycle.State.CREATED);
@@ -127,7 +124,7 @@ public class DirectionButtonsTest {
 //            assertEquals(nextButton.getVisibility(), View.VISIBLE);
 //            assertEquals(previousButton.getVisibility(), View.INVISIBLE);
 //        });
->>>>>>> e53bded0fb46f6aaf32e4aa898089ea4aa887b14
+
     }
 
     /**
