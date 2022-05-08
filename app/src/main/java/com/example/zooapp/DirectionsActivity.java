@@ -66,22 +66,27 @@ public class DirectionsActivity extends AppCompatActivity {
         // grabbing planned animals from planned list and inputting to new activity
         Gson gson = new Gson();
         Type type = new TypeToken<List<ZooNode>>(){}.getType();
-        userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
+        if(gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null){
+            userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
 
-        loadGraph(); // will initialize graph, vInfo, and eInfo variables
-        // Inputs to algorithm: context, usersList
+            loadGraph(); // will initialize graph, vInfo, and eInfo variables
+            // Inputs to algorithm: context, usersList
 
-        // Our algorithm
-        ShortestPathZooAlgorithm algorithm = new ShortestPathZooAlgorithm(
-                getApplication().getApplicationContext(), userExhibits);
-        graphPaths = algorithm.runAlgorithm(graph);
-        userListShortestOrder = algorithm.getUserListShortestOrder();
+            // Our algorithm
+            ShortestPathZooAlgorithm algorithm = new ShortestPathZooAlgorithm(
+                    getApplication().getApplicationContext(), userExhibits);
+            graphPaths = algorithm.runAlgorithm(graph);
+            userListShortestOrder = algorithm.getUserListShortestOrder();
 
-        // Set text views
-        header = findViewById(R.id.directions_header);
-        directions = findViewById(R.id.directions_text);
+            // Set text views
+            header = findViewById(R.id.directions_header);
+            directions = findViewById(R.id.directions_text);
 
-        setDirectionsText(graphPaths.get(currIndex));
+            setDirectionsText(graphPaths.get(currIndex));
+        }
+        else{
+            Log.d("null input", "User exhibits was null");
+        }
     }
 
     /**

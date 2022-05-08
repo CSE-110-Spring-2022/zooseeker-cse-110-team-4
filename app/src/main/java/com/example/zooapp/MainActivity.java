@@ -46,11 +46,13 @@ public class MainActivity extends AppCompatActivity{
     public List<ZooNode> userExhibits;
     public RecyclerView recyclerView;
     public ActionBar actionBar;
+    public AlertDialog alertMessage;
 
     // Private fields
     private PlannedAnimalAdapter plannedAnimalAdapter;
     private TextView userExhibitsSize;
     private static final int REQUEST_USER_CHOSEN_ANIMAL = 0;
+
 
     /**
      * Method for onCreate of the activity
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity{
      */
     public void onPlanButtonClicked(View view) {
         if( userExhibits.size() == 0 ) {
-            AlertDialog alertMessage = Utilities.showAlert(this,
+            alertMessage = Utilities.showAlert(this,
                     "Please Enter at least One Animal");
             alertMessage.show();
             return;
