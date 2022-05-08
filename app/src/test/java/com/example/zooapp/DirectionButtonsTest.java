@@ -30,6 +30,8 @@ import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class DirectionButtonsTest {
+    Context context;
+    ZooNodeDao dao;
     /*
     1. test initial visibility - passed
     2. test alert message pops up on next -
@@ -37,8 +39,21 @@ public class DirectionButtonsTest {
     4. alert message on plan if empty list - passed
      */
 
+<<<<<<< HEAD
     @Rule
     public ActivityScenarioRule directionsRule = new ActivityScenarioRule(DirectionsActivity.class);
+=======
+    @Before
+    public void setup() {
+        context = ApplicationProvider.getApplicationContext();
+        dao = Room.inMemoryDatabaseBuilder(context, ZooNodeDatabase.class)
+                .allowMainThreadQueries()
+                .build()
+                .ZooNodeDao();
+        List<ZooNode> allZooNodes = ZooNode.loadJSON(context, "sample_node_info.json");
+        dao.insertAll(allZooNodes);
+    }
+>>>>>>> e53bded0fb46f6aaf32e4aa898089ea4aa887b14
 
     /**
      * Test when opening the directions page, the previous button should be invisible and the next
@@ -46,6 +61,7 @@ public class DirectionButtonsTest {
      */
     @Test
     public void testInitialButtonVisibility(){
+<<<<<<< HEAD
 //        //go to directions activity
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
@@ -90,6 +106,28 @@ public class DirectionButtonsTest {
             assertEquals(true, activity.alertMessage.isShowing());
         });
 
+=======
+        //go to directions activity
+//        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+//        scenario.moveToState(Lifecycle.State.CREATED);
+//        scenario.moveToState(Lifecycle.State.STARTED);
+//        scenario.moveToState(Lifecycle.State.RESUMED);
+//
+//        //next button should be visible
+//        //previous button should not be visible
+//        scenario.onActivity(activity -> {
+//            activity.userExhibits.add(dao.getById(0));
+//
+//            Button planButton = activity.findViewById(R.id.plan_button);
+//            planButton.performClick();
+//
+//            Button nextButton = activity.findViewById(R.id.next_button);
+//            Button previousButton = activity.findViewById(R.id.previous_button);
+//
+//            assertEquals(nextButton.getVisibility(), View.VISIBLE);
+//            assertEquals(previousButton.getVisibility(), View.INVISIBLE);
+//        });
+>>>>>>> e53bded0fb46f6aaf32e4aa898089ea4aa887b14
     }
 
     /**
