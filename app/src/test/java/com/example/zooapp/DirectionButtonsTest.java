@@ -14,6 +14,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,6 +34,7 @@ import java.util.List;
 public class DirectionButtonsTest {
     Context context;
     ZooNodeDao dao;
+    ZooNodeDatabase testDb;
 
 
     String[] tags = {"lions", "cats","mammal", "africa"};
@@ -45,11 +47,13 @@ public class DirectionButtonsTest {
     @Before
     public void setup() {
         context = ApplicationProvider.getApplicationContext();
-        dao = Room.inMemoryDatabaseBuilder(context, ZooNodeDatabase.class)
+        testDb = Room.inMemoryDatabaseBuilder(context, ZooNodeDatabase.class)
                 .allowMainThreadQueries()
-                .build()
-                .ZooNodeDao();
+                .build();
+        ZooNodeDatabase.injectTestDatabase(testDb);
+
         List<ZooNode> allZooNodes = ZooNode.loadJSON(context, "sample_node_info.json");
+        dao = testDb.ZooNodeDao();
         dao.insertAll(allZooNodes);
 
     }
@@ -116,83 +120,110 @@ public class DirectionButtonsTest {
      * On last animal, clicking Next should cause an alert to appear
      */
     @Test
-    public void testButtonsTwoAnimals(){
-
-        //Start in MainActivity
-        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
-        scenario.moveToState(Lifecycle.State.CREATED);
-        scenario.moveToState(Lifecycle.State.STARTED);
-        scenario.moveToState(Lifecycle.State.RESUMED);
-
-        scenario.onActivity(activity -> {
-
-            //Add two animals to planned list
-            activity.userExhibits.add(animal);
-            activity.userExhibits.add(animal2);
-            assertEquals(2, activity.userExhibits.size());
-
-            //Set up intent to move to DirectionsActivity
-            Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
-            Gson gson = new Gson();
-            intent.putExtra("ListOfAnimals", gson.toJson(activity.userExhibits));
-
-            //Start DirectionsActivity
-            ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(intent);
-            scenario2.moveToState(Lifecycle.State.CREATED);
-            scenario2.moveToState(Lifecycle.State.STARTED);
-            scenario2.moveToState(Lifecycle.State.RESUMED);
-
-            scenario2.onActivity(activity2 -> {
-                Button next = activity2.findViewById(R.id.next_button);
-                Button previous = activity2.findViewById(R.id.previous_button);
-
-                //Two animals in planned list, but path should be length four including entrance and exit
-                assertEquals(2, activity2.userExhibits.size());
-                assertEquals(4, activity2.userListShortestOrder.size());
-
-                //currIndex starts at first animal, index at 0
-                //Previous should be invisible, Next should be visible
-                assertEquals(0, activity2.currIndex);
-                assertEquals(View.INVISIBLE, previous.getVisibility());
-                assertEquals(View.VISIBLE, next.getVisibility());
-
-                //click Next to move to the second animal, currIndex at 1
-                next.performClick();
-                assertEquals(1, activity2.currIndex);
-                assertEquals(View.VISIBLE, previous.getVisibility());
-                assertEquals(View.VISIBLE, next.getVisibility());
-
-                //click Previous to return to first animal, Previous button is invisible
-                previous.performClick();
-                assertEquals(View.INVISIBLE, previous.getVisibility());
-                assertEquals(View.VISIBLE, next.getVisibility());
-
-                //click Next to move to second animal, currIndex at 1
-                next.performClick();
-                assertEquals(1, activity2.currIndex);
-
-                //click Next to move to exit, currIndex at 2
-                next.performClick();
-                assertEquals(2, activity2.currIndex);
-
-                //click Next to get an alert that the route is complete.
-                next.performClick();
-                assertEquals(true, activity2.alertMessage.isShowing());
-                assertEquals(View.VISIBLE, next.getVisibility());
+    public void testPreviousAppearsDisappears(){
 
 
+        List<ZooNode> userExhibits = new ArrayList<>();
+        userExhibits.add(animal);
+        userExhibits.add(animal2);
+        assertEquals(2, userExhibits.size());
 
-            });
+        //Set up intent to move to DirectionsActivity
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
+        Gson gson = new Gson();
+        intent.putExtra("ListOfAnimals", gson.toJson(userExhibits));
+
+        //Start DirectionsActivity
+        ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(intent);
+        scenario2.moveToState(Lifecycle.State.CREATED);
+        scenario2.moveToState(Lifecycle.State.STARTED);
+        scenario2.moveToState(Lifecycle.State.RESUMED);
+
+        scenario2.onActivity(activity2 -> {
+            Button next = activity2.findViewById(R.id.next_button);
+            Button previous = activity2.findViewById(R.id.previous_button);
+
+            //Two animals in planned list, but path should be length four including entrance and exit
+            assertEquals(2, activity2.userExhibits.size());
+            assertEquals(4, activity2.userListShortestOrder.size());
+
+            //currIndex starts at first animal, index at 0
+            //Previous should be invisible, Next should be visible
+            assertEquals(0, activity2.currIndex);
+            assertEquals(View.INVISIBLE, previous.getVisibility());
+            assertEquals(View.VISIBLE, next.getVisibility());
+
+            //click Next to move to the second animal, currIndex at 1
+            next.performClick();
+            assertEquals(1, activity2.currIndex);
+            assertEquals(View.VISIBLE, previous.getVisibility());
+            assertEquals(View.VISIBLE, next.getVisibility());
+
+            //click Previous to return to first animal, Previous button is invisible
+            previous.performClick();
+            assertEquals(View.INVISIBLE, previous.getVisibility());
+            assertEquals(View.VISIBLE, next.getVisibility());
 
         });
+
+        scenario2.close();
 
 
     }
 
-//    @Test
-//    public void useAppContext() {
-//        // Context of the app under test.
-//        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-//        assertEquals("com.example.zooapp", appContext.getPackageName());
-//    }
+    @Test
+    public void testAlertOnRouteComplete(){
+        List<ZooNode> userExhibits = new ArrayList<>();
+        userExhibits.add(animal);
+        userExhibits.add(animal2);
+        assertEquals(2, userExhibits.size());
+
+        //Set up intent to move to DirectionsActivity
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
+        Gson gson = new Gson();
+        intent.putExtra("ListOfAnimals", gson.toJson(userExhibits));
+
+        //Start DirectionsActivity
+        ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(intent);
+        scenario2.moveToState(Lifecycle.State.CREATED);
+        scenario2.moveToState(Lifecycle.State.STARTED);
+        scenario2.moveToState(Lifecycle.State.RESUMED);
+
+        scenario2.onActivity(activity2 -> {
+            Button next = activity2.findViewById(R.id.next_button);
+            Button previous = activity2.findViewById(R.id.previous_button);
+
+            //Two animals in planned list, but path should be length four including entrance and exit
+            assertEquals(2, activity2.userExhibits.size());
+            assertEquals(4, activity2.userListShortestOrder.size());
+
+            //currIndex starts at first animal, index at 0
+            //Previous should be invisible, Next should be visible
+            assertEquals(0, activity2.currIndex);
+            assertEquals(View.INVISIBLE, previous.getVisibility());
+            assertEquals(View.VISIBLE, next.getVisibility());
+
+            //click Next to move to the second animal, currIndex at 1
+            next.performClick();
+            assertEquals(1, activity2.currIndex);
+            assertEquals(View.VISIBLE, previous.getVisibility());
+            assertEquals(View.VISIBLE, next.getVisibility());
+
+            //click Next to move to exit, currIndex at 2
+            next.performClick();
+            assertEquals(2, activity2.currIndex);
+
+            //click Next to get an alert that the route is complete.
+            next.performClick();
+            assertEquals(true, activity2.alertMessage.isShowing());
+            assertEquals(View.VISIBLE, next.getVisibility());
+
+
+        });
+
+        scenario2.close();
+
+    }
+
+
 }
