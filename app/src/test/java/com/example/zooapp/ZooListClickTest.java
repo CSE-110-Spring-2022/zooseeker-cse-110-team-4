@@ -38,7 +38,7 @@ public class ZooListClickTest {
                 .build();
         ZooNodeDatabase.injectTestDatabase(zooDb);
 
-        List<ZooNode> todos = ZooNode.loadJSON(context, "zoo_node_list.json");
+        List<ZooNode> todos = ZooNode.loadJSON(context, "sample_node_info.json");
         zooDao = zooDb.ZooNodeDao();
         zooDao.insertAll(todos);
     }

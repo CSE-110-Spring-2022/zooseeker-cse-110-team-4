@@ -34,7 +34,7 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
                         super.onCreate(db);
                         Executors.newSingleThreadScheduledExecutor().execute(() -> {
                             List<ZooNode> zooNodeList = ZooNode
-                                    .loadJSON(context, "zoo_node_list.json");
+                                    .loadJSON(context, "sample_node_info.json");
                             getSingleton(context).ZooNodeDao().insertAll(zooNodeList);
                         });
                     }
@@ -49,4 +49,5 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
         }
         singleton = testDatabase;
     }
+
 }

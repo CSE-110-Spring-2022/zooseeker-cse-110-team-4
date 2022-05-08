@@ -45,7 +45,7 @@ public class PlannedListTest {
                 .build();
         ZooNodeDatabase.injectTestDatabase(testDb);
 
-        List<ZooNode> todos = ZooNode.loadJSON(context, "zoo_node_list.json");
+        List<ZooNode> todos = ZooNode.loadJSON(context, "sample_node_info.json");
         zooNodeDao = testDb.ZooNodeDao();
         zooNodeDao.insertAll(todos);
     }
