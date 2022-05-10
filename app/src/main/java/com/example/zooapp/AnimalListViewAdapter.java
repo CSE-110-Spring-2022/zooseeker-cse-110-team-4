@@ -107,11 +107,18 @@ public class AnimalListViewAdapter extends RecyclerView.Adapter<AnimalListViewAd
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for( ZooNode zooNode: zooNodeListFull ) {
                     for( String tag: zooNode.tags ) {
-                        if( tag.toLowerCase().startsWith(filterPattern) ) {
+                        if( tag.toLowerCase().contains(filterPattern) ) {
                             // Add animal when their tag is being searched for
                             filteredList.add(zooNode);
                             break;
                         }
+                        /* For only Prefix and Suffix
+                        if( tag.toLowerCase().startsWith(filterPattern) ||
+                                tag.toLowerCase().endsWith(filterPattern) ) {
+                            // Add animal when their tag is being searched for
+                            filteredList.add(zooNode);
+                            break;
+                        }*/
                     }
                 }
             }
