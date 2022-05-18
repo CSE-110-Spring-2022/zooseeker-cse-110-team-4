@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     /**
-     * For when the plan button is clicked
+     * Navigate to Route Plan Summary Activity
      *
      * @param view The current view
      */
@@ -158,7 +158,8 @@ public class MainActivity extends AppCompatActivity{
             alertMessage.show();
             return;
         }
-        Intent intent = new Intent(this, DirectionsActivity.class);
+        //Intent intent = new Intent(this, DirectionsActivity.class);
+        Intent intent = new Intent(this, RoutePlanSummaryActivity.class);
         Gson gson = new Gson();
         intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));
         startActivity(intent);

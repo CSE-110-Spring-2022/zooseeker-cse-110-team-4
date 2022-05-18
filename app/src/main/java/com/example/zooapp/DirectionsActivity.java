@@ -59,18 +59,17 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
-        // Set the Title Bar to Zoo Seeker
+        // Set the Title Bar to Directions
         actionBar = getSupportActionBar();
         actionBar.setTitle("Directions");
 
-        // grabbing planned animals from planned list and inputting to new activity
+        // Grabbing planned animals from planned list and inputting to new activity
         Gson gson = new Gson();
         Type type = new TypeToken<List<ZooNode>>(){}.getType();
         if(gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null){
             userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
 
             loadGraph(); // will initialize graph, vInfo, and eInfo variables
-            // Inputs to algorithm: context, usersList
 
             // Our algorithm
             GraphAlgorithm algorithm = new ShortestPathZooAlgorithm(
@@ -86,6 +85,7 @@ public class DirectionsActivity extends AppCompatActivity {
         }
         else{
             Log.d("null input", "User exhibits was null");
+            throw new NullPointerException("UserExhibits was null");
         }
     }
 
@@ -108,7 +108,7 @@ public class DirectionsActivity extends AppCompatActivity {
         if (currIndex < userListShortestOrder.size() - 1){
             currIndex++;
         }
-        //making previous button visible after 1st exhbit
+        //making previous button visible after 1st exhibit
         Button previous = findViewById(R.id.previous_button);
         previous.setVisibility(View.VISIBLE);
 
