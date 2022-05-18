@@ -73,9 +73,9 @@ public class DirectionsActivity extends AppCompatActivity {
             // Inputs to algorithm: context, usersList
 
             // Our algorithm
-            ShortestPathZooAlgorithm algorithm = new ShortestPathZooAlgorithm(
+            GraphAlgorithm algorithm = new ShortestPathZooAlgorithm(
                     getApplication().getApplicationContext(), userExhibits);
-            graphPaths = algorithm.runAlgorithm(graph);
+            graphPaths = algorithm.runAlgorithm();
             userListShortestOrder = algorithm.getUserListShortestOrder();
 
             // Set text views

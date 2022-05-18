@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * This class if for the algorithm to find the shortest path to visit certain nodes
  */
-public class ShortestPathZooAlgorithm {
+public class ShortestPathZooAlgorithm implements GraphAlgorithm {
     // Private data fields
     private List<ZooNode> userListExhibits, userListShortestOrder;
     private List<Double> exhibitDistanceFromStart;
