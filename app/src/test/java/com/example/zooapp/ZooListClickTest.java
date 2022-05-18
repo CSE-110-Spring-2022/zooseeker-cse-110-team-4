@@ -55,11 +55,11 @@ public class ZooListClickTest {
             RecyclerView recyclerView = activity.recyclerView;
             RecyclerView.ViewHolder firstVH = recyclerView.findViewHolderForAdapterPosition(0);
             assertNotNull(firstVH);
-            activity.userExhibits = new ArrayList<>();
+            activity.exhibitsSetup.setUserExhibits(new ArrayList<>());
             firstVH.itemView.performClick();
-            assertEquals(1, activity.userExhibits.size());
-            assertEquals("Alligators", activity.userExhibits.get(0).name);
-            assertEquals("exhibit", activity.userExhibits.get(0).kind);
+            assertEquals(1, activity.exhibitsSetup.getUserExhibits().size());
+            assertEquals("Alligators", activity.exhibitsSetup.getUserExhibits().get(0).name);
+            assertEquals("exhibit", activity.exhibitsSetup.getUserExhibits().get(0).kind);
         });
     }
 
@@ -75,11 +75,11 @@ public class ZooListClickTest {
             RecyclerView recyclerView = activity.recyclerView;
             RecyclerView.ViewHolder firstVH = recyclerView.findViewHolderForAdapterPosition(4);
             assertNotNull(firstVH);
-            activity.userExhibits = new ArrayList<>();
+            activity.exhibitsSetup.setUserExhibits(new ArrayList<>());
             firstVH.itemView.performClick();
-            assertEquals(1, activity.userExhibits.size());
-            assertEquals("Lions", activity.userExhibits.get(0).name);
-            assertEquals("exhibit", activity.userExhibits.get(0).kind);
+            assertEquals(1, activity.exhibitsSetup.getUserExhibits().size());
+            assertEquals("Lions", activity.exhibitsSetup.getUserExhibits().get(0).name);
+            assertEquals("exhibit", activity.exhibitsSetup.getUserExhibits().get(0).kind);
         });
     }
 }
