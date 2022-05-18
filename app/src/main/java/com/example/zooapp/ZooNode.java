@@ -1,6 +1,7 @@
 package com.example.zooapp;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -40,6 +41,7 @@ public class ZooNode {
     }
 
     public static List<ZooNode> loadJSON(Context context, String path) {
+        Log.d("Info", "Loading JSON file");
         try {
             InputStream inputStream = context.getAssets().open(path);
             Reader reader = new InputStreamReader(inputStream);
