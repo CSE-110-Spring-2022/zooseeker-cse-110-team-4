@@ -2,6 +2,8 @@ package com.example.zooapp;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.jgrapht.GraphPath;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -21,6 +25,8 @@ import java.util.List;
 public class RoutePlanSummaryActivity extends AppCompatActivity {
 
     public List<ZooNode> userExhibits;
+
+    private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,29 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
             throw new NullPointerException("UserExhibits was null");
         }
 
+        // Run Route Algorithm
+        GraphAlgorithm algorithm = new ShortestPathZooAlgorithm(
+                getApplication().getApplicationContext(), userExhibits);
+        graphPaths = algorithm.runAlgorithm();
+        List<ZooNode> userListShortestOrder = algorithm.getUserListShortestOrder();
+        List<Double> exhibitDistances = algorithm.getExhibitDistance();
+        // remove last exhibit (exit gate) from list
+        userListShortestOrder.remove(userListShortestOrder.size()-1);
+
         // Set up UI of Planned List
+        setUpRecyclerView(userListShortestOrder, exhibitDistances);
+    }
+
+    /**
+     * Sets up the recycler view to display the animals that the user has currently selected
+     */
+    private void setUpRecyclerView(List<ZooNode> userListShortestOrder,
+                                   List<Double> exhibitDistances) {
+        PlannedAnimalAdapter plannedAnimalAdapter = new PlannedAnimalAdapter();
+        plannedAnimalAdapter.setAnimalList(userListShortestOrder);
+        RecyclerView recyclerView = findViewById(R.id.planned_animals);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(plannedAnimalAdapter);
     }
 
     /**
