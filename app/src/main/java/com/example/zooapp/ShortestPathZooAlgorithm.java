@@ -30,6 +30,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         this.userListExhibits = (userListExhibits == null) ? new ArrayList<>() :
                 new ArrayList<>(userListExhibits);
         this.userListShortestOrder = new ArrayList<>();
+        this.exhibitDistanceFromStart = new ArrayList<>();
         this.dao = ZooNodeDatabase.getSingleton(context).ZooNodeDao();
     }
 
@@ -77,13 +78,16 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
             }
             // Finalize shortest path and add to result
             resultPath.add(minDistPath);
-            //exhibitDistanceFromStart.add(minDistance);
+            exhibitDistanceFromStart.add(minDistance);
             start = shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
             userListShortestOrder.add(shortestZooNodeStart);
             minDistance = Double.POSITIVE_INFINITY;
         }
-        resultPath.add(DijkstraShortestPath.findPathBetween(g, start, entranceExitGate));
+        GraphPath<String, IdentifiedWeightedEdge> finalPath =
+                DijkstraShortestPath.findPathBetween(g, start, entranceExitGate);
+        resultPath.add(finalPath);
+        exhibitDistanceFromStart.add(finalPath.getWeight());
         // Return a list of all shortest paths to complete cycle
         return resultPath;
     }
@@ -95,7 +99,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
      */
     public List<ZooNode> getUserListShortestOrder() {
         ZooNode entrance = dao.getByName("Entrance and Exit Gate");
-        userListShortestOrder.add(0, entrance);
+        // userListShortestOrder.add(0, entrance);
         userListShortestOrder.add(userListShortestOrder.size(), entrance);
         return userListShortestOrder;
     }
@@ -118,8 +122,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         int i = 0;
         for( Double distance: exhibitDistanceFromStart ) {
             total += distance;
-            exhibitDistanceFromStart.set(i, total);
-            i++;
+            exhibitDistanceFromStart.set(i++, total);
         }
     }
 }

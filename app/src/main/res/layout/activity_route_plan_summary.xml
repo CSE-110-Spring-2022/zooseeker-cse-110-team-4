@@ -23,4 +23,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.83" />
 
+    <TextView
+        android:id="@+id/added_text"
+        android:layout_width="100dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="165dp"
+        android:fontFamily="monospace"
+        android:paddingTop="4pt"
+        android:text="ROUTE"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.007" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/planned_animals"
+        android:layout_width="386dp"
+        android:layout_height="489dp"
+        android:paddingTop="8pt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/added_text"
+        app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
