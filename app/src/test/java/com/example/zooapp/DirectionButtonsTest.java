@@ -35,6 +35,8 @@ public class DirectionButtonsTest {
     Context context;
     ZooNodeDao dao;
     ZooNodeDatabase testDb;
+    PlannedAnimalDao planDao;
+    PlannedAnimalDatabase testPlanDb;
 
 
     String[] tags = {"lions", "cats","mammal", "africa"};
@@ -52,9 +54,16 @@ public class DirectionButtonsTest {
                 .build();
         ZooNodeDatabase.injectTestDatabase(testDb);
 
+        testPlanDb = Room.inMemoryDatabaseBuilder(context, PlannedAnimalDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        PlannedAnimalDatabase.injectTestDatabase(testPlanDb);
+
         List<ZooNode> allZooNodes = ZooNode.loadJSON(context, "sample_node_info.json");
         dao = testDb.ZooNodeDao();
         dao.insertAll(allZooNodes);
+
+        planDao = testPlanDb.plannedAnimalDao();
 
     }
 
@@ -107,6 +116,8 @@ public class DirectionButtonsTest {
 
         scenario.onActivity(activity -> {
             //No animals have been added to the planned list
+            Button clear = activity.findViewById(R.id.clear_button);
+            clear.performClick();
             Button plan = activity.findViewById(R.id.plan_button);
             plan.performClick();
             assertEquals(true, activity.alertMessage.isShowing());

@@ -70,19 +70,28 @@ public class MainActivity extends AppCompatActivity{
 
         userExhibits = new ArrayList<>();
 
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+        //plannedAnimalDao.deleteAll();
+
         setUpRecyclerView();
 
         // Added counter for user to see
         userExhibitsSize = findViewById(R.id.added_counter);
-        userExhibitsSize.setText("(" + userExhibits.size() + ")");
+        userExhibitsSize.setText("(" + plannedAnimalDao.getAll().size() + ")");
     }
 
     /**
      * Sets up the recycler view to display the animals that the user has currently selected
      */
     private void setUpRecyclerView() {
+
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+        List<ZooNode> plannedExhibits = plannedAnimalDao.getAll();
+
         plannedAnimalAdapter = new PlannedAnimalAdapter();
-        plannedAnimalAdapter.setAnimalList(userExhibits);
+        plannedAnimalAdapter.setHasStableIds(true);
+        plannedAnimalAdapter.setAnimalList(plannedExhibits);
+
         recyclerView = findViewById(R.id.planned_animals);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(plannedAnimalAdapter);
@@ -103,7 +112,10 @@ public class MainActivity extends AppCompatActivity{
             Type type = new TypeToken<List<ZooNode>>(){}.getType();
             userExhibits = gson.fromJson(data.getStringExtra("userExhibitsJSONUpdated"),
                     type);
-            plannedAnimalAdapter.setAnimalList(userExhibits);
+
+            PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+            List<ZooNode> plannedExhibits = plannedAnimalDao.getAll();
+            plannedAnimalAdapter.setAnimalList(plannedExhibits);
             updateCount();
         }
     }
@@ -142,8 +154,8 @@ public class MainActivity extends AppCompatActivity{
      * Method used to update the selected animals list size
      */
     public void updateCount() {
-        String userListSize = "(" + userExhibits.size() + ")";
-        userExhibitsSize.setText(userListSize);
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+        userExhibitsSize.setText("(" + plannedAnimalDao.getAll().size() + ")");
     }
 
     /**
@@ -152,7 +164,8 @@ public class MainActivity extends AppCompatActivity{
      * @param view The current view
      */
     public void onPlanButtonClicked(View view) {
-        if( userExhibits.size() == 0 ) {
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+        if( plannedAnimalDao.getAll().size() == 0 ) {
             alertMessage = Utilities.showAlert(this,
                     "Please Enter at least One Animal");
             alertMessage.show();
@@ -160,8 +173,17 @@ public class MainActivity extends AppCompatActivity{
         }
         //Intent intent = new Intent(this, DirectionsActivity.class);
         Intent intent = new Intent(this, RoutePlanSummaryActivity.class);
+        //TODO edit directions activity to use dao instead
         Gson gson = new Gson();
-        intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));
+        intent.putExtra("ListOfAnimals",gson.toJson(plannedAnimalDao.getAll()));
         startActivity(intent);
+    }
+
+    public void onClearButtonClicked(View view) {
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+        plannedAnimalDao.deleteAll();
+        updateCount();
+        setUpRecyclerView();
+
     }
 }

@@ -9,14 +9,13 @@ import java.util.List;
 
 public class ExhibitsSetup {
     private final Activity activity;
-    public List<ZooNode> userExhibits;
     private List<ZooNode> totalExhibits;
 
     public ExhibitsSetup(Activity a) {
 
         this.activity = a;
-        userExhibits = new ArrayList<>();
         totalExhibits = new ArrayList<>();
+
     }
 
     void getExhibitInformation() {
@@ -43,7 +42,8 @@ public class ExhibitsSetup {
         boolean animalExists = false;
 
         // Checks if the zoo node has already been added
-        for( ZooNode zooNode: userExhibits ) {
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(activity).plannedAnimalDao();
+        for( ZooNode zooNode: plannedAnimalDao.getAll()) {
             if( zooNode.name.equals(totalExhibits.get(position).name) ) {
                 animalExists = true;
                 Log.d("Search View", "Appear if the animal is already in the list");
@@ -51,26 +51,36 @@ public class ExhibitsSetup {
         }
         // Only add if the animal hasn't been added
         if( !animalExists ) {
-            userExhibits.add(totalExhibits.get(position));
+//            userExhibits.add(totalExhibits.get(position));
+            plannedAnimalDao.insert(totalExhibits.get(position));
+
+
             Log.d("Search View", "Unique animal added");
         }
 
     }
 
     List<ZooNode> getUserExhibits(){
-        return userExhibits;
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(activity).plannedAnimalDao();
+        return plannedAnimalDao.getAll();
     }
 
     void setUserExhibits(List<ZooNode> e){
-        userExhibits = e;
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(activity).plannedAnimalDao();
+
+        //clear list - TODO replace with a clear function for the DAO
+        for( ZooNode zooNode: plannedAnimalDao.getAll()) {
+            plannedAnimalDao.delete(zooNode);
+        }
+
+        //set the new list of exhibits
+        for( ZooNode zooNode: e ) {
+            plannedAnimalDao.insert(zooNode);
+        }
     }
 
     List<ZooNode> getTotalExhibits(){
         return totalExhibits;
-    }
-
-    void setTotalExhibits(List<ZooNode> e){
-        totalExhibits = e;
     }
 
 

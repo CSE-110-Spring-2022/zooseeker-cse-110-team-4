@@ -47,7 +47,7 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         //Get information from Main Activity
         Gson gson = new Gson();
         Type type = new TypeToken<List<ZooNode>>() {}.getType();
-        exhibitsSetup.setUserExhibits(gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type));
+        //exhibitsSetup.setUserExhibits(gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type));
 
         //Set up information about the zoo exhibits
         exhibitsSetup.getExhibitInformation();
@@ -96,6 +96,7 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         /*TODO make it so we can add multiple animals in one go? can just comment out this block but
           theres no visual indicator when an animal gets added rn
         */
+
         Gson gson = new Gson();
         Intent refresh = new Intent(this, MainActivity.class);
         refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(exhibitsSetup.getUserExhibits()));
