@@ -68,12 +68,11 @@ public class DirectionsActivity extends AppCompatActivity {
         // Grabbing planned animals from planned list and inputting to new activity
         Gson gson = new Gson();
         Type type = new TypeToken<List<ZooNode>>(){}.getType();
-        //past code in if block: gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null
 
         //make sure there are exhibits planned
-        if(plannedAnimalDao.getAll().size() > 0){
-            //userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
-            userExhibits = plannedAnimalDao.getAll();
+        if(gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null){
+            userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
+            //userExhibits = plannedAnimalDao.getAll();
 
             loadGraph(); // will initialize graph, vInfo, and eInfo variables
 

@@ -83,8 +83,8 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
      */
     public void onDirectionsButtonClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
-//        Gson gson = new Gson();
-//        intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));
+        Gson gson = new Gson();
+        intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));
         startActivity(intent);
     }
 }
