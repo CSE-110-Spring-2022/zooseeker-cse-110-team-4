@@ -136,16 +136,6 @@ public class DirectionButtonsTest {
     @Test
     public void testPreviousAppearsDisappears(){
 
-//        List<ZooNode> userExhibits = new ArrayList<>();
-//        userExhibits.add(animal);
-//        userExhibits.add(animal2);
-//        assertEquals(2, userExhibits.size());
-//
-//        //Set up intent to move to DirectionsActivity
-//        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
-//        Gson gson = new Gson();
-//        intent.putExtra("ListOfAnimals", gson.toJson(userExhibits));
-
         planDao.insert(animal);
         planDao.insert(animal2);
 
@@ -159,9 +149,9 @@ public class DirectionButtonsTest {
             Button next = activity2.findViewById(R.id.next_button);
             Button previous = activity2.findViewById(R.id.previous_button);
 
-            //Two animals in planned list, but path should be length three to go back to entrance
+            //Two animals in planned list, but path should be length four to go back to entrance
             assertEquals(2, planDao.getAll().size());
-            assertEquals(3, activity2.userListShortestOrder.size());
+            assertEquals(4, activity2.userListShortestOrder.size());
 
             //currIndex starts at first animal, index at 0
             //Previous should be invisible, Next should be visible
@@ -187,17 +177,11 @@ public class DirectionButtonsTest {
 
     }
 
-    //TODO
     @Test
     public void testAlertOnRouteComplete(){
         planDao.insert(animal);
         planDao.insert(animal2);
         assertEquals(2, planDao.getAll().size());
-
-//        //Set up intent to move to DirectionsActivity
-//        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
-//        Gson gson = new Gson();
-//        intent.putExtra("ListOfAnimals", gson.toJson(userExhibits));
 
         //Start DirectionsActivity
         ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(DirectionsActivity.class);
@@ -211,9 +195,9 @@ public class DirectionButtonsTest {
 
             assertEquals(2, planDao.getAll().size());
 
-            //Two animals in planned list, but path should be length three including going back to entrance/exit
+            //Two animals in planned list, but path should be length four including going back to entrance/exit
             assertEquals(2, activity2.userExhibits.size());
-            assertEquals(3, activity2.userListShortestOrder.size());
+            assertEquals(4, activity2.userListShortestOrder.size());
 
             //currIndex starts at first animal, index at 0
             //Previous should be invisible, Next should be visible
@@ -227,7 +211,6 @@ public class DirectionButtonsTest {
             assertEquals(View.VISIBLE, previous.getVisibility());
             assertEquals(View.VISIBLE, next.getVisibility());
 
-            //TODO missing an exhibit so we're missing one, but the userListShortestOrder is right?
             //click Next to move to exit, currIndex at 2
             next.performClick();
             assertEquals(2, activity2.currIndex);

@@ -13,32 +13,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0351bcd8-9f61-49d2-939f-fa890cc97ad7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/DirectionsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/DirectionsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/ExhibitsSetup.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/ExhibitsSetup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/RoutePlanSummaryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/RoutePlanSummaryActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/SearchActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/SearchActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/ShortestPathZooAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/zooapp/ShortestPathZooAlgorithm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/test/java/com/example/zooapp/DirectionButtonsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/example/zooapp/DirectionButtonsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/example/zooapp/PlannedListTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/example/zooapp/PlannedListTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/example/zooapp/ZooListClickTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/example/zooapp/ZooListClickTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/jaydewong/.android/avd/Pixel_4_API_32.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -87,7 +82,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="cidr.known.project.marker" value="true" />
   </component>
-  <component name="RunManager" selected="Gradle.PlannedListTest">
+  <component name="RunManager" selected="Android App.app">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="Zoo_App.app" />
       <option name="DEPLOY" value="true" />
@@ -145,12 +140,12 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DirectionButtonsTest.testAlertOnRouteComplete" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="DirectionButtonsTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;com.example.zooapp.DirectionButtonsTest.testAlertOnRouteComplete&quot;" />
+        <option name="scriptParameters" value="--tests &quot;com.example.zooapp.DirectionButtonsTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -166,12 +161,12 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="DirectionButtonsTest.testInitialButtonVisibility" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="DirectionButtonsTest.testAlertOnRouteComplete" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;com.example.zooapp.DirectionButtonsTest.testInitialButtonVisibility&quot;" />
+        <option name="scriptParameters" value="--tests &quot;com.example.zooapp.DirectionButtonsTest.testAlertOnRouteComplete&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -252,11 +247,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.DirectionButtonsTest" />
         <item itemvalue="Gradle.PlannedListTest" />
         <item itemvalue="Gradle.PlannedAnimalDatabaseTest" />
         <item itemvalue="Gradle.DirectionButtonsTest.testAlertOnRouteComplete" />
         <item itemvalue="Gradle.DirectionButtonsTest.testPreviousAppearsDisappears" />
-        <item itemvalue="Gradle.DirectionButtonsTest.testInitialButtonVisibility" />
       </list>
     </recent_temporary>
   </component>

@@ -38,8 +38,8 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         actionBar.setTitle("Route Plan Summary");
 
         // Grabbing planned animals from planned list and inputting to new activity
-//        Gson gson = new Gson();
-//        Type type = new TypeToken<List<ZooNode>>(){}.getType();
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<ZooNode>>(){}.getType();
         PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
 
         if(plannedAnimalDao.getAll().size() > 0) {

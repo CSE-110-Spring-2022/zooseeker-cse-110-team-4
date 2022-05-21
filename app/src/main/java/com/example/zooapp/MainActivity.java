@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity{
     private static final int REQUEST_USER_CHOSEN_ANIMAL = 0;
 
 
+
     /**
      * Method for onCreate of the activity
      *
@@ -173,9 +174,9 @@ public class MainActivity extends AppCompatActivity{
         }
         //Intent intent = new Intent(this, DirectionsActivity.class);
         Intent intent = new Intent(this, RoutePlanSummaryActivity.class);
-//        //TODO edit directions activity to use dao instead
-//        Gson gson = new Gson();
-//        intent.putExtra("ListOfAnimals",gson.toJson(plannedAnimalDao.getAll()));
+
+        Gson gson = new Gson();
+        intent.putExtra("ListOfAnimals",gson.toJson(plannedAnimalDao.getAll()));
         startActivity(intent);
     }
 
