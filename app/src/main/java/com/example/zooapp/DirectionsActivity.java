@@ -63,11 +63,17 @@ public class DirectionsActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle("Directions");
 
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+
         // Grabbing planned animals from planned list and inputting to new activity
         Gson gson = new Gson();
         Type type = new TypeToken<List<ZooNode>>(){}.getType();
-        if(gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null){
-            userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
+        //past code in if block: gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null
+
+        //make sure there are exhibits planned
+        if(plannedAnimalDao.getAll().size() > 0){
+            //userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
+            userExhibits = plannedAnimalDao.getAll();
 
             loadGraph(); // will initialize graph, vInfo, and eInfo variables
 
@@ -105,7 +111,7 @@ public class DirectionsActivity extends AppCompatActivity {
             return;
         }
         //else if index is not at end, increment
-        if (currIndex < userListShortestOrder.size() - 1){
+        if (currIndex < userListShortestOrder.size() - 1){ //why is ^^ size-2 and this is size-1
             currIndex++;
         }
         //making previous button visible after 1st exhibit

@@ -68,10 +68,8 @@ public class ExhibitsSetup {
     void setUserExhibits(List<ZooNode> e){
         PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(activity).plannedAnimalDao();
 
-        //clear list - TODO replace with a clear function for the DAO
-        for( ZooNode zooNode: plannedAnimalDao.getAll()) {
-            plannedAnimalDao.delete(zooNode);
-        }
+        //clear list
+        plannedAnimalDao.deleteAll();
 
         //set the new list of exhibits
         for( ZooNode zooNode: e ) {

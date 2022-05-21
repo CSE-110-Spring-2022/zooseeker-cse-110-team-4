@@ -38,10 +38,12 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         actionBar.setTitle("Route Plan Summary");
 
         // Grabbing planned animals from planned list and inputting to new activity
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<ZooNode>>(){}.getType();
-        if(gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null) {
-            userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<List<ZooNode>>(){}.getType();
+        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+
+        if(plannedAnimalDao.getAll().size() > 0) {
+            userExhibits = plannedAnimalDao.getAll();
         }
         else {
             Log.d("null input", "User exhibits was null");
@@ -54,6 +56,7 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         graphPaths = algorithm.runAlgorithm();
         List<ZooNode> userListShortestOrder = algorithm.getUserListShortestOrder();
         List<Double> exhibitDistances = algorithm.getExhibitDistance();
+
         // remove last exhibit (exit gate) from list
         userListShortestOrder.remove(userListShortestOrder.size()-1);
 
@@ -80,8 +83,8 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
      */
     public void onDirectionsButtonClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
-        Gson gson = new Gson();
-        intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));
+//        Gson gson = new Gson();
+//        intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));
         startActivity(intent);
     }
 }

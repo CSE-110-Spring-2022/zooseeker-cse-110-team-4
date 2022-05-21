@@ -45,10 +45,10 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         //Get information from Main Activity
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<ZooNode>>() {}.getType();
-        //exhibitsSetup.setUserExhibits(gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type));
-
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<List<ZooNode>>() {}.getType();
+//        exhibitsSetup.setUserExhibits(gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type));
+//
         //Set up information about the zoo exhibits
         exhibitsSetup.getExhibitInformation();
 
