@@ -8,6 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,18 +28,34 @@ public class ZooNode {
 
     @NonNull
     public String id;
+    public String parent_id;
     public String kind;
     public String name;
+    public String lat;
+    public String lng;
 
     @TypeConverters(TagsConverter.class)
     public String[] tags;
 
-    public ZooNode(@NonNull String id, String kind, String name, String[] tags ) {
+    public ZooNode(@NonNull String id, String parent_id, String kind, String name, String[] tags, String lat, String lng ) {
         this.id = id;
+        this.parent_id = parent_id;
         this.kind = kind;
         this.name = name;
         this.tags = tags;
+        this.lat = lat;
+        this.lng = lng;
     }
+
+//    public ZooNode(@NonNull String id, String parent_id, String kind, String name, String[] tags) {
+//        this.id = id;
+//        this.parent_id = parent_id;
+//        this.kind = kind;
+//        this.name = name;
+//        this.tags = tags;
+//        this.lat = 0.0;
+//        this.lng = 0.0;
+//    }
 
     public static List<ZooNode> loadJSON(Context context, String path) {
         Log.d("Info", "Loading JSON file");
@@ -47,7 +64,9 @@ public class ZooNode {
             Reader reader = new InputStreamReader(inputStream);
             Gson gson = new Gson();
             Type type = new TypeToken<List<ZooNode>>(){}.getType();
-            return gson.fromJson(reader, type);
+            List<ZooNode> list = gson.fromJson(reader, type);
+            Log.d("Info", list.toString());
+            return list;
         } catch(IOException e) {
             e.printStackTrace();
             return Collections.emptyList();
@@ -56,11 +75,11 @@ public class ZooNode {
 
     @Override
     public String toString() {
-        return "ZooNode{" +
-                "id='" + id + '\'' +
-                ", kind='" + kind + '\'' +
-                ", name='" + name + '\'' +
-                ", tags=" + Arrays.toString(tags) +
-                '}';
+        String result = String.format("ZooNode{id='%s', kind='%s', name='%s', tags=%s}",
+                id,
+                kind,
+                name,
+                Arrays.toString(tags));
+        return result;
     }
 }

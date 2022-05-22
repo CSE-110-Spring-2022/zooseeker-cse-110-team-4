@@ -19,7 +19,6 @@ public class ExhibitsSetup {
     }
 
     void getExhibitInformation() {
-
         // Get all the animals available in the zoo, exhibits
         ZooNodeDao dao = ZooNodeDatabase.getSingleton(activity).ZooNodeDao();
         totalExhibits = dao.getZooNodeKind("exhibit");
