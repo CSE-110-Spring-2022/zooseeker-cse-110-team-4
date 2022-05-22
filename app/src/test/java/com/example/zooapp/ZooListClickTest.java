@@ -24,6 +24,8 @@ import java.util.List;
 public class ZooListClickTest {
     ZooNodeDatabase zooDb;
     ZooNodeDao zooDao;
+    PlannedAnimalDao planDao;
+    PlannedAnimalDatabase testPlanDb;
 
     private static void forceLayout(RecyclerView recyclerView) {
         recyclerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -38,9 +40,16 @@ public class ZooListClickTest {
                 .build();
         ZooNodeDatabase.injectTestDatabase(zooDb);
 
+        testPlanDb = Room.inMemoryDatabaseBuilder(context, PlannedAnimalDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        PlannedAnimalDatabase.injectTestDatabase(testPlanDb);
+
         List<ZooNode> todos = ZooNode.loadJSON(context, "sample_node_info.json");
         zooDao = zooDb.ZooNodeDao();
         zooDao.insertAll(todos);
+
+        planDao = testPlanDb.plannedAnimalDao();
     }
 
     @Test
@@ -55,11 +64,10 @@ public class ZooListClickTest {
             RecyclerView recyclerView = activity.recyclerView;
             RecyclerView.ViewHolder firstVH = recyclerView.findViewHolderForAdapterPosition(0);
             assertNotNull(firstVH);
-            activity.userExhibits = new ArrayList<>();
             firstVH.itemView.performClick();
-            assertEquals(1, activity.userExhibits.size());
-            assertEquals("Alligators", activity.userExhibits.get(0).name);
-            assertEquals("exhibit", activity.userExhibits.get(0).kind);
+            assertEquals(1, activity.exhibitsSetup.getUserExhibits().size());
+            assertEquals("Alligators", activity.exhibitsSetup.getUserExhibits().get(0).name);
+            assertEquals("exhibit", activity.exhibitsSetup.getUserExhibits().get(0).kind);
         });
     }
 
@@ -75,11 +83,10 @@ public class ZooListClickTest {
             RecyclerView recyclerView = activity.recyclerView;
             RecyclerView.ViewHolder firstVH = recyclerView.findViewHolderForAdapterPosition(4);
             assertNotNull(firstVH);
-            activity.userExhibits = new ArrayList<>();
             firstVH.itemView.performClick();
-            assertEquals(1, activity.userExhibits.size());
-            assertEquals("Lions", activity.userExhibits.get(0).name);
-            assertEquals("exhibit", activity.userExhibits.get(0).kind);
+            assertEquals(1, activity.exhibitsSetup.getUserExhibits().size());
+            assertEquals("Lions", activity.exhibitsSetup.getUserExhibits().get(0).name);
+            assertEquals("exhibit", activity.exhibitsSetup.getUserExhibits().get(0).kind);
         });
     }
 }

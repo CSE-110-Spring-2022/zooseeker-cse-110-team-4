@@ -35,10 +35,15 @@ public class DirectionButtonsTest {
     Context context;
     ZooNodeDao dao;
     ZooNodeDatabase testDb;
+    PlannedAnimalDao planDao;
+    PlannedAnimalDatabase testPlanDb;
 
 
-    String[] tags = {"lions", "cats","mammal", "africa"};
-    ZooNode animal = new ZooNode("lions", "exhibit", "Lions",tags);
+    String[] tags = { "gorilla",
+            "monkey",
+            "ape",
+            "mammal"};
+    ZooNode animal = new ZooNode("gorillas", "exhibit", "Gorillas",tags);
 
     String[] tags2 = {"elephant", "mammal", "africa"};
     ZooNode animal2 = new ZooNode("elephant_odyssey", "exhibit", "Elephant Odyssey",tags2);
@@ -52,9 +57,16 @@ public class DirectionButtonsTest {
                 .build();
         ZooNodeDatabase.injectTestDatabase(testDb);
 
+        testPlanDb = Room.inMemoryDatabaseBuilder(context, PlannedAnimalDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        PlannedAnimalDatabase.injectTestDatabase(testPlanDb);
+
         List<ZooNode> allZooNodes = ZooNode.loadJSON(context, "sample_node_info.json");
         dao = testDb.ZooNodeDao();
         dao.insertAll(allZooNodes);
+
+        planDao = testPlanDb.plannedAnimalDao();
 
     }
 
@@ -65,23 +77,25 @@ public class DirectionButtonsTest {
     @Test
     public void testInitialButtonVisibility(){
 
+        String[] tags = { "gorilla",
+                "monkey",
+                "ape",
+                "mammal"};
+        ZooNode animal = new ZooNode("gorillas", "exhibit", "Gorillas",tags);
+        planDao.insert(animal);
+
+        assertEquals(1, planDao.getAll().size());
+
         //Start in Directions Activity
-        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        ActivityScenario<DirectionsActivity> scenario = ActivityScenario.launch(DirectionsActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.moveToState(Lifecycle.State.STARTED);
         scenario.moveToState(Lifecycle.State.RESUMED);
 
         scenario.onActivity(activity -> {
 
-            String[] tags = {"mammal"};
-            ZooNode animal = new ZooNode("tiger", "exhibit", "name",tags);
-            activity.userExhibits.add(animal);
+            assertEquals(1, planDao.getAll().size());
 
-            assertEquals(1, activity.userExhibits.size());
-
-            //Click Plan button, move to DirectionActivity view
-            Button plan = activity.findViewById(R.id.plan_button);
-            plan.performClick();
             activity.setContentView(R.layout.activity_directions);
 
             //Next should be visible, Previous should be invisible
@@ -122,19 +136,11 @@ public class DirectionButtonsTest {
     @Test
     public void testPreviousAppearsDisappears(){
 
-
-        List<ZooNode> userExhibits = new ArrayList<>();
-        userExhibits.add(animal);
-        userExhibits.add(animal2);
-        assertEquals(2, userExhibits.size());
-
-        //Set up intent to move to DirectionsActivity
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
-        Gson gson = new Gson();
-        intent.putExtra("ListOfAnimals", gson.toJson(userExhibits));
+        planDao.insert(animal);
+        planDao.insert(animal2);
 
         //Start DirectionsActivity
-        ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(intent);
+        ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(DirectionsActivity.class);
         scenario2.moveToState(Lifecycle.State.CREATED);
         scenario2.moveToState(Lifecycle.State.STARTED);
         scenario2.moveToState(Lifecycle.State.RESUMED);
@@ -143,8 +149,8 @@ public class DirectionButtonsTest {
             Button next = activity2.findViewById(R.id.next_button);
             Button previous = activity2.findViewById(R.id.previous_button);
 
-            //Two animals in planned list, but path should be length four including entrance and exit
-            assertEquals(2, activity2.userExhibits.size());
+            //Two animals in planned list, but path should be length four to go back to entrance
+            assertEquals(2, planDao.getAll().size());
             assertEquals(4, activity2.userListShortestOrder.size());
 
             //currIndex starts at first animal, index at 0
@@ -173,18 +179,12 @@ public class DirectionButtonsTest {
 
     @Test
     public void testAlertOnRouteComplete(){
-        List<ZooNode> userExhibits = new ArrayList<>();
-        userExhibits.add(animal);
-        userExhibits.add(animal2);
-        assertEquals(2, userExhibits.size());
-
-        //Set up intent to move to DirectionsActivity
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
-        Gson gson = new Gson();
-        intent.putExtra("ListOfAnimals", gson.toJson(userExhibits));
+        planDao.insert(animal);
+        planDao.insert(animal2);
+        assertEquals(2, planDao.getAll().size());
 
         //Start DirectionsActivity
-        ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(intent);
+        ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(DirectionsActivity.class);
         scenario2.moveToState(Lifecycle.State.CREATED);
         scenario2.moveToState(Lifecycle.State.STARTED);
         scenario2.moveToState(Lifecycle.State.RESUMED);
@@ -193,7 +193,9 @@ public class DirectionButtonsTest {
             Button next = activity2.findViewById(R.id.next_button);
             Button previous = activity2.findViewById(R.id.previous_button);
 
-            //Two animals in planned list, but path should be length four including entrance and exit
+            assertEquals(2, planDao.getAll().size());
+
+            //Two animals in planned list, but path should be length four including going back to entrance/exit
             assertEquals(2, activity2.userExhibits.size());
             assertEquals(4, activity2.userListShortestOrder.size());
 

@@ -16,8 +16,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,12 +23,11 @@ import java.util.List;
  */
 public class SearchActivity extends AppCompatActivity implements AnimalListViewAdapter.ClickListener{
     // Public fields
-    public List<ZooNode> userExhibits;
     public RecyclerView recyclerView;
+    public ExhibitsSetup exhibitsSetup = new ExhibitsSetup(this);
 
     // Private fields
     private AnimalListViewAdapter adapter;
-    private List<ZooNode> exhibits;
 
     /**
      * Method for onCreate of the activity
@@ -42,32 +39,20 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // Sets up the title of the menu bar
+        // Set up the title of the menu bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Search for an Animal Exhibit");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        // Gather information from the main activity
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<ZooNode>>(){}.getType();
-        userExhibits = gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type);
+        //Get information from Main Activity
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<List<ZooNode>>() {}.getType();
+//        exhibitsSetup.setUserExhibits(gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type));
+//
+        //Set up information about the zoo exhibits
+        exhibitsSetup.getExhibitInformation();
 
-        // Get all the animals available in the zoo, exhibits
-        ZooNodeDao dao = ZooNodeDatabase.getSingleton(this).ZooNodeDao();
-        exhibits = dao.getZooNodeKind("exhibit");
-        List<String> toSort = new ArrayList<>();
-
-        // Sort the animals in alphabetical order
-        for( int i = 0; i < exhibits.size(); i++ ) {
-            toSort.add(exhibits.get(i).name);
-        }
-        Collections.sort(toSort);
-        exhibits.clear();
-        for( int i = 0; i < toSort.size(); i++ ) {
-            exhibits.add(dao.getByName(toSort.get(i)));
-        }
-        Log.d("Search View", "Exhibits sorted");
-
+        //Set up view for the list of exhibits
         setUpRecyclerView();
 
         // Set up for the search view
@@ -87,11 +72,12 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         });
     }
 
+
     /**
      * Sets up the recycler view
      */
     private void setUpRecyclerView() {
-        adapter = new AnimalListViewAdapter(exhibits, this);
+        adapter = new AnimalListViewAdapter(exhibitsSetup.getTotalExhibits(), this);
         recyclerView = findViewById(R.id.animalListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -105,22 +91,15 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
      */
     @Override
     public void onItemClick(int position) {
-        boolean animalExists = false;
-        // Checks if the zoo node has already been added
-        for( ZooNode zooNode: userExhibits ) {
-            if( zooNode.name.equals(exhibits.get(position).name) ) {
-                animalExists = true;
-                Log.d("Search View", "Appear if the animal is already in the list");
-            }
-        }
-        // Only add if the animal hasn't been added
-        if( !animalExists ) {
-            userExhibits.add(exhibits.get(position));
-            Log.d("Search View", "Unique animal added");
-        }
+        exhibitsSetup.addAnimalPlannedList(position);
+
+        /*TODO make it so we can add multiple animals in one go? can just comment out this block but
+          theres no visual indicator when an animal gets added rn
+        */
+
         Gson gson = new Gson();
         Intent refresh = new Intent(this, MainActivity.class);
-        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(userExhibits));
+        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(exhibitsSetup.getUserExhibits()));
         setResult(RESULT_OK, refresh);
         finish();
     }
@@ -135,7 +114,7 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Gson gson = new Gson();
         Intent refresh = new Intent(this, MainActivity.class);
-        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(userExhibits));
+        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(exhibitsSetup.getUserExhibits()));
         setResult(RESULT_OK, refresh);
         Log.d("Search View", "Back button has been clicked");
         finish();

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * This class if for the algorithm to find the shortest path to visit certain nodes
  */
-public class ShortestPathZooAlgorithm {
+public class ShortestPathZooAlgorithm implements GraphAlgorithm {
     // Private data fields
     private List<ZooNode> userListExhibits, userListShortestOrder;
     private List<Double> exhibitDistanceFromStart;
@@ -30,6 +30,7 @@ public class ShortestPathZooAlgorithm {
         this.userListExhibits = (userListExhibits == null) ? new ArrayList<>() :
                 new ArrayList<>(userListExhibits);
         this.userListShortestOrder = new ArrayList<>();
+        this.exhibitDistanceFromStart = new ArrayList<>();
         this.dao = ZooNodeDatabase.getSingleton(context).ZooNodeDao();
     }
 
@@ -41,7 +42,7 @@ public class ShortestPathZooAlgorithm {
      */
     public List<GraphPath<String, IdentifiedWeightedEdge>> runAlgorithm() {
         // Testing purposes with the original graph
-        Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context,
+        var g = ZooData.loadZooGraphJSON(context,
                 "sample_zoo_graph.json");
         return runAlgorithm(g);
     }
@@ -57,16 +58,16 @@ public class ShortestPathZooAlgorithm {
         // Setup all necessary parts for algorithm
         List<GraphPath<String, IdentifiedWeightedEdge>> resultPath = new ArrayList<>();
         GraphPath<String, IdentifiedWeightedEdge> minDistPath = null;
-        String entranceExitGate = "entrance_exit_gate";
-        String start = entranceExitGate;
-        double minDistance = Double.POSITIVE_INFINITY;
+        var entranceExitGate = "entrance_exit_gate";
+        var start = entranceExitGate;
+        var minDistance = Double.POSITIVE_INFINITY;
         ZooNode shortestZooNodeStart = null;
 
         // Finding all shortest paths
         while( !userListExhibits.isEmpty() ) {
             // Find shortest path for each zooNode available from current node
-            for( ZooNode zooNode: userListExhibits ) {
-                GraphPath<String, IdentifiedWeightedEdge> tempPath =
+            for(var zooNode: userListExhibits ) {
+                var tempPath =
                         DijkstraShortestPath.findPathBetween(g,start, zooNode.id);
                 // Setting the shortest path
                 if( tempPath.getWeight() < minDistance ) {
@@ -77,13 +78,16 @@ public class ShortestPathZooAlgorithm {
             }
             // Finalize shortest path and add to result
             resultPath.add(minDistPath);
-            //exhibitDistanceFromStart.add(minDistance);
+            exhibitDistanceFromStart.add(minDistance);
             start = shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
             userListShortestOrder.add(shortestZooNodeStart);
             minDistance = Double.POSITIVE_INFINITY;
         }
-        resultPath.add(DijkstraShortestPath.findPathBetween(g, start, entranceExitGate));
+        var finalPath =
+                DijkstraShortestPath.findPathBetween(g, start, entranceExitGate);
+        resultPath.add(finalPath);
+        exhibitDistanceFromStart.add(finalPath.getWeight());
         // Return a list of all shortest paths to complete cycle
         return resultPath;
     }
@@ -94,7 +98,7 @@ public class ShortestPathZooAlgorithm {
      * @return List of zoo nodes in the approximate shortest path
      */
     public List<ZooNode> getUserListShortestOrder() {
-        ZooNode entrance = dao.getByName("Entrance and Exit Gate");
+        var entrance = dao.getByName("Entrance and Exit Gate");
         userListShortestOrder.add(0, entrance);
         userListShortestOrder.add(userListShortestOrder.size(), entrance);
         return userListShortestOrder;
@@ -115,11 +119,10 @@ public class ShortestPathZooAlgorithm {
      */
     private void correctExhibitDistanceList() {
         double total = 0;
-        int i = 0;
-        for( Double distance: exhibitDistanceFromStart ) {
+        var i = 0;
+        for(var distance: exhibitDistanceFromStart ) {
             total += distance;
-            exhibitDistanceFromStart.set(i, total);
-            i++;
+            exhibitDistanceFromStart.set(i++, total);
         }
     }
 }

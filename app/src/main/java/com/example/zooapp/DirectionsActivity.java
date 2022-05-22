@@ -28,6 +28,9 @@ import java.util.Objects;
 /**
  * This class is for when the user is now seeing the directions for each exhibit
  */
+/**
+ * This class is for when the user is now seeing the directions for each exhibit
+ */
 public class DirectionsActivity extends AppCompatActivity {
     //index that is incremented/decremented by next/back buttons
     //used to traverse through planned exhibits
@@ -48,6 +51,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
     public AlertDialog alertMessage;
     public ActionBar actionBar;
+    public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
 
     /**
      * Method for onCreate of the activity
@@ -59,23 +63,26 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
-        // Set the Title Bar to Zoo Seeker
+        // Set the Title Bar to Directions
         actionBar = getSupportActionBar();
         actionBar.setTitle("Directions");
 
-        // grabbing planned animals from planned list and inputting to new activity
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<ZooNode>>(){}.getType();
-        if(gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null){
-            userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
+        // Grabbing planned animals from planned list and inputting to new activity
+        var gson = new Gson();
+        var type = new TypeToken<List<ZooNode>>(){}.getType();
+        //old if block code: gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null
+
+        if(plannedAnimalDao.getAll().size() > 0){
+            //userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
+            userExhibits = plannedAnimalDao.getAll();
+            Log.d("Zoo Nodes", userExhibits.toString());
 
             loadGraph(); // will initialize graph, vInfo, and eInfo variables
-            // Inputs to algorithm: context, usersList
 
             // Our algorithm
-            ShortestPathZooAlgorithm algorithm = new ShortestPathZooAlgorithm(
+            GraphAlgorithm algorithm = new ShortestPathZooAlgorithm(
                     getApplication().getApplicationContext(), userExhibits);
-            graphPaths = algorithm.runAlgorithm(graph);
+            graphPaths = algorithm.runAlgorithm();
             userListShortestOrder = algorithm.getUserListShortestOrder();
 
             // Set text views
@@ -86,6 +93,7 @@ public class DirectionsActivity extends AppCompatActivity {
         }
         else{
             Log.d("null input", "User exhibits was null");
+            throw new NullPointerException("UserExhibits was null");
         }
     }
 
@@ -108,7 +116,7 @@ public class DirectionsActivity extends AppCompatActivity {
         if (currIndex < userListShortestOrder.size() - 1){
             currIndex++;
         }
-        //making previous button visible after 1st exhbit
+        //making previous button visible after 1st exhibit
         Button previous = findViewById(R.id.previous_button);
         previous.setVisibility(View.VISIBLE);
 
@@ -142,14 +150,14 @@ public class DirectionsActivity extends AppCompatActivity {
     @SuppressLint("DefaultLocale")
     private void setDirectionsText(GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
         // Get the needed zoo node information
-        ZooNode current = userListShortestOrder.get(currIndex);
-        ZooNode display = userListShortestOrder.get(currIndex+1);
+        var current = userListShortestOrder.get(currIndex);
+        var display = userListShortestOrder.get(currIndex+1);
 
         // Set the header to the correct display name
         header.setText(display.name);
 
         // Set up for getting all the directions
-        int i = 1;
+        var i = 1;
         String source, target, correctTarget, start, direction = "";
         start = current.name;
 
@@ -157,7 +165,7 @@ public class DirectionsActivity extends AppCompatActivity {
         Log.d("Edge Format", start);
 
         // Get all the directions from current zoo node to the next zoo node
-        for(IdentifiedWeightedEdge e: directionsToExhibit.getEdgeList()) {
+        for(var e: directionsToExhibit.getEdgeList()) {
             Log.d("Edge Format", e.toString());
             source = Objects.requireNonNull(vInfo.get(graph.getEdgeSource(e).toString())).name;
             target = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(e).toString())).name;
@@ -183,7 +191,7 @@ public class DirectionsActivity extends AppCompatActivity {
      */
     private void loadGraph() {
         // For loading in resources
-        Context context = getApplication().getApplicationContext();
+        var context = getApplication().getApplicationContext();
 
         // 1. Load the graph...
         graph = ZooData.loadZooGraphJSON(context, ZOO_GRAPH_JSON);

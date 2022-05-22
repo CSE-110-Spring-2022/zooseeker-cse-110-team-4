@@ -61,6 +61,16 @@ public class ShortestPathTest {
             assertEquals(expected.get(i).getLength(), actual.get(i).getLength());
             assertEquals(expected.get(i).toString(), actual.get(i).toString());
         }
+
+        List<Double> actualTotalWeight = sp.getExhibitDistance();
+        List<Double> expectedTotalWeight = new ArrayList<>();
+        expectedTotalWeight.add(210.0);
+        expectedTotalWeight.add(710.0);
+        expectedTotalWeight.add(1020.0);
+
+        for( int i = 0; i < expectedTotalWeight.size(); i++ ) {
+            assertEquals(expectedTotalWeight.get(i), actualTotalWeight.get(i), 0.0001);
+        }
     }
 
     @Test
@@ -78,6 +88,18 @@ public class ShortestPathTest {
             assertEquals(expected.get(i).getWeight(), actual.get(i).getWeight(), 0.0001);
             assertEquals(expected.get(i).getLength(), actual.get(i).getLength());
             assertEquals(expected.get(i).toString(), actual.get(i).toString());
+        }
+
+        List<Double> actualTotalWeight = sp.getExhibitDistance();
+        List<Double> expectedTotalWeight = new ArrayList<>();
+        expectedTotalWeight.add(110.0);
+        expectedTotalWeight.add(310.0);
+        expectedTotalWeight.add(510.0);
+        expectedTotalWeight.add(910.0);
+        expectedTotalWeight.add(1420.0);
+
+        for( int i = 0; i < expectedTotalWeight.size(); i++ ) {
+            assertEquals(expectedTotalWeight.get(i), actualTotalWeight.get(i), 0.0001);
         }
     }
 
@@ -97,6 +119,19 @@ public class ShortestPathTest {
             assertEquals(expected.get(i).getWeight(), actual.get(i).getWeight(), 0.0001);
             assertEquals(expected.get(i).getLength(), actual.get(i).getLength());
             assertEquals(expected.get(i).toString(), actual.get(i).toString());
+        }
+
+        List<Double> actualTotalWeight = sp.getExhibitDistance();
+        List<Double> expectedTotalWeight = new ArrayList<>();
+        expectedTotalWeight.add(110.0);
+        expectedTotalWeight.add(310.0);
+        expectedTotalWeight.add(510.0);
+        expectedTotalWeight.add(910.0);
+        expectedTotalWeight.add(1710.0);
+        expectedTotalWeight.add(2020.0);
+
+        for( int i = 0; i < expectedTotalWeight.size(); i++ ) {
+            assertEquals(expectedTotalWeight.get(i), actualTotalWeight.get(i), 0.0001);
         }
     }
 }
