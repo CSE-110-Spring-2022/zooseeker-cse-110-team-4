@@ -66,7 +66,7 @@ public class ZooListClickTest {
             assertNotNull(firstVH);
             firstVH.itemView.performClick();
             assertEquals(1, activity.exhibitsSetup.getUserExhibits().size());
-            assertEquals("Alligators", activity.exhibitsSetup.getUserExhibits().get(0).name);
+            assertEquals("Bali Mynah", activity.exhibitsSetup.getUserExhibits().get(0).name);
             assertEquals("exhibit", activity.exhibitsSetup.getUserExhibits().get(0).kind);
         });
     }
@@ -85,7 +85,7 @@ public class ZooListClickTest {
             assertNotNull(firstVH);
             firstVH.itemView.performClick();
             assertEquals(1, activity.exhibitsSetup.getUserExhibits().size());
-            assertEquals("Lions", activity.exhibitsSetup.getUserExhibits().get(0).name);
+            assertEquals("Emerald Dove", activity.exhibitsSetup.getUserExhibits().get(0).name);
             assertEquals("exhibit", activity.exhibitsSetup.getUserExhibits().get(0).kind);
         });
     }
