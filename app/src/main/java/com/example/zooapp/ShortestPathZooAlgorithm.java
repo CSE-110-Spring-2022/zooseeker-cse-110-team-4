@@ -1,6 +1,7 @@
 package com.example.zooapp;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -67,8 +68,10 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         while( !userListExhibits.isEmpty() ) {
             // Find shortest path for each zooNode available from current node
             for(var zooNode: userListExhibits ) {
+                var zooNodeName = (zooNode.parent_id != null) ? zooNode.parent_id : zooNode.id;
+                Log.d("Algorithm", start + " " + zooNodeName);
                 var tempPath =
-                        DijkstraShortestPath.findPathBetween(g,start, zooNode.id);
+                        DijkstraShortestPath.findPathBetween(g,start, zooNodeName);
                 // Setting the shortest path
                 if( tempPath.getWeight() < minDistance ) {
                     shortestZooNodeStart = zooNode;
@@ -79,7 +82,8 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
             // Finalize shortest path and add to result
             resultPath.add(minDistPath);
             exhibitDistanceFromStart.add(minDistance);
-            start = shortestZooNodeStart.id;
+            start = (shortestZooNodeStart.parent_id != null) ? shortestZooNodeStart.parent_id :
+                    shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
             userListShortestOrder.add(shortestZooNodeStart);
             minDistance = Double.POSITIVE_INFINITY;
