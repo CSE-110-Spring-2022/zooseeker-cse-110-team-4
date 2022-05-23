@@ -52,8 +52,7 @@ public class MainActivity extends AppCompatActivity{
     private PlannedAnimalAdapter plannedAnimalAdapter;
     private TextView userExhibitsSize;
     private static final int REQUEST_USER_CHOSEN_ANIMAL = 0;
-
-
+    private final PermissionChecker permissionChecker = new PermissionChecker(this);
 
     /**
      * Method for onCreate of the activity
@@ -75,6 +74,8 @@ public class MainActivity extends AppCompatActivity{
         //plannedAnimalDao.deleteAll();
 
         setUpRecyclerView();
+
+        if (permissionChecker.ensurePermissions()) return;
 
         // Added counter for user to see
         userExhibitsSize = findViewById(R.id.added_counter);
