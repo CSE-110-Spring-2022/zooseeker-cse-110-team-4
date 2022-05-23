@@ -50,14 +50,21 @@ public class DirectionsActivity extends AppCompatActivity {
     public List<ZooNode> userExhibits, userListShortestOrder;
 
     // Variable for the graph and path
+    public GraphAlgorithm algorithm;
+    public AlertDialog alertMessage;
+    public ActionBar actionBar;
+    public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
+            .plannedAnimalDao();
+    public ZooNodeDao zooNodeDao = ZooNodeDatabase.getSingleton(this)
+            .ZooNodeDao();
+    private ExhibitLocations exhibitLocations = new ExhibitLocations(zooNodeDao);
     private Graph<String, IdentifiedWeightedEdge> graph;
     private TextView header, directions;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
     private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
-    public AlertDialog alertMessage;
-    public ActionBar actionBar;
-    public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+    private ZooNode display;
+    private Button previous;
 
     /**
      * Method for onCreate of the activity
@@ -74,6 +81,8 @@ public class DirectionsActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle("Directions");
 
+        previous = findViewById(R.id.previous_button);
+
         // Grabbing planned animals from planned list and inputting to new activity
         var gson = new Gson();
         var type = new TypeToken<List<ZooNode>>(){}.getType();
@@ -87,7 +96,7 @@ public class DirectionsActivity extends AppCompatActivity {
             loadGraph(); // will initialize graph, vInfo, and eInfo variables
 
             // Our algorithm
-            GraphAlgorithm algorithm = new ShortestPathZooAlgorithm(
+            algorithm = new ShortestPathZooAlgorithm(
                     getApplication().getApplicationContext(), userExhibits);
             graphPaths = algorithm.runAlgorithm();
             userListShortestOrder = algorithm.getUserListShortestOrder();
@@ -109,11 +118,45 @@ public class DirectionsActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 Log.d("Location", String.format("Location changed: %s", location));
+                exhibitLocations.setupExhibitLocations(userListShortestOrder
+                        .subList(currIndex+1, userListShortestOrder.size()-1));
+                Location currentExhibit = exhibitLocations.getZooNodeLocation(display),
+                        minExhibit = currentExhibit;
+                if( currentExhibit == null )
+                    return;
+
+                Log.d("Location", String.format("Current Exhibit Location: %s", currentExhibit));
+                double minDistance = location.distanceTo(currentExhibit);
+                Log.d("Location", String.format("Calculated Distance: %.2f", minDistance));
+                for(Location exhibitLocation: exhibitLocations.exhibitLocations) {
+                    if( location.distanceTo(exhibitLocation) < minDistance ) {
+                        minDistance = location.distanceTo(exhibitLocation);
+                        minExhibit = exhibitLocation;
+                    }
+                }
+                Log.d("Location", String.format("Min Exhibit Location: %s", minExhibit));
+
+                if( !minExhibit.getProvider().equals(currentExhibit.getProvider()) ) {
+                    promptReplan();
+                    Log.d("Location", "New Location: " + minExhibit.getProvider()
+                            + " / Old Location: " + currentExhibit.getProvider());
+                    // Rerun algorithm from current location
+                    graphPaths = algorithm.runChangedLocationAlgorithm(zooNodeDao.getById(
+                            minExhibit.getProvider()), exhibitLocations.exhibitsSubList);
+                    userListShortestOrder = algorithm.getNewUserListShortestOrder();
+                    currIndex = 0;
+                    setDirectionsText(graphPaths.get(currIndex));
+                    previous.setVisibility(View.INVISIBLE);
+                }
             }
         };
 
         locationManager.requestLocationUpdates(provider, 0, 0f,
                 locationListener);
+    }
+
+    public void promptReplan() {
+
     }
 
     /**
@@ -136,7 +179,6 @@ public class DirectionsActivity extends AppCompatActivity {
             currIndex++;
         }
         //making previous button visible after 1st exhibit
-        Button previous = findViewById(R.id.previous_button);
         previous.setVisibility(View.VISIBLE);
 
         // set text
@@ -170,7 +212,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private void setDirectionsText(GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
         // Get the needed zoo node information
         var current = userListShortestOrder.get(currIndex);
-        var display = userListShortestOrder.get(currIndex+1);
+        display = userListShortestOrder.get(currIndex+1);
 
         // Set the header to the correct display name
         header.setText(display.name);
