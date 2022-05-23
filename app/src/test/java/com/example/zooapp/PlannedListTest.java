@@ -70,7 +70,7 @@ public class PlannedListTest {
 
             List<ZooNode> before = planDao.getAll();
             String[] tags = {"tiger"};
-            planDao.insert(new ZooNode("tiger", "exhibit", "Tiger", tags));
+            planDao.insert(new ZooNode("tiger", null, "exhibit", "Tiger", tags, "0.0", "0.0"));
             List<ZooNode> after = planDao.getAll();
 
             String newAnimal = "Tiger";
@@ -110,7 +110,7 @@ public class PlannedListTest {
         scenario.onActivity(activity -> {
 
             String[] tags = {"tiger"};
-            planDao.insert(new ZooNode("tiger", "exhibit", "Tiger", tags));
+            planDao.insert(new ZooNode("tiger", null, "exhibit", "Tiger", tags, "0.0", "0.0"));
             TextView count = activity.findViewById(R.id.added_counter);
 
             activity.updateCount();

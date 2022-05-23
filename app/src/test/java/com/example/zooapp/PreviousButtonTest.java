@@ -36,10 +36,10 @@ public class PreviousButtonTest {
     ZooNodeDatabase testDb;
 
     String[] tags = {"lions", "cats","mammal", "africa"};
-    ZooNode animal = new ZooNode("lions", "exhibit", "Lions",tags);
+    ZooNode animal = new ZooNode("lions", null, "exhibit", "Lions",tags, "0.0", "0.0");
 
     String[] tags2 = {"elephant", "mammal", "africa"};
-    ZooNode animal2 = new ZooNode("elephant_odyssey", "exhibit", "Elephant Odyssey",tags2);
+    ZooNode animal2 = new ZooNode("elephant_odyssey", null, "exhibit", "Elephant Odyssey",tags2, "0.0", "0.0");
 
     //Set up the database of animals in the zoo
     @Before

@@ -43,10 +43,10 @@ public class DirectionButtonsTest {
             "monkey",
             "ape",
             "mammal"};
-    ZooNode animal = new ZooNode("gorillas", "exhibit", "Gorillas",tags);
+    ZooNode animal = new ZooNode("gorillas", null, "exhibit", "Gorillas",tags, "0.0", "0.0");
 
     String[] tags2 = {"elephant", "mammal", "africa"};
-    ZooNode animal2 = new ZooNode("elephant_odyssey", "exhibit", "Elephant Odyssey",tags2);
+    ZooNode animal2 = new ZooNode("elephant_odyssey", null, "exhibit", "Elephant Odyssey",tags2, "0.0", "0.0");
 
     //Set up the database of animals in the zoo
     @Before
@@ -81,7 +81,7 @@ public class DirectionButtonsTest {
                 "monkey",
                 "ape",
                 "mammal"};
-        ZooNode animal = new ZooNode("gorillas", "exhibit", "Gorillas",tags);
+        ZooNode animal = new ZooNode("gorillas", null, "exhibit", "Gorillas",tags, "0.0", "0.0");
         planDao.insert(animal);
 
         assertEquals(1, planDao.getAll().size());

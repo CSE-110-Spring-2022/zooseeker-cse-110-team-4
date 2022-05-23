@@ -39,8 +39,8 @@ public class PlannedAnimalDatabaseTest {
 
     @Test
     public void testInsert() {
-        ZooNode item1 = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
-        ZooNode item2 = new ZooNode("fish_exhibit", "exhibit", "Fish", fishTags);
+        ZooNode item1 = new ZooNode("gorilla_exhibit", null, "exhibit", "Gorillas", gorillaTags, "0.0", "0.0");
+        ZooNode item2 = new ZooNode("fish_exhibit", null, "exhibit", "Fish", fishTags, "0.0", "0.0");
 
         long id1 = dao.insert(item1);
         long id2 = dao.insert(item2);
@@ -50,9 +50,9 @@ public class PlannedAnimalDatabaseTest {
 
     @Test
     public void testGetExhibit() {
-        ZooNode item1 = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
-        ZooNode item2 = new ZooNode("fish_exhibit", "exhibit", "Fish", fishTags);
-        ZooNode item3 = new ZooNode("entrance", "gate", "Entrance Gate", new String[]{});
+        ZooNode item1 = new ZooNode("gorilla_exhibit", null, "exhibit", "Gorillas", gorillaTags, "0.0", "0.0");
+        ZooNode item2 = new ZooNode("fish_exhibit", null, "exhibit", "Fish", fishTags, "0.0", "0.0");
+        ZooNode item3 = new ZooNode("entrance", null, "gate", "Entrance Gate", new String[]{}, "0.0", "0.0");
 
         long value1 = dao.insert(item1);
         long value2 = dao.insert(item2);
@@ -76,7 +76,7 @@ public class PlannedAnimalDatabaseTest {
 
     @Test
     public void testGet() {
-        ZooNode insertedItem = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
+        ZooNode insertedItem = new ZooNode("gorilla_exhibit", null, "exhibit", "Gorillas", gorillaTags, "0.0", "0.0");
         long value = dao.insert(insertedItem);
 
         ZooNode item = dao.getById(value);
@@ -91,7 +91,7 @@ public class PlannedAnimalDatabaseTest {
 
     @Test
     public void testUpdate() {
-        ZooNode insertItem = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
+        ZooNode insertItem = new ZooNode("gorilla_exhibit", null, "exhibit", "Gorillas", gorillaTags, "0.0", "0.0");
         long value = dao.insert(insertItem);
 
         ZooNode item = dao.getById(value);
@@ -110,7 +110,7 @@ public class PlannedAnimalDatabaseTest {
 
     @Test
     public void testDelete() {
-        ZooNode insertItem = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
+        ZooNode insertItem = new ZooNode("gorilla_exhibit", null, "exhibit", "Gorillas", gorillaTags, "0.0", "0.0");
         long value = dao.insert(insertItem);
 
         ZooNode item = dao.getById(value);
@@ -121,8 +121,8 @@ public class PlannedAnimalDatabaseTest {
 
     @Test
     public void testGetByName() {
-        ZooNode item1 = new ZooNode("gorilla_exhibit", "exhibit", "Gorillas", gorillaTags);
-        ZooNode item2 = new ZooNode("fish_exhibit", "exhibit", "Fish", fishTags);
+        ZooNode item1 = new ZooNode("gorilla_exhibit", null, "exhibit", "Gorillas", gorillaTags, "0.0", "0.0");
+        ZooNode item2 = new ZooNode("fish_exhibit", null, "exhibit", "Fish", fishTags, "0.0", "0.0");
 
         long value = dao.insert(item1);
         long value2 = dao.insert(item2);
