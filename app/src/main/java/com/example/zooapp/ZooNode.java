@@ -37,7 +37,8 @@ public class ZooNode {
     @TypeConverters(TagsConverter.class)
     public String[] tags;
 
-    public ZooNode(@NonNull String id, String parent_id, String kind, String name, String[] tags, String lat, String lng ) {
+    public ZooNode(@NonNull String id, String parent_id, String kind, String name, String[] tags,
+                   String lat, String lng ) {
         this.id = id;
         this.parent_id = parent_id;
         this.kind = kind;

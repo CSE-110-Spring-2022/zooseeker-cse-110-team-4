@@ -17,7 +17,10 @@ public interface ZooNodeDao {
     List<Long> insertAll(List<ZooNode> zooNodeList);
 
     @Query("SELECT * FROM `zoo_node_list` WHERE `value`=:value")
-    ZooNode getById(long value);
+    ZooNode getByValue(long value);
+
+    @Query("SELECT * FROM `zoo_node_list` WHERE `id`=:id")
+    ZooNode getById(String id);
 
     @Query("SELECT * FROM `zoo_node_list` WHERE `name`=:name")
     ZooNode getByName(String name);

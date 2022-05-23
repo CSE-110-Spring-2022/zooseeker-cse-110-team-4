@@ -179,24 +179,35 @@ public class DirectionsActivity extends AppCompatActivity {
         var i = 1;
         String source, target, correctTarget, start, direction = "";
         start = current.name;
+        var edgeList = directionsToExhibit.getEdgeList();
 
         // Testing purposes
         Log.d("Edge Format", start);
 
         // Get all the directions from current zoo node to the next zoo node
-        for(var e: directionsToExhibit.getEdgeList()) {
+        for(var e: edgeList) {
             Log.d("Edge Format", e.toString());
             source = Objects.requireNonNull(vInfo.get(graph.getEdgeSource(e).toString())).name;
             target = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(e).toString())).name;
             correctTarget = (source.equals(start)) ? target : source;
             Log.d("Edge Format", correctTarget);
 
-            // Format directions to proper format
-            direction += String.format(" %d. Walk %.0f meters along %s towards the '%s'\n",
-                    i,
-                    graph.getEdgeWeight(e),
-                    Objects.requireNonNull(eInfo.get(e.getId())).street,
-                    correctTarget);
+            if( i == edgeList.size() && display.parent_id != null ) {
+                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s' and " +
+                                "find '%s' inside\n",
+                        i,
+                        graph.getEdgeWeight(e),
+                        Objects.requireNonNull(eInfo.get(e.getId())).street,
+                        correctTarget,
+                        display.name);
+            } else {
+                // Format directions to proper format
+                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s'\n",
+                        i,
+                        graph.getEdgeWeight(e),
+                        Objects.requireNonNull(eInfo.get(e.getId())).street,
+                        correctTarget);
+            }
             start = correctTarget;
             i++;
         }
