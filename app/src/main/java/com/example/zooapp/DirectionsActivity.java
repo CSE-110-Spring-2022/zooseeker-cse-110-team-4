@@ -141,12 +141,12 @@ public class DirectionsActivity extends AppCompatActivity {
                     Log.d("Location", "New Location: " + minExhibit.getProvider()
                             + " / Old Location: " + currentExhibit.getProvider());
                     // Rerun algorithm from current location
-                    graphPaths = algorithm.runChangedLocationAlgorithm(zooNodeDao.getById(
-                            minExhibit.getProvider()), exhibitLocations.exhibitsSubList);
-                    userListShortestOrder = algorithm.getNewUserListShortestOrder();
-                    currIndex = 0;
-                    setDirectionsText(graphPaths.get(currIndex));
-                    previous.setVisibility(View.INVISIBLE);
+//                    graphPaths = algorithm.runChangedLocationAlgorithm(zooNodeDao.getById(
+//                            minExhibit.getProvider()), exhibitLocations.exhibitsSubList);
+//                    userListShortestOrder = algorithm.getNewUserListShortestOrder();
+//                    currIndex = 0;
+//                    setDirectionsText(graphPaths.get(currIndex));
+//                    previous.setVisibility(View.INVISIBLE);
                 }
             }
         };
