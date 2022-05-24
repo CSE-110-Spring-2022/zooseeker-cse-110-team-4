@@ -57,8 +57,11 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         List<ZooNode> userListShortestOrder = algorithm.getUserListShortestOrder();
         List<Double> exhibitDistances = algorithm.getExhibitDistance();
 
-        // remove last exhibit (exit gate) from list
+        // remove entrance/exit gate from beginning and end of userListShortestOrder
+        userListShortestOrder.remove(0);
         userListShortestOrder.remove(userListShortestOrder.size()-1);
+        // remove distance to entrance/exit gate at end of exhibit distances list
+        exhibitDistances.remove(exhibitDistances.size()-1);
 
         // Set up UI of Planned List
         setUpRecyclerView(userListShortestOrder, exhibitDistances);
@@ -69,11 +72,13 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
      */
     private void setUpRecyclerView(List<ZooNode> userListShortestOrder,
                                    List<Double> exhibitDistances) {
-        PlannedAnimalAdapter plannedAnimalAdapter = new PlannedAnimalAdapter();
-        plannedAnimalAdapter.setAnimalList(userListShortestOrder);
-        RecyclerView recyclerView = findViewById(R.id.planned_animals);
+        RoutePlanSummaryAdapter routePlanSummaryAdapter = new RoutePlanSummaryAdapter();
+        routePlanSummaryAdapter.setHasStableIds(true);
+        routePlanSummaryAdapter.setAnimalList(userListShortestOrder, exhibitDistances);
+
+        RecyclerView recyclerView = findViewById(R.id.route_plan_summary);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(plannedAnimalAdapter);
+        recyclerView.setAdapter(routePlanSummaryAdapter);
     }
 
     /**
