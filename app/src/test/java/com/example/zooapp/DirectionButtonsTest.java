@@ -37,16 +37,7 @@ public class DirectionButtonsTest {
     ZooNodeDatabase testDb;
     PlannedAnimalDao planDao;
     PlannedAnimalDatabase testPlanDb;
-
-
-    String[] tags = { "gorilla",
-            "monkey",
-            "ape",
-            "mammal"};
-    ZooNode animal = new ZooNode("gorillas", null, "exhibit", "Gorillas",tags, "0.0", "0.0");
-
-    String[] tags2 = {"elephant", "mammal", "africa"};
-    ZooNode animal2 = new ZooNode("elephant_odyssey", null, "exhibit", "Elephant Odyssey",tags2, "0.0", "0.0");
+    List<ZooNode> allExhibits;
 
     //Set up the database of animals in the zoo
     @Before
@@ -65,8 +56,8 @@ public class DirectionButtonsTest {
         List<ZooNode> allZooNodes = ZooNode.loadJSON(context, "sample_node_info.json");
         dao = testDb.ZooNodeDao();
         dao.insertAll(allZooNodes);
-
         planDao = testPlanDb.plannedAnimalDao();
+        allExhibits = dao.getZooNodeKind("exhibit");
 
     }
 
@@ -77,12 +68,8 @@ public class DirectionButtonsTest {
     @Test
     public void testInitialButtonVisibility(){
 
-        String[] tags = { "gorilla",
-                "monkey",
-                "ape",
-                "mammal"};
-        ZooNode animal = new ZooNode("gorillas", null, "exhibit", "Gorillas",tags, "0.0", "0.0");
-        planDao.insert(animal);
+
+        planDao.insert(allExhibits.get(0));
 
         assertEquals(1, planDao.getAll().size());
 
@@ -136,8 +123,8 @@ public class DirectionButtonsTest {
     @Test
     public void testPreviousAppearsDisappears(){
 
-        planDao.insert(animal);
-        planDao.insert(animal2);
+        planDao.insert(allExhibits.get(0));
+        planDao.insert(allExhibits.get(1));
 
         //Start DirectionsActivity
         ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(DirectionsActivity.class);
@@ -179,8 +166,8 @@ public class DirectionButtonsTest {
 
     @Test
     public void testAlertOnRouteComplete(){
-        planDao.insert(animal);
-        planDao.insert(animal2);
+        planDao.insert(allExhibits.get(0));
+        planDao.insert(allExhibits.get(1));
         assertEquals(2, planDao.getAll().size());
 
         //Start DirectionsActivity

@@ -137,9 +137,6 @@ public class ShortestPathTest {
         }
 
         List<Double> actualTotalWeight = sp.getExhibitDistance();
-        for( int i = 0; i < actualTotalWeight.size(); i++ ){
-            System.out.println(actualTotalWeight.get(i));
-        }
         List<Double> expectedTotalWeight = new ArrayList<>();
         expectedTotalWeight.add(60.0);
         expectedTotalWeight.add(190.0);

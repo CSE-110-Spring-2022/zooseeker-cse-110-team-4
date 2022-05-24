@@ -47,12 +47,14 @@ public class MainActivity extends AppCompatActivity{
     public RecyclerView recyclerView;
     public ActionBar actionBar;
     public AlertDialog alertMessage;
+    public PlannedAnimalDao plannedAnimalDao;
 
     // Private fields
     private PlannedAnimalAdapter plannedAnimalAdapter;
     private TextView userExhibitsSize;
     private static final int REQUEST_USER_CHOSEN_ANIMAL = 0;
     private final PermissionChecker permissionChecker = new PermissionChecker(this);
+
 
     /**
      * Method for onCreate of the activity
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity{
 
         //userExhibits = new ArrayList<>();
 
-        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+        plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
         //plannedAnimalDao.deleteAll();
 
         setUpRecyclerView();
@@ -156,6 +158,7 @@ public class MainActivity extends AppCompatActivity{
      * Method used to update the selected animals list size
      */
     public void updateCount() {
+        userExhibitsSize = findViewById(R.id.added_counter); //added this line to fix one of tests
         PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
         userExhibitsSize.setText("(" + plannedAnimalDao.getAll().size() + ")");
     }
@@ -166,7 +169,7 @@ public class MainActivity extends AppCompatActivity{
      * @param view The current view
      */
     public void onPlanButtonClicked(View view) {
-        PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
+        plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
         if( plannedAnimalDao.getAll().size() == 0 ) {
             alertMessage = Utilities.showAlert(this,
                     "Please Enter at least One Animal");

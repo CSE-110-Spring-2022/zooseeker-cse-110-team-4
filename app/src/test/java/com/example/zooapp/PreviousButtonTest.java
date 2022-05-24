@@ -34,12 +34,9 @@ public class PreviousButtonTest {
     Context context;
     ZooNodeDao dao;
     ZooNodeDatabase testDb;
-
-    String[] tags = {"lions", "cats","mammal", "africa"};
-    ZooNode animal = new ZooNode("lions", null, "exhibit", "Lions",tags, "0.0", "0.0");
-
-    String[] tags2 = {"elephant", "mammal", "africa"};
-    ZooNode animal2 = new ZooNode("elephant_odyssey", null, "exhibit", "Elephant Odyssey",tags2, "0.0", "0.0");
+    PlannedAnimalDao planDao;
+    PlannedAnimalDatabase testPlanDb;
+    List<ZooNode> allExhibits;
 
     //Set up the database of animals in the zoo
     @Before
@@ -50,31 +47,39 @@ public class PreviousButtonTest {
                 .build();
         ZooNodeDatabase.injectTestDatabase(testDb);
 
+        testPlanDb = Room.inMemoryDatabaseBuilder(context, PlannedAnimalDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        PlannedAnimalDatabase.injectTestDatabase(testPlanDb);
+
         List<ZooNode> allZooNodes = ZooNode.loadJSON(context, "sample_node_info.json");
         dao = testDb.ZooNodeDao();
         dao.insertAll(allZooNodes);
+        planDao = testPlanDb.plannedAnimalDao();
+        allExhibits = dao.getZooNodeKind("exhibit");
+
     }
 
     @Test
     public void testPreviousInvisibility(){
+        planDao.insert(allExhibits.get(0));
+
+        assertEquals(1, planDao.getAll().size());
 
         //Start in Directions Activity
-        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        ActivityScenario<DirectionsActivity> scenario = ActivityScenario.launch(DirectionsActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.moveToState(Lifecycle.State.STARTED);
         scenario.moveToState(Lifecycle.State.RESUMED);
 
         scenario.onActivity(activity -> {
 
-            activity.userExhibits.add(animal);
-            //Click Plan button, move to DirectionActivity view
-            Button plan = activity.findViewById(R.id.plan_button);
-            plan.performClick();
+            assertEquals(1, planDao.getAll().size());
+
             activity.setContentView(R.layout.activity_directions);
 
-            //Previous should be invisible on first set of directions
+            //Next should be visible, Previous should be invisible
             Button previous = activity.findViewById(R.id.previous_button);
-
             assertEquals(previous.getVisibility(), View.INVISIBLE);
         });
 
@@ -83,18 +88,11 @@ public class PreviousButtonTest {
     @Test
     public void testPreviousCounter(){
 
-        List<ZooNode> userExhibits = new ArrayList<>();
-        userExhibits.add(animal);
-        userExhibits.add(animal2);
-        assertEquals(2, userExhibits.size());
-
-        //Set up intent to move to DirectionsActivity
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
-        Gson gson = new Gson();
-        intent.putExtra("ListOfAnimals", gson.toJson(userExhibits));
+        planDao.insert(allExhibits.get(0));
+        planDao.insert(allExhibits.get(1));
 
         //Start DirectionsActivity
-        ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(intent);
+        ActivityScenario<DirectionsActivity> scenario2 = ActivityScenario.launch(DirectionsActivity.class);
         scenario2.moveToState(Lifecycle.State.CREATED);
         scenario2.moveToState(Lifecycle.State.STARTED);
         scenario2.moveToState(Lifecycle.State.RESUMED);
@@ -113,7 +111,7 @@ public class PreviousButtonTest {
             assertEquals(0, activity2.currIndex);
 
             //make sure first animal is correct
-            assertEquals(name.getText().toString(), "Lions");
+            assertEquals(name.getText().toString(), "Koi Fish");
 
             //click Next to move to the second animal, currIndex at 1
             next.performClick();
@@ -121,7 +119,7 @@ public class PreviousButtonTest {
             assertEquals(View.VISIBLE, previous.getVisibility());
 
             //make sure second animal name is correct
-            assertEquals(name.getText().toString(), "Elephant Odyssey");
+            assertEquals(name.getText().toString(), "Flamingos");
 
             //click Next to move to the third animal, currIndex at 2
             next.performClick();
@@ -135,14 +133,14 @@ public class PreviousButtonTest {
             assertEquals(View.VISIBLE, previous.getVisibility());
             assertEquals(1, activity2.currIndex);
             //make sure second animal name is correct
-            assertEquals(name.getText().toString(), "Elephant Odyssey");
+            assertEquals(name.getText().toString(), "Flamingos");
 
             //click Previous to return to first animal, Previous button is invisible
             previous.performClick();
             assertEquals(View.INVISIBLE, previous.getVisibility());
             assertEquals(0, activity2.currIndex);
             //make sure first animal is correct
-            assertEquals(name.getText().toString(), "Lions");
+            assertEquals(name.getText().toString(), "Koi Fish");
 
         });
         scenario2.close();
