@@ -41,6 +41,7 @@ public class DirectionsActivity extends AppCompatActivity {
     //index that is incremented/decremented by next/back buttons
     //used to traverse through planned exhibits
     int currIndex = 0;
+    public static boolean check;
 
     // Graph Information Files
     final String ZOO_GRAPH_JSON = "sample_zoo_graph.json";
@@ -156,7 +157,10 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void promptReplan() {
-
+        alertMessage = Utilities.optionalAlert(this,
+                    "Would You like to Replan your Route?");
+        alertMessage.show();
+        return;
     }
 
     /**
@@ -272,4 +276,5 @@ public class DirectionsActivity extends AppCompatActivity {
         vInfo = ZooData.loadVertexInfoJSON(context, NODE_INFO_JSON);
         eInfo = ZooData.loadEdgeInfoJSON(context, EDGE_INFO_JSON);
     }
+
 }
