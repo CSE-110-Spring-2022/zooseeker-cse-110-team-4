@@ -20,20 +20,21 @@ import java.io.IOException;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-public class ZooNodeDatabaseTest {
-    private ZooNodeDao dao;
-    private ZooNodeDatabase db;
+public class PlannedAnimalDatabaseTest {
+    private PlannedAnimalDao dao;
+    private PlannedAnimalDatabase db;
     private String[] gorillaTags, fishTags;
 
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, ZooNodeDatabase.class)
+        db = Room.inMemoryDatabaseBuilder(context, PlannedAnimalDatabase.class)
                 .allowMainThreadQueries()
                 .build();
-        dao = db.ZooNodeDao();
+        dao = db.plannedAnimalDao();
         gorillaTags = new String[] {"gorilla", "ape", "mammal"};
         fishTags = new String[] {"fish", "ocean"};
+
     }
 
     @Test
@@ -78,7 +79,7 @@ public class ZooNodeDatabaseTest {
         ZooNode insertedItem = new ZooNode("gorilla_exhibit", null, "exhibit", "Gorillas", gorillaTags, "0.0", "0.0");
         long value = dao.insert(insertedItem);
 
-        ZooNode item = dao.getByValue(value);
+        ZooNode item = dao.getById(value);
         assertEquals(value, item.value);
         assertEquals(insertedItem.id, item.id);
         assertEquals(insertedItem.kind, item.kind);
@@ -93,14 +94,14 @@ public class ZooNodeDatabaseTest {
         ZooNode insertItem = new ZooNode("gorilla_exhibit", null, "exhibit", "Gorillas", gorillaTags, "0.0", "0.0");
         long value = dao.insert(insertItem);
 
-        ZooNode item = dao.getByValue(value);
+        ZooNode item = dao.getById(value);
         item.id = "fish_exhibit";
         item.kind = "gate";
         item.name = "Fish";
         int itemsUpdated = dao.update(item);
         assertEquals(1, itemsUpdated);
 
-        item = dao.getByValue(value);
+        item = dao.getById(value);
         assertNotNull(item);
         assertEquals("fish_exhibit", item.id);
         assertEquals("gate", item.kind);
@@ -112,10 +113,10 @@ public class ZooNodeDatabaseTest {
         ZooNode insertItem = new ZooNode("gorilla_exhibit", null, "exhibit", "Gorillas", gorillaTags, "0.0", "0.0");
         long value = dao.insert(insertItem);
 
-        ZooNode item = dao.getByValue(value);
+        ZooNode item = dao.getById(value);
         int itemsDeleted = dao.delete(item);
         assertEquals(1, itemsDeleted);
-        assertNull(dao.getByValue(value));
+        assertNull(dao.getById(value));
     }
 
     @Test
@@ -140,4 +141,6 @@ public class ZooNodeDatabaseTest {
     public void closeDb() throws IOException {
         db.close();
     }
+
+
 }

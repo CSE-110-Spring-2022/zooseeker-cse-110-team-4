@@ -4,13 +4,14 @@ package com.example.zooapp;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -20,9 +21,10 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -33,13 +35,30 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class LongSearchTest {
+public class LongSearchAndTagsTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
+            new ActivityScenarioRule<>(MainActivity.class);
+
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION",
+                    "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
-    public void longSearchTest() {
+    public void longSearchAndTagsTest() {
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.clear_button), withText("CLEAR"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.actions_search), withContentDescription("Search"),
                         childAtPosition(
@@ -49,6 +68,28 @@ public class LongSearchTest {
                                 0),
                         isDisplayed()));
         actionMenuItemView.perform(click());
+
+        ViewInteraction appCompatImageView = onView(
+                allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withId(R.id.searchAnimalBar),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageView.perform(click());
+
+        ViewInteraction searchAutoComplete = onView(
+                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        searchAutoComplete.perform(replaceText("ja"), closeSoftKeyboard());
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -71,56 +112,6 @@ public class LongSearchTest {
                         isDisplayed()));
         actionMenuItemView2.perform(click());
 
-        ViewInteraction appCompatImageView = onView(
-                allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
-                        childAtPosition(
-                                allOf(withClassName(is("android.widget.LinearLayout")),
-                                        childAtPosition(
-                                                withId(R.id.searchAnimalBar),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageView.perform(click());
-
-        ViewInteraction searchAutoComplete = onView(
-                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
-                        childAtPosition(
-                                allOf(withClassName(is("android.widget.LinearLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete.perform(replaceText("mammal"), closeSoftKeyboard());
-
-        ViewInteraction searchAutoComplete2 = onView(
-                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), withText("mammal"),
-                        childAtPosition(
-                                allOf(withClassName(is("android.widget.LinearLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete2.perform(pressImeActionButton());
-
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.animalListView),
-                        childAtPosition(
-                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                0)));
-        recyclerView.perform(actionOnItemAtPosition(1, click()));
-
-        ViewInteraction actionMenuItemView3 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(androidx.appcompat.R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        actionMenuItemView3.perform(click());
-
         ViewInteraction appCompatImageView2 = onView(
                 allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
                         childAtPosition(
@@ -132,6 +123,45 @@ public class LongSearchTest {
                         isDisplayed()));
         appCompatImageView2.perform(click());
 
+        ViewInteraction searchAutoComplete2 = onView(
+                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        searchAutoComplete2.perform(replaceText("japan"), closeSoftKeyboard());
+
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.animalListView),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                0)));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
+
+        ViewInteraction actionMenuItemView3 = onView(
+                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(androidx.appcompat.R.id.action_bar),
+                                        1),
+                                0),
+                        isDisplayed()));
+        actionMenuItemView3.perform(click());
+
+        ViewInteraction appCompatImageView3 = onView(
+                allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withId(R.id.searchAnimalBar),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageView3.perform(click());
+
         ViewInteraction searchAutoComplete3 = onView(
                 allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
                         childAtPosition(
@@ -141,18 +171,7 @@ public class LongSearchTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        searchAutoComplete3.perform(replaceText("africa"), closeSoftKeyboard());
-
-        ViewInteraction searchAutoComplete4 = onView(
-                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), withText("africa"),
-                        childAtPosition(
-                                allOf(withClassName(is("android.widget.LinearLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete4.perform(pressImeActionButton());
+        searchAutoComplete3.perform(replaceText("plant"), closeSoftKeyboard());
 
         ViewInteraction recyclerView2 = onView(
                 allOf(withId(R.id.animalListView),
@@ -171,7 +190,7 @@ public class LongSearchTest {
                         isDisplayed()));
         actionMenuItemView4.perform(click());
 
-        ViewInteraction appCompatImageView3 = onView(
+        ViewInteraction appCompatImageView4 = onView(
                 allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
                         childAtPosition(
                                 allOf(withClassName(is("android.widget.LinearLayout")),
@@ -180,7 +199,46 @@ public class LongSearchTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatImageView3.perform(click());
+        appCompatImageView4.perform(click());
+
+        ViewInteraction searchAutoComplete4 = onView(
+                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        searchAutoComplete4.perform(replaceText("terrestrial"), closeSoftKeyboard());
+
+        ViewInteraction recyclerView3 = onView(
+                allOf(withId(R.id.animalListView),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                0)));
+        recyclerView3.perform(actionOnItemAtPosition(1, click()));
+
+        ViewInteraction actionMenuItemView5 = onView(
+                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(androidx.appcompat.R.id.action_bar),
+                                        1),
+                                0),
+                        isDisplayed()));
+        actionMenuItemView5.perform(click());
+
+        ViewInteraction appCompatImageView5 = onView(
+                allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withId(R.id.searchAnimalBar),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageView5.perform(click());
 
         ViewInteraction searchAutoComplete5 = onView(
                 allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
@@ -191,10 +249,38 @@ public class LongSearchTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        searchAutoComplete5.perform(replaceText("lion"), closeSoftKeyboard());
+        searchAutoComplete5.perform(replaceText("bird"), closeSoftKeyboard());
+
+        ViewInteraction recyclerView4 = onView(
+                allOf(withId(R.id.animalListView),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                0)));
+        recyclerView4.perform(actionOnItemAtPosition(2, click()));
+
+        ViewInteraction actionMenuItemView6 = onView(
+                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(androidx.appcompat.R.id.action_bar),
+                                        1),
+                                0),
+                        isDisplayed()));
+        actionMenuItemView6.perform(click());
+
+        ViewInteraction appCompatImageView6 = onView(
+                allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withId(R.id.searchAnimalBar),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageView6.perform(click());
 
         ViewInteraction searchAutoComplete6 = onView(
-                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")), withText("lion"),
+                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
                         childAtPosition(
                                 allOf(withClassName(is("android.widget.LinearLayout")),
                                         childAtPosition(
@@ -202,14 +288,50 @@ public class LongSearchTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        searchAutoComplete6.perform(pressImeActionButton());
+        searchAutoComplete6.perform(replaceText("africa"), closeSoftKeyboard());
 
-        ViewInteraction recyclerView3 = onView(
+        ViewInteraction recyclerView5 = onView(
                 allOf(withId(R.id.animalListView),
                         childAtPosition(
                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
                                 0)));
-        recyclerView3.perform(actionOnItemAtPosition(0, click()));
+        recyclerView5.perform(actionOnItemAtPosition(2, click()));
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.added_counter), withText("(5)"),
+                        withParent(withParent(withId(android.R.id.content))),
+                        isDisplayed()));
+        textView.check(matches(withText("(5)")));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.planned_animal_text), withText("Koi Fish"),
+                        withParent(withParent(withId(R.id.planned_animals))),
+                        isDisplayed()));
+        textView2.check(matches(withText("Koi Fish")));
+
+        ViewInteraction textView3 = onView(
+                allOf(withId(R.id.planned_animal_text), withText("Siamangs"),
+                        withParent(withParent(withId(R.id.planned_animals))),
+                        isDisplayed()));
+        textView3.check(matches(withText("Siamangs")));
+
+        ViewInteraction textView4 = onView(
+                allOf(withId(R.id.planned_animal_text), withText("Fern Canyon"),
+                        withParent(withParent(withId(R.id.planned_animals))),
+                        isDisplayed()));
+        textView4.check(matches(withText("Fern Canyon")));
+
+        ViewInteraction textView5 = onView(
+                allOf(withId(R.id.planned_animal_text), withText("Hippos"),
+                        withParent(withParent(withId(R.id.planned_animals))),
+                        isDisplayed()));
+        textView5.check(matches(withText("Hippos")));
+
+        ViewInteraction textView6 = onView(
+                allOf(withId(R.id.planned_animal_text), withText("Emerald Dove"),
+                        withParent(withParent(withId(R.id.planned_animals))),
+                        isDisplayed()));
+        textView6.check(matches(withText("Emerald Dove")));
     }
 
     private static Matcher<View> childAtPosition(

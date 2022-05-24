@@ -31,6 +31,8 @@ public class PlannedListTest {
 
     ZooNodeDatabase testDb;
     ZooNodeDao zooNodeDao;
+    PlannedAnimalDao planDao;
+    PlannedAnimalDatabase testPlanDb;
 
     private static void forceLayout(RecyclerView recyclerView) {
         recyclerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -45,9 +47,16 @@ public class PlannedListTest {
                 .build();
         ZooNodeDatabase.injectTestDatabase(testDb);
 
+        testPlanDb = Room.inMemoryDatabaseBuilder(context, PlannedAnimalDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        PlannedAnimalDatabase.injectTestDatabase(testPlanDb);
+
         List<ZooNode> todos = ZooNode.loadJSON(context, "sample_node_info.json");
         zooNodeDao = testDb.ZooNodeDao();
         zooNodeDao.insertAll(todos);
+
+        planDao = testPlanDb.plannedAnimalDao();
     }
 
     @Test
@@ -59,23 +68,22 @@ public class PlannedListTest {
 
         scenario.onActivity(activity -> {
 
-
-            List<ZooNode> before = zooNodeDao.getAll();
+            List<ZooNode> before = planDao.getAll();
             String[] tags = {"tiger"};
-            zooNodeDao.insert(new ZooNode("tiger", "exhibit", "Tiger", tags));
-            List<ZooNode> after = zooNodeDao.getAll();
+            planDao.insert(new ZooNode("tiger", null, "exhibit", "Tiger", tags, "0.0", "0.0"));
+            List<ZooNode> after = planDao.getAll();
 
             String newAnimal = "Tiger";
 
             assertEquals(before.size()+1, after.size());
-            assertEquals(newAnimal, after.get(after.size()-1).name);
+            assertEquals(newAnimal, planDao.getByName(newAnimal).name);
 
         });
 
     }
 
     @Test
-    public void testDisplayInitialCountAsZero() {
+    public void testDisplayInitialCountAsSavedList() {
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.moveToState(Lifecycle.State.STARTED);
@@ -85,14 +93,14 @@ public class PlannedListTest {
 
             TextView count = activity.findViewById(R.id.added_counter);
 
-            assertEquals("(0)", count.getText().toString());
+            assertEquals("(" + planDao.getAll().size() + ")", count.getText().toString());
 
         });
 
     }
 
     @Test
-    public void testAddedAnimalCounter() {
+    public void testAddOneAnimalCounter() {
 
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
@@ -102,7 +110,7 @@ public class PlannedListTest {
         scenario.onActivity(activity -> {
 
             String[] tags = {"tiger"};
-            activity.userExhibits.add(new ZooNode("tiger", "exhibit", "Tiger", tags));
+            planDao.insert(new ZooNode("tiger", null, "exhibit", "Tiger", tags, "0.0", "0.0"));
             TextView count = activity.findViewById(R.id.added_counter);
 
             activity.updateCount();

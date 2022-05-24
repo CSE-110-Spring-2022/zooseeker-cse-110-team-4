@@ -1,5 +1,6 @@
 package com.example.zooapp;
 
+
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -10,13 +11,13 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-@Database(entities = {ZooNode.class},
-        version = 1)
-public abstract class ZooNodeDatabase extends RoomDatabase {
-    public static ZooNodeDatabase singleton = null;
+@Database(entities = {ZooNode.class}, version = 1)
+public abstract class PlannedAnimalDatabase extends RoomDatabase{
+    private static PlannedAnimalDatabase singleton = null;
 
 //    static final Migration MIGRATION_1_2 = new Migration(2, 1) {
 //        @Override
@@ -30,34 +31,34 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
 //        }
 //    };
 
-    public abstract ZooNodeDao ZooNodeDao();
+    public abstract PlannedAnimalDao plannedAnimalDao();
 
-    public synchronized static ZooNodeDatabase getSingleton(Context context) {
+    public synchronized static PlannedAnimalDatabase getSingleton(Context context) {
         if( singleton == null ) {
-            singleton = ZooNodeDatabase.makeDatabase(context);
+            singleton = PlannedAnimalDatabase.makeDatabase(context);
         }
         return singleton;
     }
 
-    private static ZooNodeDatabase makeDatabase(Context context) {
-        return Room.databaseBuilder(context, ZooNodeDatabase.class, "zoo_app.db")
+    private static PlannedAnimalDatabase makeDatabase(Context context) {
+        return Room.databaseBuilder(context, PlannedAnimalDatabase.class, "planned_list.db")
                 .allowMainThreadQueries()
-                .addCallback(new Callback() {
+                .addCallback(new RoomDatabase.Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         super.onCreate(db);
-                        Executors.newSingleThreadScheduledExecutor().execute(() -> {
-                            List<ZooNode> zooNodeList = ZooNode
-                                    .loadJSON(context, "sample_node_info.json");
-                            getSingleton(context).ZooNodeDao().insertAll(zooNodeList);
-                        });
+                        List<ZooNode> plannedList = new ArrayList<>();
+//                        Executors.newSingleThreadScheduledExecutor().execute(() -> {
+//                            List<ZooNode> plannedList = new ArrayList<>();
+//                            //getSingleton(context).plannedAnimalDao().
+//                        });
                     }
                 })
                 .build();
     }
 
     @VisibleForTesting
-    public static void injectTestDatabase(ZooNodeDatabase testDatabase) {
+    public static void injectTestDatabase(PlannedAnimalDatabase testDatabase) {
         if( singleton != null ) {
             singleton.close();
         }

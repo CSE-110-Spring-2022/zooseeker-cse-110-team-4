@@ -3,6 +3,8 @@ package com.example.zooapp;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -19,9 +21,10 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -30,24 +33,22 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-// Simple Plan Test
-// Click on 2 animals to plan and check the display of the application.
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PlannedAnimalTest {
+public class PersistenceTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
+            new ActivityScenarioRule<>(MainActivity.class);
 
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION",
+                    "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
-    public void plannedAnimalTest() {
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.added_counter), withText("(0)"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView.check(matches(withText("(0)")));
-
+    public void persistence2Test() {
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.actions_search), withContentDescription("Search"),
                         childAtPosition(
@@ -57,6 +58,17 @@ public class PlannedAnimalTest {
                                 0),
                         isDisplayed()));
         actionMenuItemView.perform(click());
+
+        ViewInteraction appCompatImageView = onView(
+                allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withId(R.id.searchAnimalBar),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageView.perform(click());
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -79,6 +91,28 @@ public class PlannedAnimalTest {
                         isDisplayed()));
         actionMenuItemView2.perform(click());
 
+        ViewInteraction appCompatImageView2 = onView(
+                allOf(withClassName(is("androidx.appcompat.widget.AppCompatImageView")), withContentDescription("Search"),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withId(R.id.searchAnimalBar),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageView2.perform(click());
+
+        ViewInteraction searchAutoComplete = onView(
+                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.LinearLayout")),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        searchAutoComplete.perform(replaceText("bird"), closeSoftKeyboard());
+
         ViewInteraction recyclerView = onView(
                 allOf(withId(R.id.animalListView),
                         childAtPosition(
@@ -86,34 +120,17 @@ public class PlannedAnimalTest {
                                 0)));
         recyclerView.perform(actionOnItemAtPosition(3, click()));
 
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.planned_animal_text), withText("Flamingos"),
+                        withParent(withParent(withId(R.id.planned_animals))),
+                        isDisplayed()));
+        textView.check(matches(withText("Flamingos")));
+
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.added_counter), withText("(1)"),
-                        withParent(withParent(withId(android.R.id.content))),
+                allOf(withId(R.id.planned_animal_text), withText("Flamingos"),
+                        withParent(withParent(withId(R.id.planned_animals))),
                         isDisplayed()));
-        textView2.check(matches(withText("(1)")));
-
-        ViewInteraction actionMenuItemView3 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(androidx.appcompat.R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        actionMenuItemView3.perform(click());
-
-        ViewInteraction recyclerView2 = onView(
-                allOf(withId(R.id.animalListView),
-                        childAtPosition(
-                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                0)));
-        recyclerView2.perform(actionOnItemAtPosition(2, click()));
-
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.added_counter), withText("(2)"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView3.check(matches(withText("(2)")));
+        textView2.check(matches(withText("Flamingos")));
     }
 
     private static Matcher<View> childAtPosition(

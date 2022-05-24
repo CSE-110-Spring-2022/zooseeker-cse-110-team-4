@@ -9,18 +9,12 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface ZooNodeDao {
+public interface PlannedAnimalDao {
     @Insert
     long insert(ZooNode zooNode);
 
-    @Insert
-    List<Long> insertAll(List<ZooNode> zooNodeList);
-
     @Query("SELECT * FROM `zoo_node_list` WHERE `value`=:value")
-    ZooNode getByValue(long value);
-
-    @Query("SELECT * FROM `zoo_node_list` WHERE `id`=:id")
-    ZooNode getById(String id);
+    ZooNode getById(long value);
 
     @Query("SELECT * FROM `zoo_node_list` WHERE `name`=:name")
     ZooNode getByName(String name);
@@ -31,9 +25,13 @@ public interface ZooNodeDao {
     @Query("SELECT * FROM `zoo_node_list` WHERE `kind` IN (:kind) ORDER BY `value`")
     List<ZooNode> getZooNodeKind(String kind);
 
+    @Query("DELETE FROM `zoo_node_list`")
+    void deleteAll();
+
     @Update
     int update(ZooNode exhibit);
 
     @Delete
     int delete(ZooNode exhibit);
+
 }

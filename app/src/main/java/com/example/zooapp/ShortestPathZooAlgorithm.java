@@ -1,6 +1,7 @@
 package com.example.zooapp;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -12,10 +13,11 @@ import java.util.List;
 /**
  * This class if for the algorithm to find the shortest path to visit certain nodes
  */
-public class ShortestPathZooAlgorithm {
+public class ShortestPathZooAlgorithm implements GraphAlgorithm {
     // Private data fields
-    private List<ZooNode> userListExhibits, userListShortestOrder;
+    private List<ZooNode> userListExhibits, userListShortestOrder, newUserListShortestOrder;
     private List<Double> exhibitDistanceFromStart;
+    private ZooNode newStart;
     private Context context;
     private ZooNodeDao dao;
 
@@ -30,6 +32,8 @@ public class ShortestPathZooAlgorithm {
         this.userListExhibits = (userListExhibits == null) ? new ArrayList<>() :
                 new ArrayList<>(userListExhibits);
         this.userListShortestOrder = new ArrayList<>();
+        this.newUserListShortestOrder = new ArrayList<>();
+        this.exhibitDistanceFromStart = new ArrayList<>();
         this.dao = ZooNodeDatabase.getSingleton(context).ZooNodeDao();
     }
 
@@ -41,7 +45,7 @@ public class ShortestPathZooAlgorithm {
      */
     public List<GraphPath<String, IdentifiedWeightedEdge>> runAlgorithm() {
         // Testing purposes with the original graph
-        Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context,
+        var g = ZooData.loadZooGraphJSON(context,
                 "sample_zoo_graph.json");
         return runAlgorithm(g);
     }
@@ -57,17 +61,18 @@ public class ShortestPathZooAlgorithm {
         // Setup all necessary parts for algorithm
         List<GraphPath<String, IdentifiedWeightedEdge>> resultPath = new ArrayList<>();
         GraphPath<String, IdentifiedWeightedEdge> minDistPath = null;
-        String entranceExitGate = "entrance_exit_gate";
-        String start = entranceExitGate;
-        double minDistance = Double.POSITIVE_INFINITY;
+        var entranceExitGate = "entrance_exit_gate";
+        var start = entranceExitGate;
+        var minDistance = Double.POSITIVE_INFINITY;
         ZooNode shortestZooNodeStart = null;
 
         // Finding all shortest paths
         while( !userListExhibits.isEmpty() ) {
             // Find shortest path for each zooNode available from current node
-            for( ZooNode zooNode: userListExhibits ) {
-                GraphPath<String, IdentifiedWeightedEdge> tempPath =
-                        DijkstraShortestPath.findPathBetween(g,start, zooNode.id);
+            for(var zooNode: userListExhibits ) {
+                var zooNodeName = (zooNode.parent_id != null) ? zooNode.parent_id : zooNode.id;
+                var tempPath =
+                        DijkstraShortestPath.findPathBetween(g,start, zooNodeName);
                 // Setting the shortest path
                 if( tempPath.getWeight() < minDistance ) {
                     shortestZooNodeStart = zooNode;
@@ -77,13 +82,64 @@ public class ShortestPathZooAlgorithm {
             }
             // Finalize shortest path and add to result
             resultPath.add(minDistPath);
-            //exhibitDistanceFromStart.add(minDistance);
-            start = shortestZooNodeStart.id;
+            exhibitDistanceFromStart.add(minDistance);
+            start = (shortestZooNodeStart.parent_id != null) ? shortestZooNodeStart.parent_id :
+                    shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
             userListShortestOrder.add(shortestZooNodeStart);
             minDistance = Double.POSITIVE_INFINITY;
         }
-        resultPath.add(DijkstraShortestPath.findPathBetween(g, start, entranceExitGate));
+        var finalPath =
+                DijkstraShortestPath.findPathBetween(g, start, entranceExitGate);
+        resultPath.add(finalPath);
+        exhibitDistanceFromStart.add(finalPath.getWeight());
+        // Return a list of all shortest paths to complete cycle
+        return resultPath;
+    }
+
+    public List<GraphPath<String, IdentifiedWeightedEdge>> runChangedLocationAlgorithm(
+            ZooNode newStart, List<ZooNode> newList) {
+        var g = ZooData.loadZooGraphJSON(context,
+                "sample_zoo_graph.json");
+        return runChangedLocationAlgorithm(g, newStart, newList);
+    }
+
+    private List<GraphPath<String, IdentifiedWeightedEdge>> runChangedLocationAlgorithm(Graph<String,
+            IdentifiedWeightedEdge> g, ZooNode newStart, List<ZooNode> newList) {
+        // Setup all necessary parts for algorithm
+        List<GraphPath<String, IdentifiedWeightedEdge>> resultPath = new ArrayList<>();
+        GraphPath<String, IdentifiedWeightedEdge> minDistPath = null;
+        var entranceExitGate = "entrance_exit_gate";
+        var start = newStart.id;
+        var minDistance = Double.POSITIVE_INFINITY;
+        this.newStart = newStart;
+        ZooNode shortestZooNodeStart = newStart;
+
+        // Finding all shortest paths
+        while( !newList.isEmpty() ) {
+            // Find shortest path for each zooNode available from current node
+            for(var zooNode: newList ) {
+                var zooNodeName = (zooNode.parent_id != null) ? zooNode.parent_id : zooNode.id;
+                var tempPath =
+                        DijkstraShortestPath.findPathBetween(g,start, zooNodeName);
+                // Setting the shortest path
+                if( tempPath.getWeight() < minDistance ) {
+                    shortestZooNodeStart = zooNode;
+                    minDistance = tempPath.getWeight();
+                    minDistPath = tempPath;
+                }
+            }
+            // Finalize shortest path and add to result
+            resultPath.add(minDistPath);
+            start = (shortestZooNodeStart.parent_id != null) ? shortestZooNodeStart.parent_id :
+                    shortestZooNodeStart.id;
+            newList.remove(shortestZooNodeStart);
+            newUserListShortestOrder.add(shortestZooNodeStart);
+            minDistance = Double.POSITIVE_INFINITY;
+        }
+        var finalPath =
+                DijkstraShortestPath.findPathBetween(g, start, entranceExitGate);
+        resultPath.add(finalPath);
         // Return a list of all shortest paths to complete cycle
         return resultPath;
     }
@@ -94,10 +150,17 @@ public class ShortestPathZooAlgorithm {
      * @return List of zoo nodes in the approximate shortest path
      */
     public List<ZooNode> getUserListShortestOrder() {
-        ZooNode entrance = dao.getByName("Entrance and Exit Gate");
+        var entrance = dao.getByName("Entrance and Exit Gate");
         userListShortestOrder.add(0, entrance);
         userListShortestOrder.add(userListShortestOrder.size(), entrance);
         return userListShortestOrder;
+    }
+
+    public List<ZooNode> getNewUserListShortestOrder() {
+        var entrance = dao.getByName("Entrance and Exit Gate");
+        newUserListShortestOrder.add(0, newStart);
+        newUserListShortestOrder.add(newUserListShortestOrder.size(), entrance);
+        return newUserListShortestOrder;
     }
 
     /**
@@ -115,11 +178,10 @@ public class ShortestPathZooAlgorithm {
      */
     private void correctExhibitDistanceList() {
         double total = 0;
-        int i = 0;
-        for( Double distance: exhibitDistanceFromStart ) {
+        var i = 0;
+        for(var distance: exhibitDistanceFromStart ) {
             total += distance;
-            exhibitDistanceFromStart.set(i, total);
-            i++;
+            exhibitDistanceFromStart.set(i++, total);
         }
     }
 }
