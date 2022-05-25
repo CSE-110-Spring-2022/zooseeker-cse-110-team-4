@@ -27,7 +27,7 @@ public class ZooGraphTest {
 
         // "source" and "sink" are graph terms for the start and end
         String start = "entrance_exit_gate";
-        String goal = "elephant_odyssey";
+        String goal = "orangutan";
 
         // 1. Load the graph...
         Graph<String, IdentifiedWeightedEdge> g = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
@@ -40,7 +40,7 @@ public class ZooGraphTest {
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
 
         //System.out.printf("The shortest path from '%s' to '%s' is:\n", start, goal);
-        assertEquals("The shortest path from 'entrance_exit_gate' to 'elephant_odyssey' is:\n",
+        assertEquals("The shortest path from 'entrance_exit_gate' to 'orangutan' is:\n",
                 String.format("The shortest path from '%s' to '%s' is:\n", start, goal));
 
         StringBuilder outputString = new StringBuilder();
@@ -64,10 +64,11 @@ public class ZooGraphTest {
         }
 
         assertEquals(
-        "  1. Walk 10 meters along Entrance Way from 'Entrance and Exit Gate' to 'Entrance Plaza'.\n" +
-                "  2. Walk 100 meters along Reptile Road from 'Entrance Plaza' to 'Alligators'.\n" +
-                "  3. Walk 200 meters along Sharp Teeth Shortcut from 'Alligators' to 'Lions'.\n" +
-                "  4. Walk 200 meters along Africa Rocks Street from 'Lions' to 'Elephant Odyssey'.\n",
+        "  1. Walk 10 meters along Gate Path from 'Entrance and Exit Gate' to 'Front Street / Treetops Way'.\n" +
+                "  2. Walk 30 meters along Treetops Way from 'Front Street / Treetops Way' to 'Treetops Way / Fern Canyon Trail'.\n" +
+                "  3. Walk 30 meters along Treetops Way from 'Treetops Way / Fern Canyon Trail' to 'Treetops Way / Orangutan Trail'.\n" +
+                "  4. Walk 60 meters along Orangutan Trail from 'Treetops Way / Orangutan Trail' to 'Siamangs'.\n" +
+                "  5. Walk 5 meters along Orangutan Trail from 'Siamangs' to 'Orangutans'.\n",
                 outputString.toString()
         );
     }

@@ -7,14 +7,28 @@ import androidx.annotation.VisibleForTesting;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.List;
 import java.util.concurrent.Executors;
 
-@Database(entities = {ZooNode.class}, version = 1)
+@Database(entities = {ZooNode.class},
+        version = 1)
 public abstract class ZooNodeDatabase extends RoomDatabase {
     public static ZooNodeDatabase singleton = null;
+
+//    static final Migration MIGRATION_1_2 = new Migration(2, 1) {
+//        @Override
+//        public void migrate(@NonNull SupportSQLiteDatabase database) {
+//            database.execSQL("CREATE TABLE new_zoo_list (name TEXT, id TEXT NOT NULL, parent_id TEXT," +
+//                    "value INTEGER NOT NULL, kind TEXT, tags TEXT, lat TEXT, lng TEXT, PRIMARY KEY(value))");
+//
+//            database.execSQL("DROP TABLE zoo_node_list");
+//
+//            database.execSQL("ALTER TABLE new_zoo_list RENAME TO zoo_node_list");
+//        }
+//    };
 
     public abstract ZooNodeDao ZooNodeDao();
 
