@@ -3,6 +3,7 @@ package com.example.zooapp;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.text.Layout;
 
 import java.util.Optional;
 
@@ -36,6 +37,8 @@ public class Utilities {
                 // Do nothing but close the dialog
                 DirectionsActivity.check = true;
                 dialog.dismiss();
+                DirectionsActivity.canCheckReplan = true;
+                DirectionsActivity.replanAlertShown = false;
             }
         });
 
@@ -45,6 +48,8 @@ public class Utilities {
                 // Do nothing but close the dialog
                 DirectionsActivity.check = false;
                 dialog.dismiss();
+                DirectionsActivity.canCheckReplan = false;
+                DirectionsActivity.replanAlertShown = false;
             }
         });
         AlertDialog alertDialog = alertBuilder.create();

@@ -42,7 +42,9 @@ public class DirectionsActivity extends AppCompatActivity {
     //index that is incremented/decremented by next/back buttons
     //used to traverse through planned exhibits
     int currIndex = 0;
-    public static boolean check;
+    public static boolean check = false;
+    public static boolean replanAlertShown = false;
+    public static boolean canCheckReplan = true;
 
     @VisibleForTesting
     public Location mockLocation;
@@ -125,6 +127,9 @@ public class DirectionsActivity extends AppCompatActivity {
                     userListShortestOrder.subList(currIndex+1, userListShortestOrder.size()-1));
             previousClosestZooNode = zooNodeDao.getById("entrance_exit_gate");
             setDirectionsText(graphPath);
+            mockLocation = new Location("Parker Aviary");
+            mockLocation.setLatitude(32.73870593465047);
+            mockLocation.setLongitude(-117.1695850705821);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -141,6 +146,8 @@ public class DirectionsActivity extends AppCompatActivity {
         var locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
+                if( replanAlertShown )
+                    return;
                 locationToUse = (mockLocation == null) ? location : mockLocation;
                 Log.d("Location", String.format("Location changed: %s", locationToUse));
                 if( backwards ) {
@@ -170,25 +177,42 @@ public class DirectionsActivity extends AppCompatActivity {
                         exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
                 graphPath = algorithm.runPathAlgorithm(nearestZooNode,
                         exhibitLocations.exhibitsSubList);
-                setDirectionsText(graphPath);
+
                 var closestExhibitId = algorithm.getClosestExhibitId();
 
                 var displayId = (display.group_id != null) ? display.group_id : display.id;
 
-                if( !closestExhibitId.equals(displayId) ) {
-                    //promptReplan();
-                    Log.d("Location", "New Location: " + closestExhibitId
-                            + " / Old Location: " + displayId);
-                    // Rerun algorithm from current location
+                if( !closestExhibitId.equals(displayId) && canCheckReplan ) {
+                    promptReplan();
+                    if( check ) {
+                        Log.d("Location", "New Location: " + closestExhibitId
+                                + " / Old Location: " + displayId);
+                        // Rerun algorithm from current location
+                        currIndex = 0;
+                        Log.d("Location", exhibitLocations.exhibitsSubList.toString());
+                        graphPaths = algorithm.runChangedLocationAlgorithm(nearestZooNode,
+                                exhibitLocations.exhibitsSubList.subList(1,
+                                        exhibitLocations.exhibitsSubList.size()));
+                        userListShortestOrder = algorithm.getNewUserListShortestOrder();
+                        Log.d("Location", userListShortestOrder.toString());
+                        subListSize = (currIndex >= userListShortestOrder.size() - 2) ?
+                                userListShortestOrder.size() : userListShortestOrder.size() - 1;
+                        exhibitLocations.setupExhibitLocations(userListShortestOrder
+                                .subList(currIndex+1, subListSize));
+                        Log.d("Location", exhibitLocations.exhibitsSubList.toString());
+                        nearestZooNode =
+                                exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
+                        graphPath = algorithm.runPathAlgorithm(nearestZooNode,
+                                exhibitLocations.exhibitsSubList);
 
-                    graphPaths = algorithm.runChangedLocationAlgorithm(nearestZooNode,
-                            exhibitLocations.exhibitsSubList);
-                    userListShortestOrder = algorithm.getNewUserListShortestOrder();
+                        setDirectionsText(graphPath);
+                        previous.setVisibility(View.INVISIBLE);
+                        check = false;
+                    }
+                } else {
                     graphPath = algorithm.runPathAlgorithm(nearestZooNode,
-                            exhibitLocations.exhibitsSubList);
-                    currIndex = 0;
+                            exhibitLocations.exhibitsSubList.subList(0, 1));
                     setDirectionsText(graphPath);
-                    previous.setVisibility(View.INVISIBLE);
                 }
             }
         };
@@ -206,6 +230,7 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void promptReplan() {
+        replanAlertShown = true;
         alertMessage = Utilities.optionalAlert(this,
                     "Would You like to Replan your Route?");
         alertMessage.show();
@@ -267,6 +292,7 @@ public class DirectionsActivity extends AppCompatActivity {
                 break;
         }
         setDirectionsText(graphPath);
+        canCheckReplan = true;
     }
 
     /**
@@ -309,6 +335,7 @@ public class DirectionsActivity extends AppCompatActivity {
                         .getZooNodeClosestToCurrentLocation(mockLocation),
                 userListShortestOrder.subList(currIndex, currIndex+1));
         setDirectionsText(graphPath);
+        canCheckReplan = true;
     }
 
     /**

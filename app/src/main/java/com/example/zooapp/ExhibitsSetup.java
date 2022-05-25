@@ -20,7 +20,7 @@ public class ExhibitsSetup {
 
     void getExhibitInformation() {
         // Get all the animals available in the zoo, exhibits
-
+        activity.deleteDatabase("zoo_app.db");
         ZooNodeDao dao = ZooNodeDatabase.getSingleton(activity).ZooNodeDao();
         totalExhibits = dao.getZooNodeKind("exhibit");
         List<String> toSort = new ArrayList<String>();

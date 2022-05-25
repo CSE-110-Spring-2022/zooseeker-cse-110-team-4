@@ -19,17 +19,17 @@ import java.util.concurrent.Executors;
 public abstract class PlannedAnimalDatabase extends RoomDatabase{
     private static PlannedAnimalDatabase singleton = null;
 
-    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("CREATE TABLE new_zoo_list (name TEXT, id TEXT NOT NULL, group_id TEXT," +
-                    "value INTEGER NOT NULL, kind TEXT, tags TEXT, lat TEXT, lng TEXT, PRIMARY KEY(value))");
-
-            database.execSQL("DROP TABLE zoo_node_list");
-
-            database.execSQL("ALTER TABLE new_zoo_list RENAME TO zoo_node_list");
-        }
-    };
+//    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+//        @Override
+//        public void migrate(@NonNull SupportSQLiteDatabase database) {
+//            database.execSQL("CREATE TABLE new_zoo_list (name TEXT, id TEXT NOT NULL, group_id TEXT," +
+//                    "value INTEGER NOT NULL, kind TEXT, tags TEXT, lat TEXT, lng TEXT, PRIMARY KEY(value))");
+//
+//            database.execSQL("DROP TABLE zoo_node_list");
+//
+//            database.execSQL("ALTER TABLE new_zoo_list RENAME TO zoo_node_list");
+//        }
+//    };
 
     public abstract PlannedAnimalDao plannedAnimalDao();
 
@@ -43,7 +43,6 @@ public abstract class PlannedAnimalDatabase extends RoomDatabase{
     private static PlannedAnimalDatabase makeDatabase(Context context) {
         return Room.databaseBuilder(context, PlannedAnimalDatabase.class, "planned_list.db")
                 .allowMainThreadQueries()
-                .addMigrations(MIGRATION_1_2)
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
