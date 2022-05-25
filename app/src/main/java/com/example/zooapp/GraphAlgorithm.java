@@ -10,6 +10,8 @@ public interface GraphAlgorithm {
             ZooNode newStart, List<ZooNode> newList);
     GraphPath<String, IdentifiedWeightedEdge> runPathAlgorithm(ZooNode closestZooNode,
                                                                List<ZooNode> toVisit);
+    GraphPath<String, IdentifiedWeightedEdge> runReversePathAlgorithm(ZooNode closestZooNode,
+                                                                      ZooNode previousZooNode);
     String getClosestExhibitId();
     List<ZooNode> getNewUserListShortestOrder();
     List<ZooNode> getUserListShortestOrder();

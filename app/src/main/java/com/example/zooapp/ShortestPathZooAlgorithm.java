@@ -123,6 +123,22 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         return resultPath;
     }
 
+    public GraphPath<String, IdentifiedWeightedEdge> runReversePathAlgorithm(
+            ZooNode closestZooNode, ZooNode previousZooNode) {
+        var g = ZooData.loadZooGraphJSON(context,
+                "sample_zoo_graph.json");
+        return runReversePathAlgorithm(g, closestZooNode, previousZooNode);
+    }
+
+    private GraphPath<String, IdentifiedWeightedEdge> runReversePathAlgorithm(
+            Graph<String, IdentifiedWeightedEdge> g, ZooNode closestZooNode,
+            ZooNode previousZooNode){
+        String zooNodeName = (previousZooNode.group_id != null) ? previousZooNode.group_id :
+                previousZooNode.id;
+        closestExhibit = zooNodeName;
+        return DijkstraShortestPath.findPathBetween(g, closestZooNode.id, zooNodeName);
+    }
+
     public String getClosestExhibitId() {
         return closestExhibit;
     }

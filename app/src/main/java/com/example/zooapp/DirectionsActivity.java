@@ -157,21 +157,6 @@ public class DirectionsActivity extends AppCompatActivity {
                         userListShortestOrder.size() : userListShortestOrder.size()-1;
                 exhibitLocations.setupExhibitLocations(userListShortestOrder
                         .subList(currIndex+1, subListSize));
-//                Location currentExhibit = exhibitLocations.getZooNodeLocation(display),
-//                        minExhibit = currentExhibit;
-//                if( currentExhibit == null )
-//                    return;
-//
-//                Log.d("Location", String.format("Current Exhibit Location: %s", currentExhibit));
-//                double minDistance = locationToUse.distanceTo(currentExhibit);
-//                Log.d("Location", String.format("Calculated Distance: %.2f", minDistance));
-//                for(Location exhibitLocation: exhibitLocations.exhibitLocations) {
-//                    if( locationToUse.distanceTo(exhibitLocation) < minDistance ) {
-//                        minDistance = locationToUse.distanceTo(exhibitLocation);
-//                        minExhibit = exhibitLocation;
-//                    }
-//                }
-//                Log.d("Location", String.format("Min Exhibit Location: %s", minExhibit));
                 Log.d("Location", "" + currIndex);
                 var nearestZooNode =
                         exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
