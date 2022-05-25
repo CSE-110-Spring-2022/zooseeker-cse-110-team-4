@@ -127,9 +127,6 @@ public class DirectionsActivity extends AppCompatActivity {
                     userListShortestOrder.subList(currIndex+1, userListShortestOrder.size()-1));
             previousClosestZooNode = zooNodeDao.getById("entrance_exit_gate");
             setDirectionsText(graphPath);
-            mockLocation = new Location("Parker Aviary");
-            mockLocation.setLatitude(32.73870593465047);
-            mockLocation.setLongitude(-117.1695850705821);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -297,16 +294,11 @@ public class DirectionsActivity extends AppCompatActivity {
         }
         switch(currIndex) {
             case 0:
-                mockLocation = new Location("Mock Crocs");
-                mockLocation.setLatitude(32.745293428608484);
-                mockLocation.setLongitude(-117.16976102878033);
-                break;
-            case 1:
                 mockLocation = new Location("Mock Dove");
                 mockLocation.setLatitude(32.73697286273083);
                 mockLocation.setLongitude(-117.17319785958958);
                 break;
-            case 2:
+            case 1:
                 mockLocation = new Location("Mock Entrance");
                 mockLocation.setLatitude(32.73459618734685);
                 mockLocation.setLongitude(-117.14936);
@@ -316,9 +308,9 @@ public class DirectionsActivity extends AppCompatActivity {
         }
         backwards = true;
         //set Text
-        graphPath = algorithm.runPathAlgorithm(exhibitLocations
-                        .getZooNodeClosestToCurrentLocation(mockLocation),
-                userListShortestOrder.subList(currIndex, currIndex+1));
+        graphPath = algorithm.runReversePathAlgorithm(exhibitLocations
+                        .getZooNodeClosestToCurrentLocation(mockLocation), // Change mockLocation to locationToUse when actually running app
+                userListShortestOrder.get(currIndex+1));
         setDirectionsText(graphPath);
         canCheckReplan = true;
     }
