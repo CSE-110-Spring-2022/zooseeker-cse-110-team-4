@@ -1,6 +1,7 @@
 package com.example.zooapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
 
@@ -43,6 +44,11 @@ public class DirectionsActivity extends AppCompatActivity {
     int currIndex = 0;
     public static boolean check;
 
+    @VisibleForTesting
+    public Location mockLocation;
+    @VisibleForTesting
+    public Location locationToUse;
+
     // Graph Information Files
     final String ZOO_GRAPH_JSON = "sample_zoo_graph.json";
     final String NODE_INFO_JSON = "sample_node_info.json";
@@ -77,6 +83,8 @@ public class DirectionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
+
+        resetMockLocation();
 
         // Set the Title Bar to Directions
         actionBar = getSupportActionBar();
@@ -118,7 +126,8 @@ public class DirectionsActivity extends AppCompatActivity {
         var locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                Log.d("Location", String.format("Location changed: %s", location));
+                locationToUse = (mockLocation == null) ? location : mockLocation;
+                Log.d("Location", String.format("Location changed: %s", locationToUse));
                 exhibitLocations.setupExhibitLocations(userListShortestOrder
                         .subList(currIndex+1, userListShortestOrder.size()-1));
                 Location currentExhibit = exhibitLocations.getZooNodeLocation(display),
@@ -127,23 +136,25 @@ public class DirectionsActivity extends AppCompatActivity {
                     return;
 
                 Log.d("Location", String.format("Current Exhibit Location: %s", currentExhibit));
-                double minDistance = location.distanceTo(currentExhibit);
+                double minDistance = locationToUse.distanceTo(currentExhibit);
                 Log.d("Location", String.format("Calculated Distance: %.2f", minDistance));
                 for(Location exhibitLocation: exhibitLocations.exhibitLocations) {
-                    if( location.distanceTo(exhibitLocation) < minDistance ) {
-                        minDistance = location.distanceTo(exhibitLocation);
+                    if( locationToUse.distanceTo(exhibitLocation) < minDistance ) {
+                        minDistance = locationToUse.distanceTo(exhibitLocation);
                         minExhibit = exhibitLocation;
                     }
                 }
                 Log.d("Location", String.format("Min Exhibit Location: %s", minExhibit));
 
                 if( !minExhibit.getProvider().equals(currentExhibit.getProvider()) ) {
-                    promptReplan();
+                    //promptReplan();
                     Log.d("Location", "New Location: " + minExhibit.getProvider()
                             + " / Old Location: " + currentExhibit.getProvider());
                     // Rerun algorithm from current location
-                    graphPaths = algorithm.runChangedLocationAlgorithm(zooNodeDao.getById(
-                            minExhibit.getProvider()), exhibitLocations.exhibitsSubList);
+                    ZooNode nearestZooNode =
+                            exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
+                    graphPaths = algorithm.runChangedLocationAlgorithm(nearestZooNode,
+                            exhibitLocations.exhibitsSubList);
                     userListShortestOrder = algorithm.getNewUserListShortestOrder();
                     currIndex = 0;
                     setDirectionsText(graphPaths.get(currIndex));
@@ -154,6 +165,14 @@ public class DirectionsActivity extends AppCompatActivity {
 
         locationManager.requestLocationUpdates(provider, 0, 0f,
                 locationListener);
+    }
+
+    private void resetMockLocation() {
+        mockLocation = null;
+    }
+
+    public void setMockLocation(Location mockLocation) {
+        this.mockLocation = mockLocation;
     }
 
     public void promptReplan() {
@@ -227,6 +246,10 @@ public class DirectionsActivity extends AppCompatActivity {
         start = current.name;
         var edgeList = directionsToExhibit.getEdgeList();
 
+        if( edgeList.isEmpty() ) {
+            direction += String.format("The %s is in the same area", display.name);
+        }
+
         // Testing purposes
         Log.d("Edge Format", start);
 
@@ -238,7 +261,7 @@ public class DirectionsActivity extends AppCompatActivity {
             correctTarget = (source.equals(start)) ? target : source;
             Log.d("Edge Format", correctTarget);
 
-            if( i == edgeList.size() && display.parent_id != null ) {
+            if( i == edgeList.size() && display.group_id != null ) {
                 direction += String.format(" %d. Walk %.0f meters along %s towards the '%s' and " +
                                 "find '%s' inside\n",
                         i,

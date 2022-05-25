@@ -21,7 +21,7 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
 //    static final Migration MIGRATION_1_2 = new Migration(2, 1) {
 //        @Override
 //        public void migrate(@NonNull SupportSQLiteDatabase database) {
-//            database.execSQL("CREATE TABLE new_zoo_list (name TEXT, id TEXT NOT NULL, parent_id TEXT," +
+//            database.execSQL("CREATE TABLE new_zoo_list (name TEXT, id TEXT NOT NULL, group_id TEXT," +
 //                    "value INTEGER NOT NULL, kind TEXT, tags TEXT, lat TEXT, lng TEXT, PRIMARY KEY(value))");
 //
 //            database.execSQL("DROP TABLE zoo_node_list");

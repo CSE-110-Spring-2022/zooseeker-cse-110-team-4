@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "c8865d12ecae6510e8112b65a9d4902c",
+    "identityHash": "1caf76e5b529657bde2cbd56a61dd66a",
     "entities": [
       {
         "tableName": "zoo_node_list",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`value` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT NOT NULL, `kind` TEXT, `name` TEXT, `lat` TEXT, `lng` TEXT, `tags` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`value` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT NOT NULL, `group_id` TEXT, `kind` TEXT, `name` TEXT, `lat` TEXT, `lng` TEXT, `tags` TEXT)",
         "fields": [
           {
             "fieldPath": "value",
@@ -19,6 +19,12 @@
             "columnName": "id",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "group_id",
+            "columnName": "group_id",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "kind",
@@ -64,7 +70,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c8865d12ecae6510e8112b65a9d4902c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1caf76e5b529657bde2cbd56a61dd66a')"
     ]
   }
 }

@@ -1,6 +1,7 @@
 package com.example.zooapp;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 
 import org.jgrapht.Graph;
@@ -50,6 +51,11 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         return runAlgorithm(g);
     }
 
+    public GraphPath<String, IdentifiedWeightedEdge> runAlgorithm(Graph<String,
+            IdentifiedWeightedEdge> g, Location currentLocation, List<ZooNode> toVisit) {
+        return null;
+    }
+
     /**
      * Algorithm to find the approximate shortest path cycle for when at the zoo
      *
@@ -70,7 +76,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         while( !userListExhibits.isEmpty() ) {
             // Find shortest path for each zooNode available from current node
             for(var zooNode: userListExhibits ) {
-                var zooNodeName = (zooNode.parent_id != null) ? zooNode.parent_id : zooNode.id;
+                var zooNodeName = (zooNode.group_id != null) ? zooNode.group_id : zooNode.id;
                 var tempPath =
                         DijkstraShortestPath.findPathBetween(g,start, zooNodeName);
                 // Setting the shortest path
@@ -83,7 +89,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
             // Finalize shortest path and add to result
             resultPath.add(minDistPath);
             exhibitDistanceFromStart.add(minDistance);
-            start = (shortestZooNodeStart.parent_id != null) ? shortestZooNodeStart.parent_id :
+            start = (shortestZooNodeStart.group_id != null) ? shortestZooNodeStart.group_id :
                     shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
             userListShortestOrder.add(shortestZooNodeStart);
@@ -119,7 +125,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         while( !newList.isEmpty() ) {
             // Find shortest path for each zooNode available from current node
             for(var zooNode: newList ) {
-                var zooNodeName = (zooNode.parent_id != null) ? zooNode.parent_id : zooNode.id;
+                var zooNodeName = (zooNode.group_id != null) ? zooNode.group_id : zooNode.id;
                 var tempPath =
                         DijkstraShortestPath.findPathBetween(g,start, zooNodeName);
                 // Setting the shortest path
@@ -131,7 +137,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
             }
             // Finalize shortest path and add to result
             resultPath.add(minDistPath);
-            start = (shortestZooNodeStart.parent_id != null) ? shortestZooNodeStart.parent_id :
+            start = (shortestZooNodeStart.group_id != null) ? shortestZooNodeStart.group_id :
                     shortestZooNodeStart.id;
             newList.remove(shortestZooNodeStart);
             newUserListShortestOrder.add(shortestZooNodeStart);
