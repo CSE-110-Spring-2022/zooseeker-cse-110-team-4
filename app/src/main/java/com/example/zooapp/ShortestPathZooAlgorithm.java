@@ -21,6 +21,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
     private ZooNode newStart;
     private Context context;
     private ZooNodeDao dao;
+    private String closestExhibit;
 
     /**
      * Constructor
@@ -49,11 +50,6 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         var g = ZooData.loadZooGraphJSON(context,
                 "sample_zoo_graph.json");
         return runAlgorithm(g);
-    }
-
-    public GraphPath<String, IdentifiedWeightedEdge> runAlgorithm(Graph<String,
-            IdentifiedWeightedEdge> g, Location currentLocation, List<ZooNode> toVisit) {
-        return null;
     }
 
     /**
@@ -101,6 +97,34 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         exhibitDistanceFromStart.add(finalPath.getWeight());
         // Return a list of all shortest paths to complete cycle
         return resultPath;
+    }
+
+    public GraphPath<String, IdentifiedWeightedEdge> runPathAlgorithm(ZooNode closestZooNode,
+                                                                      List<ZooNode> toVisit) {
+        var g = ZooData.loadZooGraphJSON(context,
+                "sample_zoo_graph.json");
+        return runPathAlgorithm(g, closestZooNode, toVisit);
+    }
+
+    private GraphPath<String, IdentifiedWeightedEdge> runPathAlgorithm(Graph<String,
+            IdentifiedWeightedEdge> g, ZooNode closestZooNode, List<ZooNode> toVisit) {
+        double minDistance = Double.MAX_VALUE;
+        GraphPath<String, IdentifiedWeightedEdge> resultPath = null;
+        for(var zooNode: toVisit) {
+            String zooNodeName = (zooNode.group_id != null) ? zooNode.group_id : zooNode.id;
+            var tempPath =
+                    DijkstraShortestPath.findPathBetween(g, closestZooNode.id, zooNodeName);
+            if( tempPath.getWeight() < minDistance ) {
+                resultPath = tempPath;
+                minDistance = tempPath.getWeight();
+                closestExhibit = zooNodeName;
+            }
+        }
+        return resultPath;
+    }
+
+    public String getClosestExhibitId() {
+        return closestExhibit;
     }
 
     public List<GraphPath<String, IdentifiedWeightedEdge>> runChangedLocationAlgorithm(
