@@ -20,7 +20,7 @@ public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSumma
     private List<ZooNode> userAnimals = Collections.emptyList();
     private List<Double> exhibitDistances = Collections.emptyList();
 
-    private static final String TEXT_VIEW_FORMAT = "%s (%.0f m)";
+    private static final String TEXT_VIEW_FORMAT = "%s (%.0f ft)";
 
     /**
      * Sets the list of animals (exhibits) the user has chosen
