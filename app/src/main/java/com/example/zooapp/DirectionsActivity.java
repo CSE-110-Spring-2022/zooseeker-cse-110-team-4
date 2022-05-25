@@ -235,7 +235,7 @@ public class DirectionsActivity extends AppCompatActivity {
             Log.d("Edge Format", correctTarget);
 
             if( i == edgeList.size() && display.parent_id != null ) {
-                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s' and " +
+                direction += String.format(" %d. Walk %.0f feet along %s towards the '%s' and " +
                                 "find '%s' inside\n",
                         i,
                         graph.getEdgeWeight(e),
@@ -244,7 +244,7 @@ public class DirectionsActivity extends AppCompatActivity {
                         display.name);
             } else {
                 // Format directions to proper format
-                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s'\n",
+                direction += String.format(" %d. Walk %.0f feet along %s towards the '%s'\n",
                         i,
                         graph.getEdgeWeight(e),
                         Objects.requireNonNull(eInfo.get(e.getId())).street,
