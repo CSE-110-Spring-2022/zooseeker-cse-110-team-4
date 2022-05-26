@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -66,6 +68,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private Graph<String, IdentifiedWeightedEdge> graph;
     private GraphPath<String, IdentifiedWeightedEdge> graphPath;
     private TextView header, directions;
+    private TextView scroll;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
     private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
@@ -112,7 +115,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
             // Set text views
             header = findViewById(R.id.directions_header);
-            directions = findViewById(R.id.directions_text);
+            scroll = findViewById(R.id.directions_text);
 
             //setDirectionsText(graphPaths.get(currIndex));
             graphPath = algorithm.runPathAlgorithm(zooNodeDao.getById("entrance_exit_gate"),
@@ -263,25 +266,27 @@ public class DirectionsActivity extends AppCompatActivity {
                                 exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse),
                 userListShortestOrder.subList(currIndex + 1,
                         userListShortestOrder.size() - 1));
-        switch(currIndex) {
-            case 1:
-                mockLocation = new Location("Mock Crocs");
-                mockLocation.setLatitude(32.745293428608484);
-                mockLocation.setLongitude(-117.16976102878033);
-                break;
-            case 2:
-                mockLocation = new Location("Mock Dove");
-                mockLocation.setLatitude(32.73697286273083);
-                mockLocation.setLongitude(-117.17319785958958);
-                break;
-            default:
-                break;
-        }
+
+//        switch(currIndex) {
+//            case 1:
+//                mockLocation = new Location("Mock Crocs");
+//                mockLocation.setLatitude(32.745293428608484);
+//                mockLocation.setLongitude(-117.16976102878033);
+//                break;
+//            case 2:
+//                mockLocation = new Location("Mock Dove");
+//                mockLocation.setLatitude(32.73697286273083);
+//                mockLocation.setLongitude(-117.17319785958958);
+//                break;
+//            default:
+//                break;
+//        }
         if(directionsDetailedText) {
             setDetailedDirectionsText(graphPath);
         } else {
             setBriefDirectionsText(graphPath);
         }
+
         canCheckReplan = true;
     }
 
@@ -300,24 +305,24 @@ public class DirectionsActivity extends AppCompatActivity {
         if (currIndex > 0){
             currIndex--;
         }
-        switch(currIndex) {
-            case 0:
-                mockLocation = new Location("Mock Dove");
-                mockLocation.setLatitude(32.73697286273083);
-                mockLocation.setLongitude(-117.17319785958958);
-                break;
-            case 1:
-                mockLocation = new Location("Mock Entrance");
-                mockLocation.setLatitude(32.73459618734685);
-                mockLocation.setLongitude(-117.14936);
-                break;
-            default:
-                break;
-        }
+//        switch(currIndex) {
+//            case 0:
+//                mockLocation = new Location("Mock Dove");
+//                mockLocation.setLatitude(32.73697286273083);
+//                mockLocation.setLongitude(-117.17319785958958);
+//                break;
+//            case 1:
+//                mockLocation = new Location("Mock Entrance");
+//                mockLocation.setLatitude(32.73459618734685);
+//                mockLocation.setLongitude(-117.14936);
+//                break;
+//            default:
+//                break;
+//        }
         backwards = true;
         //set Text
         graphPath = algorithm.runReversePathAlgorithm(exhibitLocations
-                        .getZooNodeClosestToCurrentLocation(mockLocation), // Change mockLocation to locationToUse when actually running app
+                        .getZooNodeClosestToCurrentLocation(locationToUse), // Change mockLocation to locationToUse when actually running app
                 userListShortestOrder.get(currIndex+1));
         if(directionsDetailedText) {
             setDetailedDirectionsText(graphPath);
@@ -362,7 +367,7 @@ public class DirectionsActivity extends AppCompatActivity {
             Log.d("Edge Format", correctTarget);
 
             if( i == edgeList.size() && display.group_id != null ) {
-                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s' and " +
+                direction += String.format(" %d. Walk %.0f feet along %s towards the '%s' and " +
                                 "find '%s' inside\n",
                         i,
                         graph.getEdgeWeight(e),
@@ -371,7 +376,7 @@ public class DirectionsActivity extends AppCompatActivity {
                         display.name);
             } else {
                 // Format directions to proper format
-                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s'\n",
+                direction += String.format(" %d. Walk %.0f feet along %s towards the '%s'\n",
                         i,
                         graph.getEdgeWeight(e),
                         Objects.requireNonNull(eInfo.get(e.getId())).street,
@@ -382,7 +387,10 @@ public class DirectionsActivity extends AppCompatActivity {
         }
 
         // Set the directions text
+        directions = new TextView(this);
         directions.setText(direction);
+        scroll.setText(direction);
+
     }
 
     @SuppressLint("DefaultLocale")
