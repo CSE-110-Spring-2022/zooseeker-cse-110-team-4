@@ -92,4 +92,10 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));
         startActivity(intent);
     }
+
+    public void onClearButtonClicked(View view) {
+        Log.d("Button Clicked", "Clear Button Clicked");
+        PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao().deleteAll();
+        finish();
+    }
 }
