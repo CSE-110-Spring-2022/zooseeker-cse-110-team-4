@@ -94,11 +94,7 @@ public class DirectionsActivity extends AppCompatActivity {
         previous = findViewById(R.id.previous_button);
 
         // Grabbing planned animals from planned list and inputting to new activity
-        var gson = new Gson();
-        var type = new TypeToken<List<ZooNode>>(){}.getType();
-        //old if block code: gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null
-
-        if(plannedAnimalDao.getAll().size() > 0){
+        if( plannedAnimalDao.getAll().size() > 0 ){
             //userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
             userExhibits = plannedAnimalDao.getAll();
             Log.d("Zoo Nodes", userExhibits.toString());
