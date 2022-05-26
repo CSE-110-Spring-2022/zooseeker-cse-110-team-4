@@ -59,7 +59,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public GraphAlgorithm algorithm;
     public AlertDialog alertMessage;
     public ActionBar actionBar;
-    public boolean directionsDetailedText = false;
+    public boolean directionsDetailedText = true;
     public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
             .plannedAnimalDao();
     public ZooNodeDao zooNodeDao = ZooNodeDatabase.getSingleton(this)
@@ -68,7 +68,6 @@ public class DirectionsActivity extends AppCompatActivity {
     private Graph<String, IdentifiedWeightedEdge> graph;
     private GraphPath<String, IdentifiedWeightedEdge> graphPath;
     private TextView header, directions;
-    private TextView scroll;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
     private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
@@ -115,7 +114,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
             // Set text views
             header = findViewById(R.id.directions_header);
-            scroll = findViewById(R.id.directions_text);
+            directions = findViewById(R.id.directions_text);
 
             //setDirectionsText(graphPaths.get(currIndex));
             graphPath = algorithm.runPathAlgorithm(zooNodeDao.getById("entrance_exit_gate"),
@@ -126,6 +125,9 @@ public class DirectionsActivity extends AppCompatActivity {
             } else {
                 setBriefDirectionsText(graphPath);
             }
+//            mockLocation = new Location("Mock Orangatan");
+//            mockLocation.setLatitude(32.735851415117665);
+//            mockLocation.setLongitude(-117.16626781198586);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -158,7 +160,6 @@ public class DirectionsActivity extends AppCompatActivity {
                         exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
                 graphPath = algorithm.runPathAlgorithm(nearestZooNode,
                         exhibitLocations.exhibitsSubList);
-
                 var closestExhibitId = algorithm.getClosestExhibitId();
 
                 var displayId = (display.group_id != null) ? display.group_id : display.id;
@@ -267,20 +268,20 @@ public class DirectionsActivity extends AppCompatActivity {
                 userListShortestOrder.subList(currIndex + 1,
                         userListShortestOrder.size() - 1));
 
-//        switch(currIndex) {
-//            case 1:
-//                mockLocation = new Location("Mock Crocs");
-//                mockLocation.setLatitude(32.745293428608484);
-//                mockLocation.setLongitude(-117.16976102878033);
-//                break;
-//            case 2:
-//                mockLocation = new Location("Mock Dove");
-//                mockLocation.setLatitude(32.73697286273083);
-//                mockLocation.setLongitude(-117.17319785958958);
-//                break;
-//            default:
-//                break;
-//        }
+        switch(currIndex) {
+            case 1:
+                mockLocation = new Location("Mock Crocs");
+                mockLocation.setLatitude(32.745293428608484);
+                mockLocation.setLongitude(-117.16976102878033);
+                break;
+            case 2:
+                mockLocation = new Location("Mock Dove");
+                mockLocation.setLatitude(32.73697286273083);
+                mockLocation.setLongitude(-117.17319785958958);
+                break;
+            default:
+                break;
+        }
         if(directionsDetailedText) {
             setDetailedDirectionsText(graphPath);
         } else {
@@ -305,24 +306,24 @@ public class DirectionsActivity extends AppCompatActivity {
         if (currIndex > 0){
             currIndex--;
         }
-//        switch(currIndex) {
-//            case 0:
-//                mockLocation = new Location("Mock Dove");
-//                mockLocation.setLatitude(32.73697286273083);
-//                mockLocation.setLongitude(-117.17319785958958);
-//                break;
-//            case 1:
-//                mockLocation = new Location("Mock Entrance");
-//                mockLocation.setLatitude(32.73459618734685);
-//                mockLocation.setLongitude(-117.14936);
-//                break;
-//            default:
-//                break;
-//        }
+        switch(currIndex) {
+            case 0:
+                mockLocation = new Location("Mock Dove");
+                mockLocation.setLatitude(32.73697286273083);
+                mockLocation.setLongitude(-117.17319785958958);
+                break;
+            case 1:
+                mockLocation = new Location("Mock Entrance");
+                mockLocation.setLatitude(32.73459618734685);
+                mockLocation.setLongitude(-117.14936);
+                break;
+            default:
+                break;
+        }
         backwards = true;
         //set Text
         graphPath = algorithm.runReversePathAlgorithm(exhibitLocations
-                        .getZooNodeClosestToCurrentLocation(locationToUse), // Change mockLocation to locationToUse when actually running app
+                        .getZooNodeClosestToCurrentLocation(mockLocation), // Change mockLocation to locationToUse when actually running app
                 userListShortestOrder.get(currIndex+1));
         if(directionsDetailedText) {
             setDetailedDirectionsText(graphPath);
@@ -387,10 +388,7 @@ public class DirectionsActivity extends AppCompatActivity {
         }
 
         // Set the directions text
-        directions = new TextView(this);
         directions.setText(direction);
-        scroll.setText(direction);
-
     }
 
     @SuppressLint("DefaultLocale")

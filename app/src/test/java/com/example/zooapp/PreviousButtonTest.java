@@ -1,6 +1,7 @@
 package com.example.zooapp;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -105,12 +106,16 @@ public class PreviousButtonTest {
             assertEquals(2, activity2.userExhibits.size());
             assertEquals(4, activity2.userListShortestOrder.size());
 
+            activity2.locationToUse = new Location("Mock Location");
+            activity2.locationToUse.setLatitude(32.73459618734685);
+            activity2.locationToUse.setLongitude(-117.14936);
+
             //currIndex starts at first animal, index at 0
             //Previous should be invisible, Next should be visible
             assertEquals(0, activity2.currIndex);
 
             //make sure first animal is correct
-            assertEquals(name.getText().toString(), "Koi Fish");
+            assertEquals(name.getText().toString(), "Flamingos");
 
             //click Next to move to the second animal, currIndex at 1
             next.performClick();
@@ -118,7 +123,7 @@ public class PreviousButtonTest {
             assertEquals(View.VISIBLE, previous.getVisibility());
 
             //make sure second animal name is correct
-            assertEquals(name.getText().toString(), "Flamingos");
+            assertEquals(name.getText().toString(), "Koi Fish");
 
             //click Next to move to the third animal, currIndex at 2
             next.performClick();
@@ -132,14 +137,14 @@ public class PreviousButtonTest {
             assertEquals(View.VISIBLE, previous.getVisibility());
             assertEquals(1, activity2.currIndex);
             //make sure second animal name is correct
-            assertEquals(name.getText().toString(), "Flamingos");
+            assertEquals(name.getText().toString(), "Koi Fish");
 
             //click Previous to return to first animal, Previous button is invisible
             previous.performClick();
             assertEquals(View.INVISIBLE, previous.getVisibility());
             assertEquals(0, activity2.currIndex);
             //make sure first animal is correct
-            assertEquals(name.getText().toString(), "Koi Fish");
+            assertEquals(name.getText().toString(), "Flamingos");
 
         });
         scenario2.close();
