@@ -146,11 +146,17 @@ public class MainActivity extends AppCompatActivity{
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d("Menu Click", "Search has been clicked");
-        Gson gson = new Gson();
-        Intent searchIntent = new Intent(this, SearchActivity.class);
-        //searchIntent.putExtra("userExhibitsJSON", gson.toJson(userExhibits));
-        startActivityForResult(searchIntent, REQUEST_USER_CHOSEN_ANIMAL);
+
+        switch (item.getItemId()) {
+            case R.id.actions_search:
+                Log.d("Menu Click", "Search has been clicked");
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                startActivityForResult(searchIntent, REQUEST_USER_CHOSEN_ANIMAL);
+            case R.id.settings_button:
+                Log.d("Menu Click", "Settings has been clicked");
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+        }
         return super.onOptionsItemSelected(item);
     }
 
