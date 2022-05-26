@@ -8,7 +8,6 @@ import androidx.appcompat.app.ActionBar;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,16 +17,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -62,6 +57,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public GraphAlgorithm algorithm;
     public AlertDialog alertMessage;
     public ActionBar actionBar;
+    public boolean directionsDetailedText = false;
     public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
             .plannedAnimalDao();
     public ZooNodeDao zooNodeDao = ZooNodeDatabase.getSingleton(this)
@@ -126,7 +122,11 @@ public class DirectionsActivity extends AppCompatActivity {
             graphPath = algorithm.runPathAlgorithm(zooNodeDao.getById("entrance_exit_gate"),
                     userListShortestOrder.subList(currIndex+1, userListShortestOrder.size()-1));
             previousClosestZooNode = zooNodeDao.getById("entrance_exit_gate");
-            setDirectionsText(graphPath);
+            if(directionsDetailedText) {
+                setDetailedDirectionsText(graphPath);
+            } else {
+                setBriefDirectionsText(graphPath);
+            }
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -187,14 +187,22 @@ public class DirectionsActivity extends AppCompatActivity {
                         graphPath = algorithm.runPathAlgorithm(nearestZooNode,
                                 exhibitLocations.exhibitsSubList);
 
-                        setDirectionsText(graphPath);
+                        if(directionsDetailedText) {
+                            setDetailedDirectionsText(graphPath);
+                        } else {
+                            setBriefDirectionsText(graphPath);
+                        }
                         previous.setVisibility(View.INVISIBLE);
                         check = false;
                     }
                 } else {
                     graphPath = algorithm.runPathAlgorithm(nearestZooNode,
                             exhibitLocations.exhibitsSubList.subList(0, 1));
-                    setDirectionsText(graphPath);
+                    if(directionsDetailedText) {
+                        setDetailedDirectionsText(graphPath);
+                    } else {
+                        setBriefDirectionsText(graphPath);
+                    }
                 }
             }
         };
@@ -273,7 +281,11 @@ public class DirectionsActivity extends AppCompatActivity {
             default:
                 break;
         }
-        setDirectionsText(graphPath);
+        if(directionsDetailedText) {
+            setDetailedDirectionsText(graphPath);
+        } else {
+            setBriefDirectionsText(graphPath);
+        }
         canCheckReplan = true;
     }
 
@@ -311,7 +323,11 @@ public class DirectionsActivity extends AppCompatActivity {
         graphPath = algorithm.runReversePathAlgorithm(exhibitLocations
                         .getZooNodeClosestToCurrentLocation(mockLocation), // Change mockLocation to locationToUse when actually running app
                 userListShortestOrder.get(currIndex+1));
-        setDirectionsText(graphPath);
+        if(directionsDetailedText) {
+            setDetailedDirectionsText(graphPath);
+        } else {
+            setBriefDirectionsText(graphPath);
+        }
         canCheckReplan = true;
     }
 
@@ -319,7 +335,8 @@ public class DirectionsActivity extends AppCompatActivity {
      * Sets the text for the directions activity
      */
     @SuppressLint("DefaultLocale")
-    private void setDirectionsText(GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
+    private void setDetailedDirectionsText(
+            GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
         // Get the needed zoo node information
         var current = userListShortestOrder.get(currIndex);
         display = userListShortestOrder.get(currIndex+1);
@@ -366,6 +383,70 @@ public class DirectionsActivity extends AppCompatActivity {
             }
             start = correctTarget;
             i++;
+        }
+
+        // Set the directions text
+        directions.setText(direction);
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void setBriefDirectionsText(
+            GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
+        var current = userListShortestOrder.get(currIndex);
+        display = userListShortestOrder.get(currIndex+1);
+
+        // Set the header to the correct display name
+        header.setText(display.name);
+
+        // Set up for getting all the directions
+        var directionNumber = 1;
+        String source, target, correctTarget, start, direction = "";
+        double distance = 0.0;
+        start = current.name;
+        var edgeList = directionsToExhibit.getEdgeList();
+
+        if( edgeList.isEmpty() ) {
+            direction += String.format("The %s are nearby", display.name);
+        }
+
+        // Testing purposes
+        Log.d("Edge Format", start);
+
+        // Get all the directions from current zoo node to the next zoo node
+        for(int j = 0; j < edgeList.size(); j++) {
+            var e = edgeList.get(j);
+            distance += graph.getEdgeWeight(e);
+            if( j != edgeList.size()-1 &&
+                    Objects.requireNonNull(eInfo.get(e.getId())).street
+                            .equals(Objects.requireNonNull(eInfo.get(edgeList.get(j+1).getId()))
+                                    .street))  {
+                continue;
+            }
+            Log.d("Edge Format", e.toString());
+            source = Objects.requireNonNull(vInfo.get(graph.getEdgeSource(e).toString())).name;
+            target = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(e).toString())).name;
+            correctTarget = (source.equals(start)) ? target : source;
+            Log.d("Edge Format", correctTarget);
+
+            if( j == edgeList.size()-1 && display.group_id != null ) {
+                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s' and " +
+                                "find '%s' inside\n",
+                        directionNumber,
+                        distance,
+                        Objects.requireNonNull(eInfo.get(e.getId())).street,
+                        correctTarget,
+                        display.name);
+            } else {
+                // Format directions to proper format
+                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s'\n",
+                        directionNumber,
+                        distance,
+                        Objects.requireNonNull(eInfo.get(e.getId())).street,
+                        correctTarget);
+            }
+            start = correctTarget;
+            distance = 0.0;
+            directionNumber++;
         }
 
         // Set the directions text
