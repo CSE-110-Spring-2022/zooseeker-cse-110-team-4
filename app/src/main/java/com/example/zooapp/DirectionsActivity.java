@@ -52,6 +52,7 @@ public class DirectionsActivity extends AppCompatActivity {
     // Variable for the graph and path
     public GraphAlgorithm algorithm;
     public ActionBar actionBar;
+    public AlertDialog alertMessage;
     public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
             .plannedAnimalDao();
     public ZooNodeDao zooNodeDao = ZooNodeDatabase.getSingleton(this)
@@ -171,7 +172,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
         //check to see if index is at the end
         if(currIndex == userListShortestOrder.size()-2){
-            AlertDialog alertMessage = Utilities.showAlert(this,"The Route is Completed");
+            alertMessage = Utilities.showAlert(this,"The Route is Completed");
             alertMessage.show();
             return;
         }
@@ -283,6 +284,10 @@ public class DirectionsActivity extends AppCompatActivity {
         eInfo = ZooData.loadEdgeInfoJSON(context, EDGE_INFO_JSON);
     }
 
+    /**
+     * Skips exhibit currently navigating to and moves onto next exhibit
+     * @param view
+     */
     public void onSkipButtonClicked(View view) {
 
 
@@ -303,5 +308,18 @@ public class DirectionsActivity extends AppCompatActivity {
         setDirectionsText(graphPaths.get(currIndex));
 
         Log.d("SkipButton", "List planned animal AFTER: " + userExhibits.toString());
+    }
+
+    public void onStartOverButtonClicked(View view) {
+        Log.d("StartOverButton", "Start Over Button Clicked");
+
+        PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao().deleteAll();
+        Log.d("StartOverButton", "Cleared Planned Animal Dao");
+        Log.d("StartOverButton", "Heading back to main activity");
+
+        // Go back to main activity
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // clear stack of activities
+        startActivity(intent);
     }
 }
