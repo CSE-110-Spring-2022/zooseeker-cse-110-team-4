@@ -52,6 +52,7 @@ public class DirectionsActivity extends AppCompatActivity {
     // Variable for the graph and path
     public GraphAlgorithm algorithm;
     public ActionBar actionBar;
+    public AlertDialog alertMessage;
     public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
             .plannedAnimalDao();
     public ZooNodeDao zooNodeDao = ZooNodeDatabase.getSingleton(this)
@@ -64,6 +65,8 @@ public class DirectionsActivity extends AppCompatActivity {
     private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
     private ZooNode display;
     private Button previous;
+    private Button skip;
+
 
     /**
      * Method for onCreate of the activity
@@ -81,6 +84,7 @@ public class DirectionsActivity extends AppCompatActivity {
         actionBar.setTitle("Directions");
 
         previous = findViewById(R.id.previous_button);
+        skip = findViewById(R.id.skip_button);
 
         // Grabbing planned animals from planned list and inputting to new activity
         var gson = new Gson();
@@ -110,6 +114,7 @@ public class DirectionsActivity extends AppCompatActivity {
             Log.d("null input", "User exhibits was null");
             throw new NullPointerException("UserExhibits was null");
         }
+
 
         var provider = LocationManager.GPS_PROVIDER;
         var locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -164,9 +169,10 @@ public class DirectionsActivity extends AppCompatActivity {
      * @param view The current view
      */
     public void onNextButtonClicked(View view) {
+
         //check to see if index is at the end
         if(currIndex == userListShortestOrder.size()-2){
-            AlertDialog alertMessage = Utilities.showAlert(this,"The Route is Completed");
+            alertMessage = Utilities.showAlert(this,"The Route is Completed");
             alertMessage.show();
             return;
         }
@@ -206,6 +212,15 @@ public class DirectionsActivity extends AppCompatActivity {
      */
     @SuppressLint("DefaultLocale")
     private void setDirectionsText(GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
+
+        // Check if the currIndex is at the end of the list
+        // If so, the skip button is not visible
+        // Otherwise, setVisible
+        if (currIndex == userListShortestOrder.size() - 2)
+            skip.setVisibility(View.INVISIBLE);
+        else
+            skip.setVisibility(View.VISIBLE);
+
         // Get the needed zoo node information
         var current = userListShortestOrder.get(currIndex);
         display = userListShortestOrder.get(currIndex+1);
@@ -269,7 +284,42 @@ public class DirectionsActivity extends AppCompatActivity {
         eInfo = ZooData.loadEdgeInfoJSON(context, EDGE_INFO_JSON);
     }
 
+    /**
+     * Skips exhibit currently navigating to and moves onto next exhibit
+     * @param view
+     */
     public void onSkipButtonClicked(View view) {
-        Log.d("CheckButton", "Skip Button Clicked");
+
+
+        Log.d("SkipButton", "Skip Button Clicked");
+        Log.d("SkipButton", "List planned animal BEFORE: " + userExhibits.toString());
+        Log.d("SkipButton", "Current view exhibit: " + userListShortestOrder.get(currIndex+1).toString());
+        plannedAnimalDao.delete(userListShortestOrder.get(currIndex+1));
+
+        userExhibits = plannedAnimalDao.getAll();
+        // Our algorithm
+        algorithm = new ShortestPathZooAlgorithm(
+                getApplication().getApplicationContext(), userExhibits);
+        graphPaths = algorithm.runAlgorithm();
+        userListShortestOrder = algorithm.getUserListShortestOrder();
+
+
+        // set text
+        setDirectionsText(graphPaths.get(currIndex));
+
+        Log.d("SkipButton", "List planned animal AFTER: " + userExhibits.toString());
+    }
+
+    public void onStartOverButtonClicked(View view) {
+        Log.d("StartOverButton", "Start Over Button Clicked");
+
+        PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao().deleteAll();
+        Log.d("StartOverButton", "Cleared Planned Animal Dao");
+        Log.d("StartOverButton", "Heading back to main activity");
+
+        // Go back to main activity
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // clear stack of activities
+        startActivity(intent);
     }
 }

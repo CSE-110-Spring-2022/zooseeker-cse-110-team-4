@@ -84,6 +84,16 @@ public class MainActivity extends AppCompatActivity{
         userExhibitsSize.setText("(" + plannedAnimalDao.getAll().size() + ")");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpRecyclerView();
+
+        // Added counter for user to see
+        userExhibitsSize = findViewById(R.id.added_counter);
+        userExhibitsSize.setText("(" + plannedAnimalDao.getAll().size() + ")");
+    }
+
     /**
      * Sets up the recycler view to display the animals that the user has currently selected
      */
@@ -195,6 +205,5 @@ public class MainActivity extends AppCompatActivity{
         plannedAnimalDao.deleteAll();
         updateCount();
         setUpRecyclerView();
-
     }
 }
