@@ -272,4 +272,12 @@ public class DirectionsActivity extends AppCompatActivity {
         vInfo = ZooData.loadVertexInfoJSON(context, NODE_INFO_JSON);
         eInfo = ZooData.loadEdgeInfoJSON(context, EDGE_INFO_JSON);
     }
+
+    public void onSkipButtonClicked(View view) {
+        Log.d("CheckButton", "Skip Button Clicked");
+    }
+
+    public void onPreviewButtonClicked(View view) {
+        Log.d("CheckButton", "Preview Button Clicked");
+    }
 }

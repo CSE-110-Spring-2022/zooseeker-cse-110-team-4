@@ -7,13 +7,44 @@
     tools:context=".DirectionsActivity">
 
     <Button
-        android:id="@+id/next_button"
-        android:layout_width="85dp"
+        android:id="@+id/skip_button"
+        android:layout_width="100dp"
         android:layout_height="50dp"
         android:backgroundTint="#8BC34A"
         android:fontFamily="monospace"
-        android:text="Next"
+        android:onClick="onSkipButtonClicked"
+        android:text="Skip"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.937" />
+
+    <Button
+        android:id="@+id/preview_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#8BC34A"
+        android:fontFamily="monospace"
+        android:onClick="onPreviewButtonClicked"
+        android:text="Preview"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toEndOf="@+id/previous_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.939" />
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#8BC34A"
+        android:fontFamily="monospace"
         android:onClick="onNextButtonClicked"
+        android:text="Next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.509"
@@ -23,8 +54,8 @@
 
     <Button
         android:id="@+id/previous_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:backgroundTint="#8BC34A"
         android:fontFamily="monospace"
         android:onClick="onPreviousButtonClicked"
