@@ -31,6 +31,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Tests to see if RoutePlanSummary is correctly displayed in new activity with correct
+ * order of exhibits and distances to each
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class RoutePlanSummaryTest {
