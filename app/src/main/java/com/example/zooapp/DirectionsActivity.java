@@ -270,6 +270,23 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void onSkipButtonClicked(View view) {
-        Log.d("CheckButton", "Skip Button Clicked");
+
+        Log.d("SkipButton", "Skip Button Clicked");
+        Log.d("SkipButton", "List planned animal BEFORE: " + userExhibits.toString());
+        Log.d("SkipButton", "Current view exhibit: " + userListShortestOrder.get(currIndex+1).toString());
+        plannedAnimalDao.delete(userListShortestOrder.get(currIndex+1));
+
+        userExhibits = plannedAnimalDao.getAll();
+        // Our algorithm
+        algorithm = new ShortestPathZooAlgorithm(
+                getApplication().getApplicationContext(), userExhibits);
+        graphPaths = algorithm.runAlgorithm();
+        userListShortestOrder = algorithm.getUserListShortestOrder();
+
+
+        // set text
+        setDirectionsText(graphPaths.get(currIndex));
+
+        Log.d("SkipButton", "List planned animal AFTER: " + userExhibits.toString());
     }
 }
