@@ -294,4 +294,17 @@ public class DirectionsActivity extends AppCompatActivity {
 
         Log.d("SkipButton", "List planned animal AFTER: " + userExhibits.toString());
     }
+
+    public void onStartOverButtonClicked(View view) {
+        Log.d("StartOverButton", "Start Over Button Clicked");
+
+        PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao().deleteAll();
+        Log.d("StartOverButton", "Cleared Planned Animal Dao");
+        Log.d("StartOverButton", "Heading back to main activity");
+
+        // Go back to main activity
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // clear stack of activities
+        startActivity(intent);
+    }
 }
