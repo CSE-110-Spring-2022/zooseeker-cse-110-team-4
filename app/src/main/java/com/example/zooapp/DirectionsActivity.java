@@ -51,7 +51,6 @@ public class DirectionsActivity extends AppCompatActivity {
 
     // Variable for the graph and path
     public GraphAlgorithm algorithm;
-    public AlertDialog alertMessage;
     public ActionBar actionBar;
     public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
             .plannedAnimalDao();
@@ -167,11 +166,8 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onNextButtonClicked(View view) {
         //check to see if index is at the end
         if(currIndex == userListShortestOrder.size()-2){
-            runOnUiThread(() -> {
-                alertMessage = Utilities.showAlert(this,"The Route is Completed");
-                alertMessage.show();
-                //alertMessage.isShowing();
-            });
+            AlertDialog alertMessage = Utilities.showAlert(this,"The Route is Completed");
+            alertMessage.show();
             return;
         }
         //else if index is not at end, increment
@@ -275,9 +271,5 @@ public class DirectionsActivity extends AppCompatActivity {
 
     public void onSkipButtonClicked(View view) {
         Log.d("CheckButton", "Skip Button Clicked");
-    }
-
-    public void onPreviewButtonClicked(View view) {
-        Log.d("CheckButton", "Preview Button Clicked");
     }
 }
