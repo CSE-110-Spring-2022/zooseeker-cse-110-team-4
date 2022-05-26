@@ -64,6 +64,8 @@ public class DirectionsActivity extends AppCompatActivity {
     private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
     private ZooNode display;
     private Button previous;
+    private Button skip;
+
 
     /**
      * Method for onCreate of the activity
@@ -81,6 +83,7 @@ public class DirectionsActivity extends AppCompatActivity {
         actionBar.setTitle("Directions");
 
         previous = findViewById(R.id.previous_button);
+        skip = findViewById(R.id.skip_button);
 
         // Grabbing planned animals from planned list and inputting to new activity
         var gson = new Gson();
@@ -110,6 +113,7 @@ public class DirectionsActivity extends AppCompatActivity {
             Log.d("null input", "User exhibits was null");
             throw new NullPointerException("UserExhibits was null");
         }
+
 
         var provider = LocationManager.GPS_PROVIDER;
         var locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -164,6 +168,7 @@ public class DirectionsActivity extends AppCompatActivity {
      * @param view The current view
      */
     public void onNextButtonClicked(View view) {
+
         //check to see if index is at the end
         if(currIndex == userListShortestOrder.size()-2){
             AlertDialog alertMessage = Utilities.showAlert(this,"The Route is Completed");
@@ -206,6 +211,15 @@ public class DirectionsActivity extends AppCompatActivity {
      */
     @SuppressLint("DefaultLocale")
     private void setDirectionsText(GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
+
+        // Check if the currIndex is at the end of the list
+        // If so, the skip button is not visible
+        // Otherwise, setVisible
+        if (currIndex == userListShortestOrder.size() - 2)
+            skip.setVisibility(View.INVISIBLE);
+        else
+            skip.setVisibility(View.VISIBLE);
+
         // Get the needed zoo node information
         var current = userListShortestOrder.get(currIndex);
         display = userListShortestOrder.get(currIndex+1);
@@ -270,6 +284,7 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void onSkipButtonClicked(View view) {
+
 
         Log.d("SkipButton", "Skip Button Clicked");
         Log.d("SkipButton", "List planned animal BEFORE: " + userExhibits.toString());
