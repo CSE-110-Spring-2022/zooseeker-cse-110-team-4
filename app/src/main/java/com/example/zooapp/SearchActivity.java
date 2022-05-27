@@ -72,6 +72,12 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpRecyclerView();
+    }
+
 
     /**
      * Sets up the recycler view
@@ -112,10 +118,10 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Gson gson = new Gson();
-        Intent refresh = new Intent(this, MainActivity.class);
-        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(exhibitsSetup.getUserExhibits()));
-        setResult(RESULT_OK, refresh);
+//        Gson gson = new Gson();
+//        Intent refresh = new Intent(this, MainActivity.class);
+//        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(exhibitsSetup.getUserExhibits()));
+//        setResult(RESULT_OK, refresh);
         Log.d("Search View", "Back button has been clicked");
         finish();
         return super.onOptionsItemSelected(item);

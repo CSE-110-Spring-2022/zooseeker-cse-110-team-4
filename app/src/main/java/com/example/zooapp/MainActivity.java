@@ -158,14 +158,16 @@ public class MainActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.actions_search:
-                Log.d("Menu Click", "Search has been clicked");
-                Intent searchIntent = new Intent(this, SearchActivity.class);
-                startActivityForResult(searchIntent, REQUEST_USER_CHOSEN_ANIMAL);
-            case R.id.settings_button:
+            case R.id.main_settings_button:
                 Log.d("Menu Click", "Settings has been clicked");
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
+                break;
+            case R.id.main_actions_search:
+                Log.d("Menu Click", "Search has been clicked");
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                //startActivityForResult(searchIntent, REQUEST_USER_CHOSEN_ANIMAL);
+                startActivity(searchIntent);
         }
         return super.onOptionsItemSelected(item);
     }

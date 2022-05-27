@@ -1,5 +1,6 @@
 package com.example.zooapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -79,6 +83,38 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.route_plan_summary);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(routePlanSummaryAdapter);
+    }
+
+    /**
+     * Creates the custom menu bar
+     *
+     * @param menu Menu
+     * @return True for creating the menu bar
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.route_summary_menu, menu);
+        return true;
+    }
+
+    /**
+     * Checks when an item on the menu has been clicked
+     *
+     * @param item Item that has been clicked
+     * @return Result of that item being clicked
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.route_settings_button:
+                Log.d("Menu Click", "Settings has been clicked");
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

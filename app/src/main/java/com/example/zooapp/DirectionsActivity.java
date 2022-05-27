@@ -13,6 +13,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -161,6 +164,38 @@ public class DirectionsActivity extends AppCompatActivity {
 
     public void promptReplan() {
 
+    }
+
+    /**
+     * Creates the custom menu bar
+     *
+     * @param menu Menu
+     * @return True for creating the menu bar
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.directions_menu, menu);
+        return true;
+    }
+
+    /**
+     * Checks when an item on the menu has been clicked
+     *
+     * @param item Item that has been clicked
+     * @return Result of that item being clicked
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.directions_settings_button:
+                Log.d("Menu Click", "Settings has been clicked");
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
