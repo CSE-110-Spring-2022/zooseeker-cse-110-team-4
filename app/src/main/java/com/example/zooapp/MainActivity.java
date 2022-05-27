@@ -39,11 +39,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is the main activity, where the app initially loads into
+ * This is the main activity, where the app initially loads
  */
 public class MainActivity extends AppCompatActivity{
     // Public fields
-    public List<ZooNode> userExhibits;
     public RecyclerView recyclerView;
     public ActionBar actionBar;
     public AlertDialog alertMessage;
@@ -70,26 +69,31 @@ public class MainActivity extends AppCompatActivity{
         actionBar = getSupportActionBar();
         actionBar.setTitle("Zoo Seeker");
 
-        //userExhibits = new ArrayList<>();
-
+        //Access the DAO used to store the list of planned animals
         plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
-        //plannedAnimalDao.deleteAll();
 
+        //Create the RecyclerView to view our planned animals
         setUpRecyclerView();
 
+        //Check for location permissions
         if (permissionChecker.ensurePermissions()) return;
 
-        // Added counter for user to see
+        // Added counter for user to see the number of animals in list
         userExhibitsSize = findViewById(R.id.added_counter);
         userExhibitsSize.setText("(" + plannedAnimalDao.getAll().size() + ")");
     }
 
+    /**
+     * Method for onCreate of the activity
+     * Will setup the screen when we return to Main after moving back from a different activity
+     *
+     */
     @Override
     protected void onResume() {
         super.onResume();
         setUpRecyclerView();
 
-        // Added counter for user to see
+        //Update counter of current total animals in planned list
         userExhibitsSize = findViewById(R.id.added_counter);
         userExhibitsSize.setText("(" + plannedAnimalDao.getAll().size() + ")");
     }
@@ -118,14 +122,11 @@ public class MainActivity extends AppCompatActivity{
      * @param resultCode Code for how the result went
      * @param data The intent of the activity we are returning from
      */
+    //TODO do we still need the requestCode stuff? SearchActivity doesn't use it
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if( requestCode == REQUEST_USER_CHOSEN_ANIMAL && resultCode == Activity.RESULT_OK ) {
-//            Gson gson = new Gson();
-//            Type type = new TypeToken<List<ZooNode>>(){}.getType();
-//            userExhibits = gson.fromJson(data.getStringExtra("userExhibitsJSONUpdated"),
-//                    type);
 
             PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
             List<ZooNode> plannedExhibits = plannedAnimalDao.getAll();
@@ -194,7 +195,7 @@ public class MainActivity extends AppCompatActivity{
             alertMessage.show();
             return;
         }
-        //Intent intent = new Intent(this, DirectionsActivity.class);
+
         Intent intent = new Intent(this, RoutePlanSummaryActivity.class);
 
         Gson gson = new Gson();
@@ -202,6 +203,11 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
+    /**
+     * Clear the animals in the planned animal DAO
+     *
+     * @param view The current view
+     */
     public void onClearButtonClicked(View view) {
         PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
         plannedAnimalDao.deleteAll();

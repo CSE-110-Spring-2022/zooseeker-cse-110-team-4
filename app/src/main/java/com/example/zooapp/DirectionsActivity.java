@@ -37,9 +37,6 @@ import java.util.Objects;
 /**
  * This class is for when the user is now seeing the directions for each exhibit
  */
-/**
- * This class is for when the user is now seeing the directions for each exhibit
- */
 public class DirectionsActivity extends AppCompatActivity {
     //index that is incremented/decremented by next/back buttons
     //used to traverse through planned exhibits
@@ -50,7 +47,7 @@ public class DirectionsActivity extends AppCompatActivity {
     final String NODE_INFO_JSON = "sample_node_info.json";
     final String EDGE_INFO_JSON = "sample_edge_info.json";
 
-    public List<ZooNode> userExhibits, userListShortestOrder;
+    public List<ZooNode> userListShortestOrder;
 
     // Variable for the graph and path
     public GraphAlgorithm algorithm;
@@ -70,7 +67,6 @@ public class DirectionsActivity extends AppCompatActivity {
     private Button previous;
     private Button skip;
 
-
     /**
      * Method for onCreate of the activity
      *
@@ -86,24 +82,19 @@ public class DirectionsActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle("Directions");
 
+        //Access the previous and skip buttons
         previous = findViewById(R.id.previous_button);
         skip = findViewById(R.id.skip_button);
 
-        // Grabbing planned animals from planned list and inputting to new activity
-        var gson = new Gson();
-        var type = new TypeToken<List<ZooNode>>(){}.getType();
-        //old if block code: gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type) != null
-
         if(plannedAnimalDao.getAll().size() > 0){
-            //userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
-            userExhibits = plannedAnimalDao.getAll();
-            Log.d("Zoo Nodes", userExhibits.toString());
+
+            Log.d("Zoo Nodes", plannedAnimalDao.getAll().toString());
 
             loadGraph(); // will initialize graph, vInfo, and eInfo variables
 
             // Our algorithm
             algorithm = new ShortestPathZooAlgorithm(
-                    getApplication().getApplicationContext(), userExhibits);
+                    getApplication().getApplicationContext(), plannedAnimalDao.getAll());
             graphPaths = algorithm.runAlgorithm();
             userListShortestOrder = algorithm.getUserListShortestOrder();
 
@@ -321,30 +312,35 @@ public class DirectionsActivity extends AppCompatActivity {
 
     /**
      * Skips exhibit currently navigating to and moves onto next exhibit
+     *
      * @param view
      */
     public void onSkipButtonClicked(View view) {
 
 
         Log.d("SkipButton", "Skip Button Clicked");
-        Log.d("SkipButton", "List planned animal BEFORE: " + userExhibits.toString());
+        Log.d("SkipButton", "List planned animal BEFORE: " + plannedAnimalDao.getAll().toString());
         Log.d("SkipButton", "Current view exhibit: " + userListShortestOrder.get(currIndex+1).toString());
         plannedAnimalDao.delete(userListShortestOrder.get(currIndex+1));
 
-        userExhibits = plannedAnimalDao.getAll();
         // Our algorithm
         algorithm = new ShortestPathZooAlgorithm(
-                getApplication().getApplicationContext(), userExhibits);
+                getApplication().getApplicationContext(), plannedAnimalDao.getAll());
         graphPaths = algorithm.runAlgorithm();
         userListShortestOrder = algorithm.getUserListShortestOrder();
-
 
         // set text
         setDirectionsText(graphPaths.get(currIndex));
 
-        Log.d("SkipButton", "List planned animal AFTER: " + userExhibits.toString());
+        Log.d("SkipButton", "List planned animal AFTER: " + plannedAnimalDao.getAll().toString());
     }
 
+
+    /**
+     * Clears animals from planned list and returns to home screen
+     *
+     * @param view the current view
+     */
     public void onStartOverButtonClicked(View view) {
         Log.d("StartOverButton", "Start Over Button Clicked");
 

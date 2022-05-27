@@ -41,22 +41,19 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Route Plan Summary");
 
-        // Grabbing planned animals from planned list and inputting to new activity
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<ZooNode>>(){}.getType();
+        //Access DAO of planned animals
         PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao();
 
-        if(plannedAnimalDao.getAll().size() > 0) {
-            userExhibits = plannedAnimalDao.getAll();
-        }
-        else {
+        //Throw exception if there are no exhibits in the planned list
+        if(plannedAnimalDao.getAll().size() <= 0) {
             Log.d("null input", "User exhibits was null");
             throw new NullPointerException("UserExhibits was null");
         }
 
         // Run Route Algorithm
+        //TODO refactor
         GraphAlgorithm algorithm = new ShortestPathZooAlgorithm(
-                getApplication().getApplicationContext(), userExhibits);
+                getApplication().getApplicationContext(), plannedAnimalDao.getAll());
         graphPaths = algorithm.runAlgorithm();
         List<ZooNode> userListShortestOrder = algorithm.getUserListShortestOrder();
         List<Double> exhibitDistances = algorithm.getExhibitDistance();
@@ -113,6 +110,7 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
                 Log.d("Menu Click", "Settings has been clicked");
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -124,11 +122,14 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
      */
     public void onDirectionsButtonClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
-        Gson gson = new Gson();
-        intent.putExtra("ListOfAnimals",gson.toJson(userExhibits));
         startActivity(intent);
     }
 
+    /**
+     * Clear the animals from the planned list and return to home screen
+     *
+     * @param view The current view
+     */
     public void onClearButtonClicked(View view) {
         Log.d("Button Clicked", "Clear Button Clicked");
         PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao().deleteAll();

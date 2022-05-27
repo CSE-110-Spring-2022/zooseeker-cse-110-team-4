@@ -183,7 +183,7 @@ public class DirectionButtonsTest {
             assertEquals(2, planDao.getAll().size());
 
             //Two animals in planned list, but path should be length four including going back to entrance/exit
-            assertEquals(2, activity2.userExhibits.size());
+            assertEquals(2, planDao.getAll().size());
             assertEquals(4, activity2.userListShortestOrder.size());
 
             //currIndex starts at first animal, index at 0
