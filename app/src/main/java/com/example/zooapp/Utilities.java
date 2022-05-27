@@ -50,6 +50,7 @@ public class Utilities {
                 dialog.dismiss();
                 DirectionsActivity.canCheckReplan = false;
                 DirectionsActivity.replanAlertShown = false;
+                DirectionsActivity.recentlyNoReplan = true;
             }
         });
         AlertDialog alertDialog = alertBuilder.create();

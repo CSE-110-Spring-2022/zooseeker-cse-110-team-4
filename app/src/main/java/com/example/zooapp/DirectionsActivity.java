@@ -42,6 +42,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public static boolean check = false;
     public static boolean replanAlertShown = false;
     public static boolean canCheckReplan = true;
+    public static boolean recentlyNoReplan = false;
 
     @VisibleForTesting
     public Location mockLocation;
@@ -73,7 +74,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
     private ZooNode display;
     private Button previous;
-    private Boolean backwards = false;
+    private boolean backwards = false;
     private ZooNode previousClosestZooNode;
 
     /**
@@ -125,9 +126,9 @@ public class DirectionsActivity extends AppCompatActivity {
             } else {
                 setBriefDirectionsText(graphPath);
             }
-//            mockLocation = new Location("Mock Orangatan");
-//            mockLocation.setLatitude(32.735851415117665);
-//            mockLocation.setLongitude(-117.16626781198586);
+            mockLocation = new Location("Mock Orangatan");
+            mockLocation.setLatitude(32.735851415117665);
+            mockLocation.setLongitude(-117.16626781198586);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -144,13 +145,12 @@ public class DirectionsActivity extends AppCompatActivity {
         var locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                if( replanAlertShown )
-                    return;
-                locationToUse = (mockLocation == null) ? location : mockLocation;
-                Log.d("Location", String.format("Location changed: %s", locationToUse));
-                if( backwards ) {
+                if( replanAlertShown || backwards || recentlyNoReplan ) {
+                    recentlyNoReplan = false;
                     return;
                 }
+                locationToUse = (mockLocation == null) ? location : mockLocation;
+                Log.d("Location", String.format("Location changed: %s", locationToUse));
                 var subListSize = (currIndex >= userListShortestOrder.size()-2) ?
                         userListShortestOrder.size() : userListShortestOrder.size()-1;
                 exhibitLocations.setupExhibitLocations(userListShortestOrder
