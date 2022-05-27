@@ -28,6 +28,8 @@ import org.jgrapht.GraphPath;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class is for when the user is now seeing the directions for each exhibit
@@ -42,7 +44,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public static boolean check = false;
     public static boolean replanAlertShown = false;
     public static boolean canCheckReplan = true;
-    public static boolean recentlyNoReplan = false;
+    public static boolean recentlyYesReplan = false;
 
     @VisibleForTesting
     public Location mockLocation;
@@ -145,8 +147,7 @@ public class DirectionsActivity extends AppCompatActivity {
         var locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                if( replanAlertShown || backwards || recentlyNoReplan ) {
-                    recentlyNoReplan = false;
+                if( replanAlertShown || backwards ) {
                     return;
                 }
                 locationToUse = (mockLocation == null) ? location : mockLocation;
@@ -165,16 +166,30 @@ public class DirectionsActivity extends AppCompatActivity {
                 var displayId = (display.group_id != null) ? display.group_id : display.id;
 
                 if( !closestExhibitId.equals(displayId) && canCheckReplan ) {
-                    promptReplan();
+                    Log.d("Check Location", "New Location: " + closestExhibitId
+                            + " / Old Location: " + displayId);
+                    if( !recentlyYesReplan )
+                        promptReplan();
                     if( check ) {
-                        Log.d("Location", "New Location: " + closestExhibitId
-                                + " / Old Location: " + displayId);
                         // Rerun algorithm from current location
                         currIndex = 0;
                         Log.d("Location", exhibitLocations.exhibitsSubList.toString());
+//                        var reorderedExhibits = algorithm
+//                                .runChangedLocationAlgorithm(nearestZooNode,
+//                                exhibitLocations.exhibitsSubList.subList(1,
+//                                        exhibitLocations.exhibitsSubList.size()));
+//                        var originalVisitedExhibits =
+//                                graphPaths.subList(0, currIndex);
+//                        graphPaths = Stream.concat(originalVisitedExhibits.stream(),
+//                                reorderedExhibits.stream()).collect(Collectors.toList());
                         graphPaths = algorithm.runChangedLocationAlgorithm(nearestZooNode,
                                 exhibitLocations.exhibitsSubList.subList(1,
                                         exhibitLocations.exhibitsSubList.size()));
+//                        var reorderedShortestOrder = algorithm.getNewUserListShortestOrder();
+//                        var originalVisitedShortestOrder = userListShortestOrder
+//                                .subList(0, currIndex+1);
+//                        userListShortestOrder = Stream.concat(originalVisitedShortestOrder.stream(),
+//                                reorderedShortestOrder.stream()).collect(Collectors.toList());
                         userListShortestOrder = algorithm.getNewUserListShortestOrder();
                         Log.d("Location", userListShortestOrder.toString());
                         subListSize = (currIndex >= userListShortestOrder.size() - 2) ?
@@ -194,6 +209,7 @@ public class DirectionsActivity extends AppCompatActivity {
                         }
                         previous.setVisibility(View.INVISIBLE);
                         check = false;
+                        recentlyYesReplan = false;
                     }
                 } else {
                     graphPath = algorithm.runPathAlgorithm(nearestZooNode,

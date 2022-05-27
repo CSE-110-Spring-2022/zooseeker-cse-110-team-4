@@ -39,6 +39,7 @@ public class Utilities {
                 dialog.dismiss();
                 DirectionsActivity.canCheckReplan = true;
                 DirectionsActivity.replanAlertShown = false;
+                DirectionsActivity.recentlyYesReplan = true;
             }
         });
 
@@ -50,7 +51,6 @@ public class Utilities {
                 dialog.dismiss();
                 DirectionsActivity.canCheckReplan = false;
                 DirectionsActivity.replanAlertShown = false;
-                DirectionsActivity.recentlyNoReplan = true;
             }
         });
         AlertDialog alertDialog = alertBuilder.create();
