@@ -147,11 +147,22 @@ public class DirectionsActivity extends AppCompatActivity {
         var locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                if( replanAlertShown || backwards ) {
+                if( replanAlertShown ) {
                     return;
                 }
                 locationToUse = (mockLocation == null) ? location : mockLocation;
                 Log.d("Location", String.format("Location changed: %s", locationToUse));
+                if( backwards ) {
+                    graphPath = algorithm.runReversePathAlgorithm(exhibitLocations
+                                    .getZooNodeClosestToCurrentLocation(locationToUse),
+                            userListShortestOrder.get(currIndex+1));
+                    if(directionsDetailedText) {
+                        setDetailedDirectionsText(graphPath);
+                    } else {
+                        setBriefDirectionsText(graphPath);
+                    }
+                    return;
+                }
                 var subListSize = (currIndex >= userListShortestOrder.size()-2) ?
                         userListShortestOrder.size() : userListShortestOrder.size()-1;
                 exhibitLocations.setupExhibitLocations(userListShortestOrder
