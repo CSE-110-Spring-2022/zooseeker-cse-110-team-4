@@ -160,6 +160,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         var minDistance = Double.POSITIVE_INFINITY;
         this.newStart = newStart;
         ZooNode shortestZooNodeStart = newStart;
+        newUserListShortestOrder.clear();
 
         // Finding all shortest paths
         while( !newList.isEmpty() ) {
@@ -176,6 +177,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
                 }
             }
             // Finalize shortest path and add to result
+            Log.d("Algorithm", shortestZooNodeStart.toString());
             resultPath.add(minDistPath);
             start = (shortestZooNodeStart.group_id != null) ? shortestZooNodeStart.group_id :
                     shortestZooNodeStart.id;
@@ -205,6 +207,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
     public List<ZooNode> getNewUserListShortestOrder() {
         var entrance = dao.getByName("Entrance and Exit Gate");
         newUserListShortestOrder.add(newUserListShortestOrder.size(), entrance);
+        Log.d("Algorithm", newUserListShortestOrder.toString());
         return newUserListShortestOrder;
     }
 
