@@ -204,7 +204,6 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
 
     public List<ZooNode> getNewUserListShortestOrder() {
         var entrance = dao.getByName("Entrance and Exit Gate");
-        newUserListShortestOrder.add(0, newStart);
         newUserListShortestOrder.add(newUserListShortestOrder.size(), entrance);
         return newUserListShortestOrder;
     }

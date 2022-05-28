@@ -128,9 +128,12 @@ public class DirectionsActivity extends AppCompatActivity {
             } else {
                 setBriefDirectionsText(graphPath);
             }
-            mockLocation = new Location("Mock Orangatan");
-            mockLocation.setLatitude(32.735851415117665);
-            mockLocation.setLongitude(-117.16626781198586);
+            mockLocation = new Location("Mock Entrance");
+            mockLocation.setLatitude(32.73459618734685);
+            mockLocation.setLongitude(-117.14936);
+//            mockLocation = new Location("Mock Orangutans");
+//            mockLocation.setLatitude(32.735851415117665);
+//            mockLocation.setLongitude(-117.16626781198586);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -172,25 +175,33 @@ public class DirectionsActivity extends AppCompatActivity {
                         promptReplan();
                     if( check ) {
                         // Rerun algorithm from current location
-                        currIndex = 0;
+//                        currIndex = 0;
                         Log.d("Location", exhibitLocations.exhibitsSubList.toString());
-//                        var reorderedExhibits = algorithm
-//                                .runChangedLocationAlgorithm(nearestZooNode,
+                        Log.d("Check Location", nearestZooNode.toString());
+                        Log.d("Check Location", ""+currIndex);
+                        var reorderedExhibits = algorithm
+                                .runChangedLocationAlgorithm(nearestZooNode,
+                                userListShortestOrder.subList(currIndex+1,
+                                        userListShortestOrder.size()-1));
+                        Log.d("Check Location", "New Graph Path: " + reorderedExhibits.toString());
+                        var originalVisitedExhibits =
+                                graphPaths.subList(0, currIndex);
+                        Log.d("Check Location", "Old Graph Path: " + originalVisitedExhibits);
+                        graphPaths = Stream.concat(originalVisitedExhibits.stream(),
+                                reorderedExhibits.stream()).collect(Collectors.toList());
+                        Log.d("Check Location", "Graph Plan Replan: " + graphPaths.toString());
+//                        graphPaths = algorithm.runChangedLocationAlgorithm(nearestZooNode,
 //                                exhibitLocations.exhibitsSubList.subList(1,
 //                                        exhibitLocations.exhibitsSubList.size()));
-//                        var originalVisitedExhibits =
-//                                graphPaths.subList(0, currIndex);
-//                        graphPaths = Stream.concat(originalVisitedExhibits.stream(),
-//                                reorderedExhibits.stream()).collect(Collectors.toList());
-                        graphPaths = algorithm.runChangedLocationAlgorithm(nearestZooNode,
-                                exhibitLocations.exhibitsSubList.subList(1,
-                                        exhibitLocations.exhibitsSubList.size()));
-//                        var reorderedShortestOrder = algorithm.getNewUserListShortestOrder();
-//                        var originalVisitedShortestOrder = userListShortestOrder
-//                                .subList(0, currIndex+1);
-//                        userListShortestOrder = Stream.concat(originalVisitedShortestOrder.stream(),
-//                                reorderedShortestOrder.stream()).collect(Collectors.toList());
-                        userListShortestOrder = algorithm.getNewUserListShortestOrder();
+                        var reorderedShortestOrder = algorithm.getNewUserListShortestOrder();
+                        Log.d("Check Location", "New Order: " + reorderedShortestOrder.toString());
+                        var originalVisitedShortestOrder = userListShortestOrder
+                                .subList(0, currIndex+1);
+                        Log.d("Check Location", "Old Beginning: " + originalVisitedShortestOrder.toString());
+                        userListShortestOrder = Stream.concat(originalVisitedShortestOrder.stream(),
+                                reorderedShortestOrder.stream()).collect(Collectors.toList());
+                        Log.d("Check Location", "Replan Complete: " + userListShortestOrder.toString());
+//                        userListShortestOrder = algorithm.getNewUserListShortestOrder();
                         Log.d("Location", userListShortestOrder.toString());
                         subListSize = (currIndex >= userListShortestOrder.size() - 2) ?
                                 userListShortestOrder.size() : userListShortestOrder.size() - 1;
@@ -207,7 +218,7 @@ public class DirectionsActivity extends AppCompatActivity {
                         } else {
                             setBriefDirectionsText(graphPath);
                         }
-                        previous.setVisibility(View.INVISIBLE);
+//                        previous.setVisibility(View.INVISIBLE);
                         check = false;
                         recentlyYesReplan = false;
                     }
@@ -295,6 +306,11 @@ public class DirectionsActivity extends AppCompatActivity {
                 mockLocation.setLatitude(32.73697286273083);
                 mockLocation.setLongitude(-117.17319785958958);
                 break;
+            case 3:
+                mockLocation = new Location("Mock Fern");
+                mockLocation.setLatitude(32.7337949159672);
+                mockLocation.setLongitude(-117.1769866067953);
+                break;
             default:
                 break;
         }
@@ -329,6 +345,11 @@ public class DirectionsActivity extends AppCompatActivity {
                 mockLocation.setLongitude(-117.17319785958958);
                 break;
             case 1:
+                mockLocation = new Location("Mock Fern");
+                mockLocation.setLatitude(32.7337949159672);
+                mockLocation.setLongitude(-117.1769866067953);
+                break;
+            case 2:
                 mockLocation = new Location("Mock Entrance");
                 mockLocation.setLatitude(32.73459618734685);
                 mockLocation.setLongitude(-117.14936);
@@ -365,7 +386,8 @@ public class DirectionsActivity extends AppCompatActivity {
         // Set up for getting all the directions
         var i = 1;
         String source, target, correctTarget, start, direction = "";
-        start = current.name;
+        start = (current.group_id != null) ? zooNodeDao.getById(current.group_id).name :
+                current.name;
         var edgeList = directionsToExhibit.getEdgeList();
 
         if( edgeList.isEmpty() ) {
