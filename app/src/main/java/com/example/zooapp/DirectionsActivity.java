@@ -20,16 +20,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -209,6 +202,8 @@ public class DirectionsActivity extends AppCompatActivity {
         //making previous button visible after 1st exhibit
         previous.setVisibility(View.VISIBLE);
 
+        skipButtonVisibilityCheck();
+
         // set text
         setDirectionsText(graphPaths.get(currIndex));
     }
@@ -229,6 +224,8 @@ public class DirectionsActivity extends AppCompatActivity {
             currIndex--;
         }
 
+        skipButtonVisibilityCheck();
+
         //set Text
         setDirectionsText(graphPaths.get(currIndex));
     }
@@ -242,10 +239,10 @@ public class DirectionsActivity extends AppCompatActivity {
         // Check if the currIndex is at the end of the list
         // If so, the skip button is not visible
         // Otherwise, setVisible
-        if (currIndex == userListShortestOrder.size() - 2)
-            skip.setVisibility(View.INVISIBLE);
-        else
-            skip.setVisibility(View.VISIBLE);
+        // if (currIndex == userListShortestOrder.size() - 2)
+        //     skip.setVisibility(View.INVISIBLE);
+        // else
+        //     skip.setVisibility(View.VISIBLE);
 
         // Get the needed zoo node information
         var current = userListShortestOrder.get(currIndex);
@@ -353,4 +350,16 @@ public class DirectionsActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // clear stack of activities
         startActivity(intent);
     }
+
+
+    private void skipButtonVisibilityCheck() {
+        // Check if the currIndex is at "Entrance and Exit" node
+        // If so, the skip button is not visible
+        // Otherwise, setVisible
+        if (currIndex == userListShortestOrder.size() - 2)
+            skip.setVisibility(View.INVISIBLE);
+        else
+            skip.setVisibility(View.VISIBLE);
+    }
+
 }
