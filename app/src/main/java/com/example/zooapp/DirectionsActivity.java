@@ -631,6 +631,8 @@ public class DirectionsActivity extends AppCompatActivity {
         graphPath = algorithm.runPathAlgorithm(nearestZooNode,
                 exhibitLocations.exhibitsSubList);
 
+        skipButtonVisibilityCheck();
+
         if(directionsDetailedText) {
             setDetailedDirectionsText(graphPath);
         } else {
