@@ -60,7 +60,7 @@ public class LongSearchAndTagsTest {
         appCompatButton.perform(click());
 
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -103,7 +103,7 @@ public class LongSearchAndTagsTest {
         appCompatImageButton.perform(click());
 
         ViewInteraction actionMenuItemView2 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -142,7 +142,7 @@ public class LongSearchAndTagsTest {
         recyclerView.perform(actionOnItemAtPosition(0, click()));
 
         ViewInteraction actionMenuItemView3 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -181,7 +181,7 @@ public class LongSearchAndTagsTest {
         recyclerView2.perform(actionOnItemAtPosition(0, click()));
 
         ViewInteraction actionMenuItemView4 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -220,7 +220,7 @@ public class LongSearchAndTagsTest {
         recyclerView3.perform(actionOnItemAtPosition(1, click()));
 
         ViewInteraction actionMenuItemView5 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -259,7 +259,7 @@ public class LongSearchAndTagsTest {
         recyclerView4.perform(actionOnItemAtPosition(2, click()));
 
         ViewInteraction actionMenuItemView6 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),

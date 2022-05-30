@@ -70,7 +70,7 @@ public class SearchAndDisplayTest {
         appCompatButton2.perform(click());
 
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -91,7 +91,7 @@ public class SearchAndDisplayTest {
         appCompatImageButton.perform(click());
 
         ViewInteraction actionMenuItemView2 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -142,7 +142,7 @@ public class SearchAndDisplayTest {
         textView2.check(matches(withText("(1)")));
 
         ViewInteraction actionMenuItemView3 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),

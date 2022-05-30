@@ -42,7 +42,7 @@ public class FullScenarioTest {
     @Test
     public void fullScenarioTest() {
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -82,7 +82,7 @@ public class FullScenarioTest {
         appCompatButton2.perform(scrollTo(), click());
 
         ViewInteraction actionMenuItemView2 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -132,7 +132,7 @@ public class FullScenarioTest {
         recyclerView.perform(actionOnItemAtPosition(0, click()));
 
         ViewInteraction actionMenuItemView3 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -182,7 +182,7 @@ public class FullScenarioTest {
         recyclerView2.perform(actionOnItemAtPosition(3, click()));
 
         ViewInteraction actionMenuItemView4 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -232,7 +232,7 @@ public class FullScenarioTest {
         recyclerView3.perform(actionOnItemAtPosition(0, click()));
 
         ViewInteraction actionMenuItemView5 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
