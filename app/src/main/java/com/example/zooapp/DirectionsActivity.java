@@ -371,7 +371,7 @@ public class DirectionsActivity extends AppCompatActivity {
         backwards = true;
         //set Text
         graphPath = algorithm.runReversePathAlgorithm(exhibitLocations
-                        .getZooNodeClosestToCurrentLocation(mockLocation), // Change mockLocation to locationToUse when actually running app
+                        .getZooNodeClosestToCurrentLocation(locationToUse),
                 userListShortestOrder.get(currIndex+1));
         if(directionsDetailedText) {
             setDetailedDirectionsText(graphPath);
