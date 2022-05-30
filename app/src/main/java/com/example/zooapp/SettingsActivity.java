@@ -23,10 +23,9 @@ public class SettingsActivity extends AppCompatActivity {
         actionBar.setTitle("Settings");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("DIRECTIONS", MODE_PRIVATE);
         Switch switchButton = findViewById(R.id.directions_switch);
-        boolean originalState = DirectionsActivity.directionsDetailedText;
-        boolean toggled = preferences.getBoolean("toggled", originalState); //default false
+        boolean toggled = preferences.getBoolean("toggled", false);
 
         if(toggled == true){
             switchButton.setChecked(true);
@@ -37,7 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void onDirectionsSwitchClick(View view) {
         //change variable, need to get it from location branch
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("DIRECTIONS", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         Switch switchButton = findViewById(R.id.directions_switch);

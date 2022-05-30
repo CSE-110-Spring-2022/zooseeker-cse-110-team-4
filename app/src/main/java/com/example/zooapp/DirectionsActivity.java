@@ -45,7 +45,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public static boolean replanAlertShown = false;
     public static boolean canCheckReplan = true;
     public static boolean recentlyYesReplan = false;
-    public static boolean directionsDetailedText = false;
+    public static boolean directionsDetailedText;
 
     @VisibleForTesting
     public Location mockLocation;
@@ -78,6 +78,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private Button previous, skip;
     private boolean backwards = false;
     private ZooNode previousClosestZooNode;
+    private SharedPreferences preferences;
 
     /**
      * Method for onCreate of the activity
@@ -91,6 +92,11 @@ public class DirectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_directions);
 
         resetMockLocation();
+
+        // Get boolean, default false
+        preferences = getSharedPreferences("DIRECTIONS", MODE_PRIVATE);
+        directionsDetailedText = preferences.getBoolean("toggled", false);
+        Log.d("Boolean Direction", "" + directionsDetailedText);
 
         // Set the Title Bar to Directions
         actionBar = getSupportActionBar();
@@ -589,12 +595,6 @@ public class DirectionsActivity extends AppCompatActivity {
         Log.d("SkipButton", "List planned animal BEFORE: " + plannedAnimalDao.getAll().toString());
         Log.d("SkipButton", "Current view exhibit: " + userListShortestOrder.get(currIndex+1).toString());
         plannedAnimalDao.delete(userListShortestOrder.get(currIndex+1));
-
-        // Our algorithm
-//        algorithm = new ShortestPathZooAlgorithm(
-//                getApplication().getApplicationContext(), plannedAnimalDao.getAll());
-//        graphPaths = algorithm.runAlgorithm();
-//        userListShortestOrder = algorithm.getUserListShortestOrder();
 
         var nearestZooNode =
                 exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
