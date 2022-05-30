@@ -80,7 +80,7 @@ public class PreviousButtonTest {
 
             //Next should be visible, Previous should be invisible
             Button previous = activity.findViewById(R.id.previous_button);
-            assertEquals(previous.getVisibility(), View.INVISIBLE);
+            assertEquals(View.INVISIBLE, previous.getVisibility());
         });
 
     }
@@ -103,7 +103,7 @@ public class PreviousButtonTest {
             TextView name = activity2.findViewById(R.id.directions_header);
 
             //Two animals in planned list, but path should be length four including entrance and exit
-            assertEquals(2, activity2.userExhibits.size());
+            assertEquals(2, planDao.getAll().size());
             assertEquals(4, activity2.userListShortestOrder.size());
 
             activity2.locationToUse = new Location("Mock Location");
@@ -130,7 +130,7 @@ public class PreviousButtonTest {
             assertEquals(2, activity2.currIndex);
             assertEquals(View.VISIBLE, previous.getVisibility());
             //make sure end name is correct
-            assertEquals(name.getText().toString(), "Entrance and Exit Gate");
+            assertEquals( "Entrance and Exit Gate", name.getText().toString());
 
             //click Previous to return to third animal, Previous button is invisible
             previous.performClick();

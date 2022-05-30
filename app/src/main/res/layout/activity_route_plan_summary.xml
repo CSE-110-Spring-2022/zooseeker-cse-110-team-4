@@ -19,6 +19,25 @@
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.797"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.83" />
+
+    <Button
+        android:id="@+id/clear_button"
+        style="@android:style/Widget.DeviceDefault.Light.Button"
+        android:layout_width="125dp"
+        android:layout_height="54dp"
+        android:background="@android:color/holo_green_dark"
+        android:backgroundTint="#8BC34A"
+        android:fontFamily="monospace"
+        android:onClick="onClearButtonClicked"
+        android:text="Clear"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.188"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.83" />
@@ -39,7 +58,7 @@
         app:layout_constraintVertical_bias="0.007" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/planned_animals"
+        android:id="@+id/route_plan_summary"
         android:layout_width="386dp"
         android:layout_height="489dp"
         android:paddingTop="8pt"

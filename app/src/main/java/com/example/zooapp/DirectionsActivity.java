@@ -14,14 +14,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 
@@ -31,9 +30,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * This class is for when the user is now seeing the directions for each exhibit
- */
 /**
  * This class is for when the user is now seeing the directions for each exhibit
  */
@@ -56,12 +52,12 @@ public class DirectionsActivity extends AppCompatActivity {
     final String NODE_INFO_JSON = "sample_node_info.json";
     final String EDGE_INFO_JSON = "sample_edge_info.json";
 
-    public List<ZooNode> userExhibits, userListShortestOrder;
+    public List<ZooNode> userListShortestOrder;
 
     // Variable for the graph and path
     public GraphAlgorithm algorithm;
-    public AlertDialog alertMessage;
     public ActionBar actionBar;
+    public AlertDialog alertMessage;
     public boolean directionsDetailedText = true;
     public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
             .plannedAnimalDao();
@@ -75,7 +71,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private Map<String, ZooData.EdgeInfo> eInfo;
     private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
     private ZooNode display;
-    private Button previous;
+    private Button previous, skip;
     private boolean backwards = false;
     private ZooNode previousClosestZooNode;
 
@@ -96,19 +92,21 @@ public class DirectionsActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle("Directions");
 
+        //Access the previous and skip buttons
         previous = findViewById(R.id.previous_button);
+        skip = findViewById(R.id.skip_button);
 
         // Grabbing planned animals from planned list and inputting to new activity
         if( plannedAnimalDao.getAll().size() > 0 ){
             //userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
             userExhibits = plannedAnimalDao.getAll();
             Log.d("Zoo Nodes", userExhibits.toString());
-
+            Log.d("Zoo Nodes", plannedAnimalDao.getAll().toString());
             loadGraph(); // will initialize graph, vInfo, and eInfo variables
 
             // Our old algorithm
             algorithm = new ShortestPathZooAlgorithm(
-                    getApplication().getApplicationContext(), userExhibits);
+                    getApplication().getApplicationContext(), plannedAnimalDao.getAll());
             graphPaths = algorithm.runAlgorithm();
             userListShortestOrder = algorithm.getUserListShortestOrder();
             display = userListShortestOrder.get(currIndex+1);
@@ -136,7 +134,7 @@ public class DirectionsActivity extends AppCompatActivity {
             Log.d("null input", "User exhibits was null");
             throw new NullPointerException("UserExhibits was null");
         }
-
+      
         setUpLocationListener();
     }
 
@@ -266,6 +264,38 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     /**
+     * Creates the custom menu bar
+     *
+     * @param menu Menu
+     * @return True for creating the menu bar
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.directions_menu, menu);
+        return true;
+    }
+
+    /**
+     * Checks when an item on the menu has been clicked
+     *
+     * @param item Item that has been clicked
+     * @return Result of that item being clicked
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.directions_settings_button:
+                Log.d("Menu Click", "Settings has been clicked");
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
      * Method for when the next button is clicked
      *
      * @param view The current view
@@ -296,6 +326,8 @@ public class DirectionsActivity extends AppCompatActivity {
         backwards = false;
         //making previous button visible after 1st exhibit
         previous.setVisibility(View.VISIBLE);
+
+        skipButtonVisibilityCheck();
 
         // set text
         graphPath = (currIndex >= userListShortestOrder.size()-2) ? algorithm.runPathAlgorithm(
@@ -349,6 +381,9 @@ public class DirectionsActivity extends AppCompatActivity {
         if (currIndex > 0){
             currIndex--;
         }
+
+        skipButtonVisibilityCheck();
+
         switch(currIndex) {
             case 0:
                 mockLocation = new Location("Mock Dove");
@@ -385,8 +420,17 @@ public class DirectionsActivity extends AppCompatActivity {
      * Sets the text for the directions activity
      */
     @SuppressLint("DefaultLocale")
-    private void setDetailedDirectionsText(
+    private void setDirectionsText(
             GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
+
+        // Check if the currIndex is at the end of the list
+        // If so, the skip button is not visible
+        // Otherwise, setVisible
+        // if (currIndex == userListShortestOrder.size() - 2)
+        //     skip.setVisibility(View.INVISIBLE);
+        // else
+        //     skip.setVisibility(View.VISIBLE);
+
         // Get the needed zoo node information
         var current = userListShortestOrder.get(currIndex);
         display = userListShortestOrder.get(currIndex+1);
@@ -519,4 +563,58 @@ public class DirectionsActivity extends AppCompatActivity {
         eInfo = ZooData.loadEdgeInfoJSON(context, EDGE_INFO_JSON);
     }
 
+    /**
+     * Skips exhibit currently navigating to and moves onto next exhibit
+     *
+     * @param view
+     */
+    public void onSkipButtonClicked(View view) {
+
+
+        Log.d("SkipButton", "Skip Button Clicked");
+        Log.d("SkipButton", "List planned animal BEFORE: " + plannedAnimalDao.getAll().toString());
+        Log.d("SkipButton", "Current view exhibit: " + userListShortestOrder.get(currIndex+1).toString());
+        plannedAnimalDao.delete(userListShortestOrder.get(currIndex+1));
+
+        // Our algorithm
+        algorithm = new ShortestPathZooAlgorithm(
+                getApplication().getApplicationContext(), plannedAnimalDao.getAll());
+        graphPaths = algorithm.runAlgorithm();
+        userListShortestOrder = algorithm.getUserListShortestOrder();
+
+        // set text
+        setDirectionsText(graphPaths.get(currIndex));
+
+        Log.d("SkipButton", "List planned animal AFTER: " + plannedAnimalDao.getAll().toString());
+    }
+
+
+    /**
+     * Clears animals from planned list and returns to home screen
+     *
+     * @param view the current view
+     */
+    public void onStartOverButtonClicked(View view) {
+        Log.d("StartOverButton", "Start Over Button Clicked");
+
+        PlannedAnimalDatabase.getSingleton(this).plannedAnimalDao().deleteAll();
+        Log.d("StartOverButton", "Cleared Planned Animal Dao");
+        Log.d("StartOverButton", "Heading back to main activity");
+
+        // Go back to main activity
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // clear stack of activities
+        startActivity(intent);
+    }
+
+
+    private void skipButtonVisibilityCheck() {
+        // Check if the currIndex is at "Entrance and Exit" node
+        // If so, the skip button is not visible
+        // Otherwise, setVisible
+        if (currIndex == userListShortestOrder.size() - 2)
+            skip.setVisibility(View.INVISIBLE);
+        else
+            skip.setVisibility(View.VISIBLE);
+    }
 }
