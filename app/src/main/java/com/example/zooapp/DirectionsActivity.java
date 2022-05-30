@@ -127,9 +127,6 @@ public class DirectionsActivity extends AppCompatActivity {
             } else {
                 setBriefDirectionsText(graphPath);
             }
-//            mockLocation = new Location("Mock Orangutans");
-//            mockLocation.setLatitude(32.735851415117665);
-//            mockLocation.setLongitude(-117.16626781198586);
             mockLocation = new Location("Mock Entrance");
             mockLocation.setLatitude(32.73459618734685);
             mockLocation.setLongitude(-117.14936);
@@ -344,19 +341,19 @@ public class DirectionsActivity extends AppCompatActivity {
 
         switch(currIndex) {
             case 1:
-                mockLocation = new Location("Mock Crocs");
-                mockLocation.setLatitude(32.745293428608484);
-                mockLocation.setLongitude(-117.16976102878033);
+                mockLocation = new Location("Mock Flamingos");
+                mockLocation.setLatitude(32.7440416465169);
+                mockLocation.setLongitude(-117.15952052282296);
                 break;
             case 2:
-                mockLocation = new Location("Mock Dove");
-                mockLocation.setLatitude(32.73697286273083);
-                mockLocation.setLongitude(-117.17319785958958);
+                mockLocation = new Location("Mock Gorillas");
+                mockLocation.setLatitude(32.74711745394194);
+                mockLocation.setLongitude(-117.18047982358976);
                 break;
             case 3:
-                mockLocation = new Location("Mock Fern");
-                mockLocation.setLatitude(32.7337949159672);
-                mockLocation.setLongitude(-117.1769866067953);
+                mockLocation = new Location("Mock Orangutans");
+                mockLocation.setLatitude(32.735851415117665);
+                mockLocation.setLongitude(-117.16626781198586);
                 break;
             default:
                 break;
@@ -390,14 +387,14 @@ public class DirectionsActivity extends AppCompatActivity {
 
         switch(currIndex) {
             case 0:
-                mockLocation = new Location("Mock Dove");
-                mockLocation.setLatitude(32.73697286273083);
-                mockLocation.setLongitude(-117.17319785958958);
+                mockLocation = new Location("Mock Gorillas");
+                mockLocation.setLatitude(32.74711745394194);
+                mockLocation.setLongitude(-117.18047982358976);
                 break;
             case 1:
-                mockLocation = new Location("Mock Fern");
-                mockLocation.setLatitude(32.7337949159672);
-                mockLocation.setLongitude(-117.1769866067953);
+                mockLocation = new Location("Mock Orangutans");
+                mockLocation.setLatitude(32.735851415117665);
+                mockLocation.setLongitude(-117.16626781198586);
                 break;
             case 2:
                 mockLocation = new Location("Mock Entrance");
@@ -436,7 +433,8 @@ public class DirectionsActivity extends AppCompatActivity {
         //     skip.setVisibility(View.VISIBLE);
 
         // Get the needed zoo node information
-        var current = userListShortestOrder.get(currIndex);
+        var current = (locationToUse == null) ? userListShortestOrder.get(currIndex) :
+                exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
         display = userListShortestOrder.get(currIndex+1);
 
         // Set the header to the correct display name
@@ -491,7 +489,8 @@ public class DirectionsActivity extends AppCompatActivity {
     @SuppressLint("DefaultLocale")
     private void setBriefDirectionsText(
             GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
-        var current = userListShortestOrder.get(currIndex);
+        var current = (locationToUse == null) ? userListShortestOrder.get(currIndex) :
+                exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
         display = userListShortestOrder.get(currIndex+1);
 
         // Set the header to the correct display name
