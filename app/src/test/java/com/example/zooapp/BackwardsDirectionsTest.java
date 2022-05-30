@@ -78,7 +78,7 @@ public class BackwardsDirectionsTest {
             Button previous = activity.findViewById(R.id.previous_button);
             TextView name = activity.findViewById(R.id.directions_text);
 
-            assertEquals(1, activity.userExhibits.size());
+            assertEquals(1, activity.plannedAnimalDao.getAll().size());
             assertEquals(3, activity.userListShortestOrder.size());
             activity.locationToUse = new Location("Mock Location");
             activity.locationToUse.setLatitude(32.73459618734685);
@@ -89,8 +89,10 @@ public class BackwardsDirectionsTest {
             next.performClick();
             previous.performClick();
             name = activity.findViewById(R.id.directions_text);
-            String expected = " 1. Walk 1300 feet along Aviary Trail towards the 'Parker Aviary'" +
-                    " and find 'Blue Capped Motmot' inside\n";
+            String expected = " 1. Walk 1100 feet along Gate Path towards the 'Front Street / " +
+                    "Treetops Way'\n 2. Walk 2500 feet along Treetops Way towards the 'Treetops " +
+                    "Way / Orangutan Trail'\n 3. Walk 3800 feet along Orangutan Trail towards the " +
+                    "'Parker Aviary' and find 'Blue Capped Motmot' inside";
             assertEquals(expected, name.getText().toString());
 
         });

@@ -133,6 +133,7 @@ public class DirectionsActivity extends AppCompatActivity {
             } else {
                 setBriefDirectionsText(graphPath);
             }
+            // Used for live testing
             mockLocation = new Location("Mock Entrance");
             mockLocation.setLatitude(32.73459618734685);
             mockLocation.setLongitude(-117.14936);
@@ -345,25 +346,26 @@ public class DirectionsActivity extends AppCompatActivity {
                 userListShortestOrder.subList(currIndex + 1,
                         userListShortestOrder.size() - 1));
 
-        switch(currIndex) {
-            case 1:
-                mockLocation = new Location("Mock Flamingos");
-                mockLocation.setLatitude(32.7440416465169);
-                mockLocation.setLongitude(-117.15952052282296);
-                break;
-            case 2:
-                mockLocation = new Location("Mock Gorillas");
-                mockLocation.setLatitude(32.74711745394194);
-                mockLocation.setLongitude(-117.18047982358976);
-                break;
-            case 3:
-                mockLocation = new Location("Mock Orangutans");
-                mockLocation.setLatitude(32.735851415117665);
-                mockLocation.setLongitude(-117.16626781198586);
-                break;
-            default:
-                break;
-        }
+        // Used for live testing
+//        switch(currIndex) {
+//            case 1:
+//                mockLocation = new Location("Mock Flamingos");
+//                mockLocation.setLatitude(32.7440416465169);
+//                mockLocation.setLongitude(-117.15952052282296);
+//                break;
+//            case 2:
+//                mockLocation = new Location("Mock Gorillas");
+//                mockLocation.setLatitude(32.74711745394194);
+//                mockLocation.setLongitude(-117.18047982358976);
+//                break;
+//            case 3:
+//                mockLocation = new Location("Mock Orangutans");
+//                mockLocation.setLatitude(32.735851415117665);
+//                mockLocation.setLongitude(-117.16626781198586);
+//                break;
+//            default:
+//                break;
+//        }
         if(directionsDetailedText) {
             setDetailedDirectionsText(graphPath);
         } else {
@@ -391,25 +393,26 @@ public class DirectionsActivity extends AppCompatActivity {
 
         skipButtonVisibilityCheck();
 
-        switch(currIndex) {
-            case 0:
-                mockLocation = new Location("Mock Gorillas");
-                mockLocation.setLatitude(32.74711745394194);
-                mockLocation.setLongitude(-117.18047982358976);
-                break;
-            case 1:
-                mockLocation = new Location("Mock Orangutans");
-                mockLocation.setLatitude(32.735851415117665);
-                mockLocation.setLongitude(-117.16626781198586);
-                break;
-            case 2:
-                mockLocation = new Location("Mock Entrance");
-                mockLocation.setLatitude(32.73459618734685);
-                mockLocation.setLongitude(-117.14936);
-                break;
-            default:
-                break;
-        }
+        // Used for live testing
+//        switch(currIndex) {
+//            case 0:
+//                mockLocation = new Location("Mock Gorillas");
+//                mockLocation.setLatitude(32.74711745394194);
+//                mockLocation.setLongitude(-117.18047982358976);
+//                break;
+//            case 1:
+//                mockLocation = new Location("Mock Orangutans");
+//                mockLocation.setLatitude(32.735851415117665);
+//                mockLocation.setLongitude(-117.16626781198586);
+//                break;
+//            case 2:
+//                mockLocation = new Location("Mock Entrance");
+//                mockLocation.setLatitude(32.73459618734685);
+//                mockLocation.setLongitude(-117.14936);
+//                break;
+//            default:
+//                break;
+//        }
         backwards = true;
         //set Text
         graphPath = algorithm.runReversePathAlgorithm(exhibitLocations
@@ -429,14 +432,6 @@ public class DirectionsActivity extends AppCompatActivity {
     @SuppressLint("DefaultLocale")
     private void setDetailedDirectionsText(
             GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
-
-        // Check if the currIndex is at the end of the list
-        // If so, the skip button is not visible
-        // Otherwise, setVisible
-        // if (currIndex == userListShortestOrder.size() - 2)
-        //     skip.setVisibility(View.INVISIBLE);
-        // else
-        //     skip.setVisibility(View.VISIBLE);
 
         // Get the needed zoo node information
         var current = (locationToUse == null) ? userListShortestOrder.get(currIndex) :
@@ -470,7 +465,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
             if( i == edgeList.size() && display.group_id != null ) {
                 direction += String.format(" %d. Walk %.0f feet along %s towards the '%s' and " +
-                                "find '%s' inside\n",
+                                "find '%s' inside",
                         i,
                         graph.getEdgeWeight(e),
                         Objects.requireNonNull(eInfo.get(e.getId())).street,
@@ -536,8 +531,8 @@ public class DirectionsActivity extends AppCompatActivity {
             Log.d("Edge Format", correctTarget);
 
             if( j == edgeList.size()-1 && display.group_id != null ) {
-                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s' and " +
-                                "find '%s' inside\n",
+                direction += String.format(" %d. Walk %.0f feet along %s towards the '%s' and " +
+                                "find '%s' inside",
                         directionNumber,
                         distance,
                         Objects.requireNonNull(eInfo.get(e.getId())).street,
@@ -545,7 +540,7 @@ public class DirectionsActivity extends AppCompatActivity {
                         display.name);
             } else {
                 // Format directions to proper format
-                direction += String.format(" %d. Walk %.0f meters along %s towards the '%s'\n",
+                direction += String.format(" %d. Walk %.0f feet along %s towards the '%s'\n",
                         directionNumber,
                         distance,
                         Objects.requireNonNull(eInfo.get(e.getId())).street,

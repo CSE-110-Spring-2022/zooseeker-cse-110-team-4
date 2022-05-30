@@ -46,12 +46,6 @@ public class ZooGraphTest {
         StringBuilder outputString = new StringBuilder();
         int i = 1;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-//            System.out.printf("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
-//                    i,
-//                    g.getEdgeWeight(e),
-//                    eInfo.get(e.getId()).street,
-//                    vInfo.get(g.getEdgeSource(e).toString()).name,
-//                    vInfo.get(g.getEdgeTarget(e).toString()).name);
             outputString.append(
                     String.format("  %d. Walk %.0f feet along %s from '%s' to '%s'.\n",
                         i,

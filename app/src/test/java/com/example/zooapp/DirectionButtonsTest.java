@@ -97,26 +97,6 @@ public class DirectionButtonsTest {
     }
 
     /**
-     * Test when clicking the plan button with an empty planned list, an alert pops up on screen
-     */
-    @Test
-    public void testPlanClickedEmptyList() {
-        //Start in MainActivity
-        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
-        scenario.moveToState(Lifecycle.State.CREATED);
-        scenario.moveToState(Lifecycle.State.STARTED);
-        scenario.moveToState(Lifecycle.State.RESUMED);
-
-        scenario.onActivity(activity -> {
-            //No animals have been added to the planned list
-            Button plan = activity.findViewById(R.id.plan_button);
-            plan.performClick();
-            assertEquals(true, activity.alertMessage.isShowing());
-        });
-        scenario.close();
-    }
-
-    /**
      * Test Next and Previous with a planned list of two animals
      * On first animal, Previous should be invisible
      * On last animal, clicking Next should cause an alert to appear
@@ -162,10 +142,7 @@ public class DirectionButtonsTest {
             assertEquals(View.VISIBLE, next.getVisibility());
 
         });
-
         scenario2.close();
-
-
     }
 
     @Test
@@ -212,13 +189,7 @@ public class DirectionButtonsTest {
             next.performClick();
             assertEquals(true, activity2.alertMessage.isShowing());
             assertEquals(View.VISIBLE, next.getVisibility());
-
-
         });
-
         scenario2.close();
-
     }
-
-
 }

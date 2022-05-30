@@ -1,6 +1,7 @@
 package com.example.zooapp;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -82,6 +83,10 @@ public class SkipButtonTest {
             Button next = activity.findViewById(R.id.next_button);
             TextView name = activity.findViewById(R.id.directions_header);
 
+            activity.locationToUse = new Location("Mock Location");
+            activity.locationToUse.setLatitude(32.73459618734685);
+            activity.locationToUse.setLongitude(-117.14936);
+
             assertEquals(0, activity.currIndex);
             assertEquals("Koi Fish", name.getText().toString());
             assertEquals(View.VISIBLE,skip.getVisibility());
@@ -89,8 +94,8 @@ public class SkipButtonTest {
 
             // Skip should be invisible at the entrance/exit node
             next.performClick();
-            assertEquals("Entrance and Exit Gate", name.getText().toString());
             assertEquals(1, activity.currIndex);
+            assertEquals("Entrance and Exit Gate", name.getText().toString());
 
             assertEquals(View.INVISIBLE, skip.getVisibility());
 
@@ -121,6 +126,10 @@ public class SkipButtonTest {
             Button skip = activity2.findViewById(R.id.skip_button);
             TextView name = activity2.findViewById(R.id.directions_header);
 
+            activity2.locationToUse = new Location("Mock Location");
+            activity2.locationToUse.setLatitude(32.73459618734685);
+            activity2.locationToUse.setLongitude(-117.14936);
+
             //Two animals in planned list, but path should be length four including entrance and exit
             assertEquals(2, planDao.getAll().size());
             assertEquals(4, activity2.userListShortestOrder.size());
@@ -130,14 +139,14 @@ public class SkipButtonTest {
             assertEquals(0, activity2.currIndex);
 
             //make sure first animal is correct
-            assertEquals("Koi Fish", name.getText().toString());
+            assertEquals("Flamingos", name.getText().toString());
 
             //click Next to move to the second animal, currIndex at 1
             next.performClick();
             assertEquals(1, activity2.currIndex);
 
             //make sure second animal name is correct
-            assertEquals("Flamingos", name.getText().toString());
+            assertEquals("Koi Fish", name.getText().toString());
 
             // Click Skip
             // Should remove "Flamingos" and decrease the size of the planned animals by 1

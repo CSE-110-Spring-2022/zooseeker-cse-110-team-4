@@ -121,5 +121,23 @@ public class PlannedListTest {
 
     }
 
+    /**
+     * Test when clicking the plan button with an empty planned list, an alert pops up on screen
+     */
+    @Test
+    public void testPlanClickedEmptyList() {
+        //Start in MainActivity
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.moveToState(Lifecycle.State.STARTED);
+        scenario.moveToState(Lifecycle.State.RESUMED);
 
+        scenario.onActivity(activity -> {
+            //No animals have been added to the planned list
+            Button plan = activity.findViewById(R.id.plan_button);
+            plan.performClick();
+            assertEquals(true, activity.alertMessage.isShowing());
+        });
+        scenario.close();
+    }
 }
