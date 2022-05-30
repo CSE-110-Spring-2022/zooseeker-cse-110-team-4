@@ -28,7 +28,7 @@ public class ZooNode {
 
     @NonNull
     public String id;
-    public String parent_id;
+    public String group_id;
     public String kind;
     public String name;
     public String lat;
@@ -37,26 +37,16 @@ public class ZooNode {
     @TypeConverters(TagsConverter.class)
     public String[] tags;
 
-    public ZooNode(@NonNull String id, String parent_id, String kind, String name, String[] tags,
+    public ZooNode(@NonNull String id, String group_id, String kind, String name, String[] tags,
                    String lat, String lng ) {
         this.id = id;
-        this.parent_id = parent_id;
+        this.group_id = group_id;
         this.kind = kind;
         this.name = name;
         this.tags = tags;
         this.lat = lat;
         this.lng = lng;
     }
-
-//    public ZooNode(@NonNull String id, String parent_id, String kind, String name, String[] tags) {
-//        this.id = id;
-//        this.parent_id = parent_id;
-//        this.kind = kind;
-//        this.name = name;
-//        this.tags = tags;
-//        this.lat = 0.0;
-//        this.lng = 0.0;
-//    }
 
     public static List<ZooNode> loadJSON(Context context, String path) {
         Log.d("Info", "Loading JSON file");

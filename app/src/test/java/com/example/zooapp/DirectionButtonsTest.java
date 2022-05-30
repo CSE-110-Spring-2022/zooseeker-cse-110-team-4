@@ -2,6 +2,7 @@ package com.example.zooapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.view.View;
 import android.widget.Button;
 
@@ -135,6 +136,9 @@ public class DirectionButtonsTest {
         scenario2.onActivity(activity2 -> {
             Button next = activity2.findViewById(R.id.next_button);
             Button previous = activity2.findViewById(R.id.previous_button);
+            activity2.locationToUse = new Location("Mock Location");
+            activity2.locationToUse.setLatitude(32.73459618734685);
+            activity2.locationToUse.setLongitude(-117.14936);
 
             //Two animals in planned list, but path should be length four to go back to entrance
             assertEquals(2, planDao.getAll().size());
@@ -179,7 +183,9 @@ public class DirectionButtonsTest {
         scenario2.onActivity(activity2 -> {
             Button next = activity2.findViewById(R.id.next_button);
             Button previous = activity2.findViewById(R.id.previous_button);
-
+            activity2.locationToUse = new Location("Mock Location");
+            activity2.locationToUse.setLatitude(32.73459618734685);
+            activity2.locationToUse.setLongitude(-117.14936);
             assertEquals(2, planDao.getAll().size());
 
             //Two animals in planned list, but path should be length four including going back to entrance/exit
