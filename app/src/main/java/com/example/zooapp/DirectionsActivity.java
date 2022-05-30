@@ -1,6 +1,7 @@
 package com.example.zooapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,6 +30,7 @@ import org.jgrapht.GraphPath;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,6 +45,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public static boolean replanAlertShown = false;
     public static boolean canCheckReplan = true;
     public static boolean recentlyYesReplan = false;
+    public static boolean directionsDetailedText = false;
 
     @VisibleForTesting
     public Location mockLocation;
@@ -58,7 +63,6 @@ public class DirectionsActivity extends AppCompatActivity {
     public GraphAlgorithm algorithm;
     public ActionBar actionBar;
     public AlertDialog alertMessage;
-    public boolean directionsDetailedText = true;
     public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
             .plannedAnimalDao();
     public ZooNodeDao zooNodeDao = ZooNodeDatabase.getSingleton(this)
@@ -98,9 +102,6 @@ public class DirectionsActivity extends AppCompatActivity {
 
         // Grabbing planned animals from planned list and inputting to new activity
         if( plannedAnimalDao.getAll().size() > 0 ){
-            //userExhibits = gson.fromJson(getIntent().getStringExtra("ListOfAnimals"), type);
-            userExhibits = plannedAnimalDao.getAll();
-            Log.d("Zoo Nodes", userExhibits.toString());
             Log.d("Zoo Nodes", plannedAnimalDao.getAll().toString());
             loadGraph(); // will initialize graph, vInfo, and eInfo variables
 
@@ -129,6 +130,9 @@ public class DirectionsActivity extends AppCompatActivity {
 //            mockLocation = new Location("Mock Orangutans");
 //            mockLocation.setLatitude(32.735851415117665);
 //            mockLocation.setLongitude(-117.16626781198586);
+            mockLocation = new Location("Mock Entrance");
+            mockLocation.setLatitude(32.73459618734685);
+            mockLocation.setLongitude(-117.14936);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -420,7 +424,7 @@ public class DirectionsActivity extends AppCompatActivity {
      * Sets the text for the directions activity
      */
     @SuppressLint("DefaultLocale")
-    private void setDirectionsText(
+    private void setDetailedDirectionsText(
             GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
 
         // Check if the currIndex is at the end of the list
@@ -511,15 +515,18 @@ public class DirectionsActivity extends AppCompatActivity {
         for(int j = 0; j < edgeList.size(); j++) {
             var e = edgeList.get(j);
             distance += graph.getEdgeWeight(e);
+            source = Objects.requireNonNull(vInfo.get(graph.getEdgeSource(e).toString())).name;
+            target = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(e).toString())).name;
+            Log.d("Directions", "Start: " + start + ", Source: " + source + ", Target: "
+                    + target);
             if( j != edgeList.size()-1 &&
                     Objects.requireNonNull(eInfo.get(e.getId())).street
                             .equals(Objects.requireNonNull(eInfo.get(edgeList.get(j+1).getId()))
                                     .street))  {
+                start = (source.equals(start)) ? target : source;
                 continue;
             }
             Log.d("Edge Format", e.toString());
-            source = Objects.requireNonNull(vInfo.get(graph.getEdgeSource(e).toString())).name;
-            target = Objects.requireNonNull(vInfo.get(graph.getEdgeTarget(e).toString())).name;
             correctTarget = (source.equals(start)) ? target : source;
             Log.d("Edge Format", correctTarget);
 
@@ -569,7 +576,15 @@ public class DirectionsActivity extends AppCompatActivity {
      * @param view
      */
     public void onSkipButtonClicked(View view) {
-
+        if(locationToUse == null) {
+            runOnUiThread(() -> {
+                alertMessage = Utilities.showAlert(this,"Please wait until " +
+                        "your location has started updating.");
+                alertMessage.show();
+                //alertMessage.isShowing();
+            });
+            return;
+        }
 
         Log.d("SkipButton", "Skip Button Clicked");
         Log.d("SkipButton", "List planned animal BEFORE: " + plannedAnimalDao.getAll().toString());
@@ -577,13 +592,56 @@ public class DirectionsActivity extends AppCompatActivity {
         plannedAnimalDao.delete(userListShortestOrder.get(currIndex+1));
 
         // Our algorithm
-        algorithm = new ShortestPathZooAlgorithm(
-                getApplication().getApplicationContext(), plannedAnimalDao.getAll());
-        graphPaths = algorithm.runAlgorithm();
-        userListShortestOrder = algorithm.getUserListShortestOrder();
+//        algorithm = new ShortestPathZooAlgorithm(
+//                getApplication().getApplicationContext(), plannedAnimalDao.getAll());
+//        graphPaths = algorithm.runAlgorithm();
+//        userListShortestOrder = algorithm.getUserListShortestOrder();
 
-        // set text
-        setDirectionsText(graphPaths.get(currIndex));
+        var nearestZooNode =
+                exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
+
+        var reorderedExhibits = algorithm
+                .runChangedLocationAlgorithm(nearestZooNode,
+                        userListShortestOrder.subList(currIndex+2,
+                                userListShortestOrder.size()-1));
+        Log.d("Check Location", "New Graph Path: " + reorderedExhibits.toString());
+        var originalVisitedExhibits =
+                graphPaths.subList(0, currIndex);
+        Log.d("Check Location", "Old Graph Path: " + originalVisitedExhibits);
+        graphPaths = Stream.concat(originalVisitedExhibits.stream(),
+                reorderedExhibits.stream()).collect(Collectors.toList());
+
+        // Get the new List of zoo nodes in the new shortest order of the remaining
+        // exhibits
+        Log.d("Check Location", "Graph Plan Replan: " + graphPaths.toString());
+        var reorderedShortestOrder = algorithm.getNewUserListShortestOrder();
+        Log.d("Check Location", "New Order: " + reorderedShortestOrder.toString());
+        var originalVisitedShortestOrder = userListShortestOrder
+                .subList(0, currIndex+1);
+        Log.d("Check Location", "Old Beginning: " + originalVisitedShortestOrder.toString());
+        userListShortestOrder = Stream.concat(originalVisitedShortestOrder.stream(),
+                reorderedShortestOrder.stream()).collect(Collectors.toList());
+        Log.d("Check Location", "Replan Complete: " + userListShortestOrder.toString());
+        Log.d("Location", userListShortestOrder.toString());
+
+        // Set up for the exhibitLocations class
+        var subListSize = (currIndex >= userListShortestOrder.size() - 2) ?
+                userListShortestOrder.size() : userListShortestOrder.size() - 1;
+        exhibitLocations.setupExhibitLocations(userListShortestOrder
+                .subList(currIndex+1, subListSize));
+        Log.d("Check Location", exhibitLocations.exhibitsSubList.toString());
+        nearestZooNode =
+                exhibitLocations.getZooNodeClosestToCurrentLocation(locationToUse);
+
+        // Find the new path to display
+        graphPath = algorithm.runPathAlgorithm(nearestZooNode,
+                exhibitLocations.exhibitsSubList);
+
+        if(directionsDetailedText) {
+            setDetailedDirectionsText(graphPath);
+        } else {
+            setBriefDirectionsText(graphPath);
+        }
 
         Log.d("SkipButton", "List planned animal AFTER: " + plannedAnimalDao.getAll().toString());
     }

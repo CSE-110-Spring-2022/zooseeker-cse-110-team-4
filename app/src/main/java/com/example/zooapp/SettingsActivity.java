@@ -25,7 +25,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         Switch switchButton = findViewById(R.id.directions_switch);
-        boolean toggled = preferences.getBoolean("toggled", false); //default false
+        boolean originalState = DirectionsActivity.directionsDetailedText;
+        boolean toggled = preferences.getBoolean("toggled", originalState); //default false
 
         if(toggled == true){
             switchButton.setChecked(true);
@@ -44,9 +45,11 @@ public class SettingsActivity extends AppCompatActivity {
         if(switchButton.isChecked()){
             editor.putBoolean("toggled", true);
             editor.commit();
+            DirectionsActivity.directionsDetailedText = true;
         }else{
             editor.putBoolean("toggled", false);
             editor.commit();
+            DirectionsActivity.directionsDetailedText = false;
         }
     }
 
