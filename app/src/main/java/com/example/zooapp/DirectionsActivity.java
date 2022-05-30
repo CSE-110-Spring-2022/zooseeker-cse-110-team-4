@@ -347,25 +347,25 @@ public class DirectionsActivity extends AppCompatActivity {
                         userListShortestOrder.size() - 1));
 
         // Used for live testing
-//        switch(currIndex) {
-//            case 1:
-//                mockLocation = new Location("Mock Flamingos");
-//                mockLocation.setLatitude(32.7440416465169);
-//                mockLocation.setLongitude(-117.15952052282296);
-//                break;
-//            case 2:
-//                mockLocation = new Location("Mock Gorillas");
-//                mockLocation.setLatitude(32.74711745394194);
-//                mockLocation.setLongitude(-117.18047982358976);
-//                break;
-//            case 3:
-//                mockLocation = new Location("Mock Orangutans");
-//                mockLocation.setLatitude(32.735851415117665);
-//                mockLocation.setLongitude(-117.16626781198586);
-//                break;
-//            default:
-//                break;
-//        }
+        switch(currIndex) {
+            case 1:
+                mockLocation = new Location("Mock Flamingos");
+                mockLocation.setLatitude(32.7440416465169);
+                mockLocation.setLongitude(-117.15952052282296);
+                break;
+            case 2:
+                mockLocation = new Location("Mock Gorillas");
+                mockLocation.setLatitude(32.74711745394194);
+                mockLocation.setLongitude(-117.18047982358976);
+                break;
+            case 3:
+                mockLocation = new Location("Mock Orangutans");
+                mockLocation.setLatitude(32.735851415117665);
+                mockLocation.setLongitude(-117.16626781198586);
+                break;
+            default:
+                break;
+        }
         if(directionsDetailedText) {
             setDetailedDirectionsText(graphPath);
         } else {
@@ -394,25 +394,25 @@ public class DirectionsActivity extends AppCompatActivity {
         skipButtonVisibilityCheck();
 
         // Used for live testing
-//        switch(currIndex) {
-//            case 0:
-//                mockLocation = new Location("Mock Gorillas");
-//                mockLocation.setLatitude(32.74711745394194);
-//                mockLocation.setLongitude(-117.18047982358976);
-//                break;
-//            case 1:
-//                mockLocation = new Location("Mock Orangutans");
-//                mockLocation.setLatitude(32.735851415117665);
-//                mockLocation.setLongitude(-117.16626781198586);
-//                break;
-//            case 2:
-//                mockLocation = new Location("Mock Entrance");
-//                mockLocation.setLatitude(32.73459618734685);
-//                mockLocation.setLongitude(-117.14936);
-//                break;
-//            default:
-//                break;
-//        }
+        switch(currIndex) {
+            case 0:
+                mockLocation = new Location("Mock Gorillas");
+                mockLocation.setLatitude(32.74711745394194);
+                mockLocation.setLongitude(-117.18047982358976);
+                break;
+            case 1:
+                mockLocation = new Location("Mock Orangutans");
+                mockLocation.setLatitude(32.735851415117665);
+                mockLocation.setLongitude(-117.16626781198586);
+                break;
+            case 2:
+                mockLocation = new Location("Mock Entrance");
+                mockLocation.setLatitude(32.73459618734685);
+                mockLocation.setLongitude(-117.14936);
+                break;
+            default:
+                break;
+        }
         backwards = true;
         //set Text
         graphPath = algorithm.runReversePathAlgorithm(exhibitLocations
