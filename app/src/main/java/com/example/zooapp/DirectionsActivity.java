@@ -102,10 +102,10 @@ public class DirectionsActivity extends AppCompatActivity {
             setDirections.setDirectionsText(directionsDetailedText);
 
             // Testing Replan Button
-//            Location mockBenchlyPlaza = new Location("Mock Benchly Plaza");
-//            mockBenchlyPlaza.setLatitude(32.74476120197887);
-//            mockBenchlyPlaza.setLongitude(-117.18369973246877);
-//            setMockLocation(mockBenchlyPlaza);
+            Location mockEntrance = new Location("Mock Entrance");
+            mockEntrance.setLatitude(32.73459618734685);
+            mockEntrance.setLongitude(-117.14936);
+            setMockLocation(mockEntrance);
         }
         else{
             Log.d("null input", "User exhibits was null");
