@@ -8,6 +8,9 @@ import androidx.room.Update;
 
 import java.util.List;
 
+/**
+ * This interface is used to store and manage the list of exhibits
+ */
 @Dao
 public interface ZooNodeDao {
     @Insert

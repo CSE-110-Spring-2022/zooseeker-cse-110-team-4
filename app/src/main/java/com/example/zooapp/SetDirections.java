@@ -13,7 +13,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * This class handles setting the correct set of directions onto the screen
+ */
 public class SetDirections {
+
+
+    //Private fields
     private final DirectionsActivity directionsActivity;
     private ZooNode display;
     private GraphPath<String, IdentifiedWeightedEdge> graphPath;
@@ -28,7 +34,9 @@ public class SetDirections {
     }
 
     /**
-     * Sets the text for the directions activity
+     * Creates the detailed directions text for the directions activity and stores it in the variable directions
+     *
+     * @param GraphPath
      */
     @SuppressLint("DefaultLocale")
     public void setDetailedDirectionsText(
@@ -92,6 +100,11 @@ public class SetDirections {
         directions.setText(direction);
     }
 
+    /**
+     * Creates the brief directions text for the directions activity and stores it in the variable directions
+     *
+     * @param GraphPath
+     */
     @SuppressLint("DefaultLocale")
     public void setBriefDirectionsText(
             GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
@@ -164,6 +177,12 @@ public class SetDirections {
         directions.setText(direction);
     }
 
+
+    /**
+     * Sets the correct animal header that matches the directions
+     *
+     * @param TextView header
+     */
     public void setDirectionsText(boolean directionsDetailedText) {
         if(directionsDetailedText) {
             setDetailedDirectionsText(graphPath);
@@ -176,6 +195,11 @@ public class SetDirections {
         this.header = header;
     }
 
+    /**
+     * Sets the directions TextView to the correct type of directions
+     *
+     * @param TextView directions
+     */
     public void setDirections(TextView directions) {
         this.directions = directions;
     }

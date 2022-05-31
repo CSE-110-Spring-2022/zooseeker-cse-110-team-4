@@ -21,6 +21,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class represents each individual ZooNode
+ */
 @Entity(tableName = "zoo_node_list")
 public class ZooNode {
     @PrimaryKey(autoGenerate = true)
@@ -37,6 +40,11 @@ public class ZooNode {
     @TypeConverters(TagsConverter.class)
     public String[] tags;
 
+    /**
+     * Constructor
+     *
+     * @param String id, group_id, kind, name, lat, lng, String[] tags
+     */
     public ZooNode(@NonNull String id, String group_id, String kind, String name, String[] tags,
                    String lat, String lng ) {
         this.id = id;
@@ -48,6 +56,13 @@ public class ZooNode {
         this.lng = lng;
     }
 
+    /**
+     * Loads information about ZooNode vertices from a JSON file
+     *
+     * @param Context
+     * @param String path to information file
+     * @return List of ZooNodes
+     */
     public static List<ZooNode> loadJSON(Context context, String path) {
         Log.d("Info", "Loading JSON file");
         try {
@@ -64,6 +79,11 @@ public class ZooNode {
         }
     }
 
+    /**
+     * Converts information about a ZooNode into a String
+     *
+     * @String information of the ZooNode
+     */
     @Override
     public String toString() {
         String result = String.format("ZooNode{id='%s', kind='%s', name='%s', tags=%s}",

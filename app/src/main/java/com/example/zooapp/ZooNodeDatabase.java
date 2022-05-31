@@ -13,6 +13,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+/**
+ * This class creates the database to store the list of exhibits in the zoo
+ */
 @Database(entities = {ZooNode.class},
         version = 2)
 public abstract class ZooNodeDatabase extends RoomDatabase {
@@ -32,6 +35,12 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
 
     public abstract ZooNodeDao ZooNodeDao();
 
+    /**
+     * Creates a new Room database if one has not yet been created
+     *
+     * @param Context
+     * @return ZooNodeDatabase the created or existing database
+     */
     public synchronized static ZooNodeDatabase getSingleton(Context context) {
         if( singleton == null ) {
             singleton = ZooNodeDatabase.makeDatabase(context);
@@ -39,6 +48,12 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
         return singleton;
     }
 
+    /**
+     * Creates a new Room database to store the list of zoo exhibits
+     *
+     * @param Context
+     * @return ZooNodeDatabase the created database
+     */
     private static ZooNodeDatabase makeDatabase(Context context) {
         return Room.databaseBuilder(context, ZooNodeDatabase.class, "zoo_app.db")
                 .allowMainThreadQueries()
@@ -57,6 +72,11 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
                 .build();
     }
 
+    /**
+     * Creates a new test database if one has not already been made
+     *
+     * @param ZooNodeDatabase
+     */
     @VisibleForTesting
     public static void injectTestDatabase(ZooNodeDatabase testDatabase) {
         if( singleton != null ) {

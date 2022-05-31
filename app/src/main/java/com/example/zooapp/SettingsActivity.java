@@ -11,8 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 
+/**
+ * The activity is used to change the type of directions displayed on screen
+ */
 public class SettingsActivity extends AppCompatActivity {
 
+    /**
+     * Sets up the information needed for this activity when it is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
         actionBar.setTitle("Settings");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        //Set the switch to the state it was in the last time the app was run
         SharedPreferences preferences = getSharedPreferences("DIRECTIONS", MODE_PRIVATE);
         Switch switchButton = findViewById(R.id.directions_switch);
         boolean toggled = preferences.getBoolean("toggled", false);
@@ -34,13 +41,19 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * When the switch button is clicked, change the directions from detailed to brief or vice versa
+     *
+     * @param View
+     */
     public void onDirectionsSwitchClick(View view) {
-        //change variable, need to get it from location branch
+
         SharedPreferences preferences = getSharedPreferences("DIRECTIONS", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         Switch switchButton = findViewById(R.id.directions_switch);
 
+        //if the button is on detailed directions, clicking it will switch it to brief directions and vice versa
         if(switchButton.isChecked()){
             editor.putBoolean("toggled", true);
             editor.commit();
