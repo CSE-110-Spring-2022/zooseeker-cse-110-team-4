@@ -1,6 +1,7 @@
 package com.example.zooapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -32,15 +33,15 @@ public class SetDirections {
     private final String NODE_INFO_JSON = "sample_node_info.json";
     private final String EDGE_INFO_JSON = "sample_edge_info.json";
 
-    public SetDirections(DirectionsActivity directionsActivity) {
+    public SetDirections(DirectionsActivity directionsActivity, Context context) {
         this.directionsActivity = directionsActivity;
-        loadGraph(directionsActivity);
+        loadGraph(context);
     }
 
     /**
      * Creates the detailed directions text for the directions activity and stores it in the variable directions
      *
-     * @param GraphPath
+     * @param directionsToExhibit
      */
     @SuppressLint("DefaultLocale")
     public void setDetailedDirectionsText(
@@ -108,7 +109,7 @@ public class SetDirections {
      * Creates the brief directions text for the directions activity and stores it in the variable
      * directions
      *
-     * @param GraphPath
+     * @param directionsToExhibit
      */
     @SuppressLint("DefaultLocale")
     public void setBriefDirectionsText(
@@ -185,10 +186,7 @@ public class SetDirections {
     /**
      * Loads graph information from files. Initializes graph, vInfo, and eInfo instance variables.
      */
-    private void loadGraph(DirectionsActivity directionsActivity) {
-        // For loading in resources
-        var context = directionsActivity.getApplicationContext();
-
+    private void loadGraph(Context context) {
         // 1. Load the graph...
         setGraph(ZooData.loadZooGraphJSON(context, ZOO_GRAPH_JSON));
 
@@ -200,7 +198,7 @@ public class SetDirections {
     /**
      * Sets the correct animal header that matches the directions
      *
-     * @param TextView header
+     * @param directionsDetailedText
      */
     public void setDirectionsText(boolean directionsDetailedText) {
         if(directionsDetailedText) {
@@ -217,7 +215,7 @@ public class SetDirections {
     /**
      * Sets the directions TextView to the correct type of directions
      *
-     * @param TextView directions
+     * @param directions
      */
     public void setDirections(TextView directions) {
         this.directions = directions;
