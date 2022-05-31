@@ -1,7 +1,13 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.app.Activity;
 import android.util.Log;
+
+import com.example.zooapp.Data.PlannedAnimalDatabase;
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Data.ZooNodeDatabase;
+import com.example.zooapp.Interface.PlannedAnimalDao;
+import com.example.zooapp.Interface.ZooNodeDao;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +37,7 @@ public class ExhibitsSetup {
      * Takes the list of exhibits stored in a ZooNodeDao and sorts the exhibits alphabetically
      * Adds the sorted list of exhibits into the variable totalExhibits
      */
-    void getExhibitInformation() {
+    public void getExhibitInformation() {
         // Get all the animals available in the zoo, exhibits
         activity.deleteDatabase("zoo_app.db");
         ZooNodeDao dao = ZooNodeDatabase.getSingleton(activity).ZooNodeDao();
@@ -58,7 +64,7 @@ public class ExhibitsSetup {
      *
      * @param position of the item in the recycler view in SearchActivity
      */
-    void addAnimalPlannedList(int position){
+    public void addAnimalPlannedList(int position){
 
         boolean animalExists = false;
 
@@ -85,7 +91,7 @@ public class ExhibitsSetup {
      *
      * @return List of ZooNodes that have been added to the planned animals list Dao
      */
-    List<ZooNode> getUserExhibits(){
+    public List<ZooNode> getUserExhibits(){
         PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(activity).plannedAnimalDao();
         return plannedAnimalDao.getAll();
     }
@@ -95,7 +101,7 @@ public class ExhibitsSetup {
      *
      * @return List of ZooNodes that have been added to the planned animals list
      */
-    List<ZooNode> getTotalExhibits(){
+    public List<ZooNode> getTotalExhibits(){
         return totalExhibits;
     }
 

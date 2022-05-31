@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ZooApp">
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Viewer.SettingsActivity"
             android:exported="false" />
 
         <meta-data
@@ -23,16 +23,16 @@
             android:value="AIzaSyDSN4bZa9dfFOkMVUdRikUF4asIX5V6r7U" />
 
         <activity
-            android:name=".RoutePlanSummaryActivity"
+            android:name=".Viewer.RoutePlanSummaryActivity"
             android:exported="false" />
         <activity
-            android:name=".DirectionsActivity"
+            android:name=".Viewer.DirectionsActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".Viewer.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Viewer.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Data;
 
 import android.content.Context;
 
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.example.zooapp.Ultility.IdentifiedWeightedEdge;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;

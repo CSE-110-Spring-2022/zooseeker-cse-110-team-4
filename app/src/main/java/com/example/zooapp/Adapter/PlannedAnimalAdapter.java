@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,39 +7,30 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
+
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.R;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Adapter for the recycler view displaying the route plan summary
+ * Adapter for the recycler view displaying all the planned animals from the user
  */
-public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSummaryAdapter.ViewHolder> {
+public class PlannedAnimalAdapter extends RecyclerView.Adapter<PlannedAnimalAdapter.ViewHolder> {
     // Private fields
     private List<ZooNode> userAnimals = Collections.emptyList();
-    private List<Double> exhibitDistances = Collections.emptyList();
-
-    private static final String TEXT_VIEW_FORMAT = "%s (%.0f ft)";
 
     /**
-     * Sets the list of animals (exhibits) the user has chosen
-     * and the distances to each exhibit
+     * Sets the list of animals the user has chosen
      *
      * @param newSampleAnimals List of animals the user has chosen
-     * @param exhibitDistances list of exhibit distances from entrance gate for each
      */
-    public void setAnimalList(List<ZooNode> newSampleAnimals, List<Double> exhibitDistances){
-        if (newSampleAnimals.size() != exhibitDistances.size()) {
-            throw new IllegalArgumentException("userAnimal Size different from exhibitDistances size");
-        }
+    public void setAnimalList(List<ZooNode> newSampleAnimals){
         this.userAnimals.clear();
         this.userAnimals = newSampleAnimals;
-        this.exhibitDistances.clear();
-        this.exhibitDistances = exhibitDistances;
         notifyDataSetChanged();
     }
-
 
     /**
      * Sets the view holder with the proper animal information
@@ -50,10 +41,10 @@ public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSumma
      */
     @NonNull
     @Override
-    public RoutePlanSummaryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.planned_animal_list,parent,false);
-        return new RoutePlanSummaryAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     /**
@@ -63,14 +54,8 @@ public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSumma
      * @param position Position of view holder in recycler view
      */
     @Override
-    public void onBindViewHolder(@NonNull RoutePlanSummaryAdapter.ViewHolder holder, int position) {
-        if (userAnimals.size() != exhibitDistances.size()) {
-            Log.e("Error", "userAnimal Size different from exhibitDistances size");
-        }
-        if (position > userAnimals.size()) {
-            Log.e("Error", "position is " + position + ", but userAnimals size is" + userAnimals.size());
-        }
-        holder.setAnimal(userAnimals.get(position), exhibitDistances.get(position));
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.setAnimal(userAnimals.get(position));
     }
 
     /**
@@ -89,9 +74,7 @@ public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSumma
     public static class ViewHolder extends RecyclerView.ViewHolder{
         // Private fields
         private final TextView textView;
-//        private ZooNode userAnimal;
-//        private double distanceToAnimal;
-        private String textDisplay;
+        private ZooNode userAnimal;
 
         /**
          * Constructor
@@ -102,16 +85,16 @@ public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSumma
             super(itemView);
             this.textView = itemView.findViewById(R.id.planned_animal_text);
         }
+        public ZooNode getAnimal(){return userAnimal;}
 
         /**
          * Set animal with correct values
          *
          * @param userAnimal Animal to be used to get correct values
-         * @param distanceToAnimal distance to animal exhibit
          */
-        public void setAnimal(ZooNode userAnimal, double distanceToAnimal){
-            this.textDisplay = String.format(TEXT_VIEW_FORMAT, userAnimal.name, distanceToAnimal);
-            this.textView.setText(textDisplay);
+        public void setAnimal(ZooNode userAnimal){
+            this.userAnimal = userAnimal;
+            this.textView.setText(userAnimal.name);
         }
     }
 }

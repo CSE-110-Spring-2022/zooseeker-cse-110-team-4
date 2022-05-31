@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 import android.location.Location;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.room.Room;
@@ -13,12 +11,22 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.zooapp.Data.PlannedAnimalDatabase;
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Data.ZooNodeDatabase;
+import com.example.zooapp.Interface.PlannedAnimalDao;
+import com.example.zooapp.Interface.ZooNodeDao;
+import com.example.zooapp.Viewer.DirectionsActivity;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
 
+/**
+ * Mock location test
+ */
 @RunWith(AndroidJUnit4.class)
 public class MockLocationTest {
     Context context;
