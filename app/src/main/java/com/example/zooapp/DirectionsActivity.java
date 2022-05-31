@@ -115,6 +115,10 @@ public class DirectionsActivity extends AppCompatActivity {
         locationHandler.setUpLocationListener();
     }
 
+    /**
+     * Displays alert asking user to replan route
+     *
+     */
     public void promptReplan() {
         replanAlertShown = true;
         alertMessage = Utilities.optionalAlert(this,
