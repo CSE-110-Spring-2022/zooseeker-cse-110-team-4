@@ -13,13 +13,12 @@ import java.util.Objects;
 
 public class SetDirections {
     private final DirectionsActivity directionsActivity;
-    public Graph<String, IdentifiedWeightedEdge> graph;
-    public GraphPath<String, IdentifiedWeightedEdge> graphPath;
-    public Map<String, ZooData.VertexInfo> vInfo;
-    public Map<String, ZooData.EdgeInfo> eInfo;
-    public List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
-    public ZooNode display;
-
+    private ZooNode display;
+    private GraphPath<String, IdentifiedWeightedEdge> graphPath;
+    private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
+    private Map<String, ZooData.VertexInfo> vInfo;
+    private Map<String, ZooData.EdgeInfo> eInfo;
+    private Graph<String, IdentifiedWeightedEdge> graph;
     private TextView header, directions;
 
     public SetDirections(DirectionsActivity directionsActivity) {
@@ -169,5 +168,41 @@ public class SetDirections {
 
     public void setDirections(TextView directions) {
         this.directions = directions;
+    }
+
+    public void setGraph(Graph<String, IdentifiedWeightedEdge> graph) {
+        this.graph = graph;
+    }
+
+    public void setvInfo(Map<String, ZooData.VertexInfo> vInfo) {
+        this.vInfo = vInfo;
+    }
+
+    public void seteInfo(Map<String, ZooData.EdgeInfo> eInfo) {
+        this.eInfo = eInfo;
+    }
+
+    public void setGraphPath(GraphPath<String, IdentifiedWeightedEdge> graphPath) {
+        this.graphPath = graphPath;
+    }
+
+    public GraphPath<String, IdentifiedWeightedEdge> getGraphPath() {
+        return graphPath;
+    }
+
+    public void setGraphPaths(List<GraphPath<String, IdentifiedWeightedEdge>> graphPath) {
+        this.graphPaths = graphPaths;
+    }
+
+    public List<GraphPath<String, IdentifiedWeightedEdge>> getGraphPaths() {
+        return graphPaths;
+    }
+
+    public ZooNode getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(ZooNode display) {
+        this.display = display;
     }
 }

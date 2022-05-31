@@ -70,8 +70,8 @@ public class MockLocationTest {
             activity.setContentView(R.layout.activity_directions);
 
             //Next should be visible, Previous should be invisible
-            assertEquals(mockLocation.getLatitude(), activity.mockLocation.getLatitude(), 0.0001);
-            assertEquals(mockLocation.getLongitude(), activity.mockLocation.getLongitude(), 0.0001);
+            assertEquals(mockLocation.getLatitude(), activity.getMockLocation().getLatitude(), 0.0001);
+            assertEquals(mockLocation.getLongitude(), activity.getMockLocation().getLongitude(), 0.0001);
         });
     }
 }

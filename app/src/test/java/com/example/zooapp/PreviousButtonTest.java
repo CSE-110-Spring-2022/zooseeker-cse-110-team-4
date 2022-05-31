@@ -106,9 +106,9 @@ public class PreviousButtonTest {
             assertEquals(2, planDao.getAll().size());
             assertEquals(4, activity2.userListShortestOrder.size());
 
-            activity2.locationToUse = new Location("Mock Location");
-            activity2.locationToUse.setLatitude(32.73459618734685);
-            activity2.locationToUse.setLongitude(-117.14936);
+            activity2.setLocationToUse(new Location("Mock Location"));
+            activity2.getLocationToUse().setLatitude(32.73459618734685);
+            activity2.getLocationToUse().setLongitude(-117.14936);
 
             //currIndex starts at first animal, index at 0
             //Previous should be invisible, Next should be visible

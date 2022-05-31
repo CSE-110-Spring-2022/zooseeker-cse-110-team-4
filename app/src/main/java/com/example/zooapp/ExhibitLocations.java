@@ -43,22 +43,6 @@ public class ExhibitLocations {
         }
     }
 
-    public Location getZooNodeLocation(ZooNode zooNode) {
-        if( zooNode == null ) {
-            return null;
-        }
-        ZooNode updateZooNode = (zooNode.group_id == null) ? zooNode :
-                dao.getById(zooNode.group_id);
-        Location result = null;
-        for(Location zooNodeLocation: exhibitLocations) {
-            if( updateZooNode.id.equals(zooNodeLocation.getProvider()) ) {
-                result = zooNodeLocation;
-                break;
-            }
-        }
-        return result;
-    }
-
     public ZooNode getZooNodeClosestToCurrentLocation(Location currentLocation) {
         double minDistance = Double.MAX_VALUE;
         Location minLocation = currentLocation;
