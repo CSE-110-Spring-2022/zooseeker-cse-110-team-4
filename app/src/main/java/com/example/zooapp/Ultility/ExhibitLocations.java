@@ -1,8 +1,10 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.location.Location;
 
-import java.sql.Array;
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Interface.ZooNodeDao;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class ExhibitLocations {
     /**
      * Constructor
      *
-     * @param ZooNodeDao the dao storing the list of exhibits
+     * @param dao the dao storing the list of exhibits
      */
     public ExhibitLocations(ZooNodeDao dao) {
         exhibitLocations = new ArrayList<>();
@@ -41,7 +43,7 @@ public class ExhibitLocations {
     /**
      * Sets up the locations of each exhibit in the zoo and stores them in exhibitLocations
      *
-     * @param List<ZooNode> the list of exhibits in the zoo
+     * @param exhibits the list of exhibits in the zoo
      */
     public void setupExhibitLocations(List<ZooNode> exhibits) {
         if( exhibits == null )
@@ -63,7 +65,7 @@ public class ExhibitLocations {
     /**
      * Get the location of a single ZooNode
      *
-     * @param ZooNode the zooNode we want to find the location of
+     * @param zooNode the zooNode we want to find the location of
      * @return a Location of the zooNode
      */
     public Location getZooNodeLocation(ZooNode zooNode) {
@@ -85,7 +87,7 @@ public class ExhibitLocations {
     /**
      * Returns the exhibit that is closest to the user's location
      *
-     * @param Location the user's current location
+     * @param currentLocation the user's current location
      * @return a Location of the closest zooNode
      */
     public ZooNode getZooNodeClosestToCurrentLocation(Location currentLocation) {

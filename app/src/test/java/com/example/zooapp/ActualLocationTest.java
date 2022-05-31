@@ -6,17 +6,17 @@ import static org.robolectric.Shadows.shadowOf;
 
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationManager;
 
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
+
+import com.example.zooapp.Ultility.LocationListenerImplementation;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowLocationManager;
 
 import java.util.List;
 

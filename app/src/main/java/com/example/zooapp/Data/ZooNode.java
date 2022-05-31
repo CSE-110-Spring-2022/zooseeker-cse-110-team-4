@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Data;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.example.zooapp.Ultility.TagsConverter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -43,7 +43,7 @@ public class ZooNode {
     /**
      * Constructor
      *
-     * @param String id, group_id, kind, name, lat, lng, String[] tags
+     * @param id, group_id, kind, name, lat, lng, tags
      */
     public ZooNode(@NonNull String id, String group_id, String kind, String name, String[] tags,
                    String lat, String lng ) {
@@ -59,8 +59,8 @@ public class ZooNode {
     /**
      * Loads information about ZooNode vertices from a JSON file
      *
-     * @param Context
-     * @param String path to information file
+     * @param context
+     * @param path to information file
      * @return List of ZooNodes
      */
     public static List<ZooNode> loadJSON(Context context, String path) {
@@ -82,7 +82,7 @@ public class ZooNode {
     /**
      * Converts information about a ZooNode into a String
      *
-     * @String information of the ZooNode
+     * @return information of the ZooNode
      */
     @Override
     public String toString() {

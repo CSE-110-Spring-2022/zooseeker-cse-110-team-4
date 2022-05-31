@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Data;
 
 import android.content.Context;
 
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.example.zooapp.Ultility.IdentifiedWeightedEdge;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -58,8 +59,8 @@ public class ZooData {
     /**
      * Loads information about each vertex in the graph from a JSON file
      *
-     * @param Context
-     * @param String the path to the information file
+     * @param context
+     * @param path the path to the information file
      *
      * @return Map of edges and their information
      */
@@ -95,8 +96,8 @@ public class ZooData {
     /**
      * Loads information about each edge in the graph from a JSON file
      *
-     * @param Context
-     * @param String the path to the information file
+     * @param context
+     * @param path the path to the information file
      *
      * @return Map of edges and their information
      */
@@ -125,8 +126,8 @@ public class ZooData {
     /**
      * Loads the zoo graph from a JSON file
      *
-     * @param Context
-     * @param String the path to the information file
+     * @param context
+     * @param path the path to the information file
      *
      * @return Graph
      */

@@ -1,33 +1,29 @@
 package com.example.zooapp;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
-import static org.robolectric.RuntimeEnvironment.getApplication;
 
-import com.google.gson.Gson;
+import com.example.zooapp.Data.PlannedAnimalDatabase;
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Data.ZooNodeDatabase;
+import com.example.zooapp.Interface.PlannedAnimalDao;
+import com.example.zooapp.Interface.ZooNodeDao;
+import com.example.zooapp.Viewer.DirectionsActivity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)

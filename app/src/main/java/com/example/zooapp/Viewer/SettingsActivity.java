@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Viewer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -8,8 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Switch;
+
+import com.example.zooapp.R;
 
 /**
  * The activity is used to change the type of directions displayed on screen
@@ -44,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * When the switch button is clicked, change the directions from detailed to brief or vice versa
      *
-     * @param View
+     * @param view
      */
     public void onDirectionsSwitchClick(View view) {
 

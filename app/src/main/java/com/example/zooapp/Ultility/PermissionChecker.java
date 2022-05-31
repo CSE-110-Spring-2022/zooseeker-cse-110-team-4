@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -24,7 +24,7 @@ public class PermissionChecker {
     /**
      * Constructor
      *
-     * @param ComponentActivity the activity where permissions are required
+     * @param activity the activity where permissions are required
      */
     public PermissionChecker(ComponentActivity activity) {
         this.activity = activity;
@@ -40,7 +40,7 @@ public class PermissionChecker {
      *
      * @return returns if permissions are granted
      */
-    boolean ensurePermissions() {
+    public boolean ensurePermissions() {
         var requiredPermissions = new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION

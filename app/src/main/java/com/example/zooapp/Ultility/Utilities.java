@@ -1,9 +1,10 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.text.Layout;
+
+import com.example.zooapp.Viewer.DirectionsActivity;
 
 import java.util.Optional;
 
@@ -15,8 +16,8 @@ public class Utilities {
     /**
      * Displays an alert on screen
      *
-     * @param Activity the activity the alert will appear in
-     * @param String the message that will be displayed on the alert
+     * @param activity the activity the alert will appear in
+     * @param message the message that will be displayed on the alert
      * @return AlertDialog
      */
     public static AlertDialog showAlert(Activity activity, String message){
@@ -38,8 +39,8 @@ public class Utilities {
     /**
      * Displays an alert on screen with a clickable yes or no option
      *
-     * @param Activity the activity the alert will appear in
-     * @param String the message that will be displayed on the alert
+     * @param activity the activity the alert will appear in
+     * @param message the message that will be displayed on the alert
      * @return AlertDialog
      */
     public static AlertDialog optionalAlert(Activity activity, String message){
@@ -81,7 +82,7 @@ public class Utilities {
     /**
      * Takes in a string and converts it to an Optional of type Integer
      *
-     * @param String
+     * @param str
      * @return Optional<Integer>
      */
     public static Optional<Integer> parseCount(String str){

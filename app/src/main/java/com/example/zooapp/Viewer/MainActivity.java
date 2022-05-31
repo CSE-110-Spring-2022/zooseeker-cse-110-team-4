@@ -1,42 +1,32 @@
-package com.example.zooapp;
+package com.example.zooapp.Viewer;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.SearchView;
-import android.widget.TextView;
-
-import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.sql.Array;
-import java.util.ArrayList;
-import android.util.Log;
-
+import com.example.zooapp.Data.PlannedAnimalDatabase;
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Interface.PlannedAnimalDao;
+import com.example.zooapp.R;
+import com.example.zooapp.Ultility.PermissionChecker;
+import com.example.zooapp.Adapter.PlannedAnimalAdapter;
+import com.example.zooapp.Ultility.Utilities;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is the main activity, where the app initially loads

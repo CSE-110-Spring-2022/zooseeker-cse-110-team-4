@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,6 +11,9 @@ import org.jgrapht.GraphPath;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Viewer.DirectionsActivity;
 
 public class LocationListenerImplementation implements LocationListener {
     Location locationToUse, mockLocation;

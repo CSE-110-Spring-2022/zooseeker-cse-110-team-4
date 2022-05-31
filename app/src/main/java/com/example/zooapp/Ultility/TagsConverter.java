@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import androidx.room.TypeConverter;
 
@@ -10,7 +10,7 @@ public class TagsConverter {
     /**
      * This method takes an array of tags and converts it into a single string
      *
-     * @param String[] the tags of an exhibit
+     * @param tags the tags of an exhibit
      * @return a String made up of all of the tags
      */
     @TypeConverter
@@ -27,7 +27,7 @@ public class TagsConverter {
     /**
      * This method takes a string and converts it to an array of tags
      *
-     * @param String the tags of an exhibit given in a string
+     * @param tagString the tags of an exhibit given in a string
      * @return String[] of the seprated tags
      */
     @TypeConverter

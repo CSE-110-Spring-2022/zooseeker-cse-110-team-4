@@ -1,7 +1,13 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.app.Activity;
 import android.util.Log;
+
+import com.example.zooapp.Data.PlannedAnimalDatabase;
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Data.ZooNodeDatabase;
+import com.example.zooapp.Interface.PlannedAnimalDao;
+import com.example.zooapp.Interface.ZooNodeDao;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +25,7 @@ public class ExhibitsSetup {
     /**
      * Constructor
      *
-     * @param Activity The activity where we need the list of exhibits
+     * @param a The activity where we need the list of exhibits
      */
     public ExhibitsSetup(Activity a) {
         this.activity = a;
@@ -31,7 +37,7 @@ public class ExhibitsSetup {
      * Takes the list of exhibits stored in a ZooNodeDao and sorts the exhibits alphabetically
      * Adds the sorted list of exhibits into the variable totalExhibits
      */
-    void getExhibitInformation() {
+    public void getExhibitInformation() {
         // Get all the animals available in the zoo, exhibits
         activity.deleteDatabase("zoo_app.db");
         ZooNodeDao dao = ZooNodeDatabase.getSingleton(activity).ZooNodeDao();
@@ -56,9 +62,9 @@ public class ExhibitsSetup {
      * Checks if the selected animal from the search bar has already been added to the list of planned animals.
      * If so, do nothing, else add the selected animal to the plannedAnimalDao
      *
-     * @param int position of the item in the recycler view in SearchActivity
+     * @param position of the item in the recycler view in SearchActivity
      */
-    void addAnimalPlannedList(int position){
+    public void addAnimalPlannedList(int position){
 
         boolean animalExists = false;
 
@@ -85,7 +91,7 @@ public class ExhibitsSetup {
      *
      * @return List of ZooNodes that have been added to the planned animals list Dao
      */
-    List<ZooNode> getUserExhibits(){
+    public List<ZooNode> getUserExhibits(){
         PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(activity).plannedAnimalDao();
         return plannedAnimalDao.getAll();
     }
@@ -95,14 +101,14 @@ public class ExhibitsSetup {
      *
      * @return List of ZooNodes that have been added to the planned animals list
      */
-    List<ZooNode> getTotalExhibits(){
+    public List<ZooNode> getTotalExhibits(){
         return totalExhibits;
     }
 
     /**
      * Sets the dao storing the list of planned animals to the new given list
      *
-     * @param List of ZooNodes to plan
+     * @param e of ZooNodes to plan
      */
     void setUserExhibits(List<ZooNode> e){
         PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(activity).plannedAnimalDao();
