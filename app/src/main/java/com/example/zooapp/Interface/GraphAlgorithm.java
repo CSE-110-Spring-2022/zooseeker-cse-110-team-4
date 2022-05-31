@@ -1,4 +1,7 @@
-package com.example.zooapp;
+package com.example.zooapp.Interface;
+
+import com.example.zooapp.Ultility.IdentifiedWeightedEdge;
+import com.example.zooapp.Data.ZooNode;
 
 import org.jgrapht.GraphPath;
 

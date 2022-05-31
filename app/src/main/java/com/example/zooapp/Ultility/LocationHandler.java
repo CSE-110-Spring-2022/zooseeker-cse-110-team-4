@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Viewer.DirectionsActivity;
 
 import org.jgrapht.GraphPath;
 
@@ -155,7 +158,7 @@ public class LocationHandler {
         return;
     }
 
-    void resetMockLocation() {
+    public void resetMockLocation() {
         directionsActivity.setMockLocation(null);
     }
 
