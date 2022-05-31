@@ -103,8 +103,8 @@ public class DirectionsActivity extends AppCompatActivity {
 
             // Testing Replan Button
             Location mockEntrance = new Location("Mock Entrance");
-            mockEntrance.setLatitude(32.73459618734685);
-            mockEntrance.setLongitude(-117.14936);
+            mockEntrance.setLatitude(32.72109826903826);
+            mockEntrance.setLongitude(-117.15952052282296);
             setMockLocation(mockEntrance);
         }
         else{
