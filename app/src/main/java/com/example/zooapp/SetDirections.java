@@ -17,8 +17,6 @@ import java.util.stream.Stream;
  * This class handles setting the correct set of directions onto the screen
  */
 public class SetDirections {
-
-
     //Private fields
     private final DirectionsActivity directionsActivity;
     private ZooNode display;
@@ -29,8 +27,14 @@ public class SetDirections {
     private Graph<String, IdentifiedWeightedEdge> graph;
     private TextView header, directions;
 
+    // Graph Information Files
+    private final String ZOO_GRAPH_JSON = "sample_zoo_graph.json";
+    private final String NODE_INFO_JSON = "sample_node_info.json";
+    private final String EDGE_INFO_JSON = "sample_edge_info.json";
+
     public SetDirections(DirectionsActivity directionsActivity) {
         this.directionsActivity = directionsActivity;
+        loadGraph(directionsActivity);
     }
 
     /**
@@ -178,6 +182,20 @@ public class SetDirections {
         directions.setText(direction);
     }
 
+    /**
+     * Loads graph information from files. Initializes graph, vInfo, and eInfo instance variables.
+     */
+    private void loadGraph(DirectionsActivity directionsActivity) {
+        // For loading in resources
+        var context = directionsActivity.getApplication().getApplicationContext();
+
+        // 1. Load the graph...
+        setGraph(ZooData.loadZooGraphJSON(context, ZOO_GRAPH_JSON));
+
+        // 2. Load the information about our nodes and edges...
+        setvInfo(ZooData.loadVertexInfoJSON(context, NODE_INFO_JSON));
+        seteInfo(ZooData.loadEdgeInfoJSON(context, EDGE_INFO_JSON));
+    }
 
     /**
      * Sets the correct animal header that matches the directions

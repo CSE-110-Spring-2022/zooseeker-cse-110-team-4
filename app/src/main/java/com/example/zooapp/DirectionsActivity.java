@@ -34,11 +34,6 @@ public class DirectionsActivity extends AppCompatActivity {
     public static boolean recentlyYesReplan = false;
     public static boolean directionsDetailedText;
 
-    // Graph Information Files
-    final String ZOO_GRAPH_JSON = "sample_zoo_graph.json";
-    final String NODE_INFO_JSON = "sample_node_info.json";
-    final String EDGE_INFO_JSON = "sample_edge_info.json";
-
     public List<ZooNode> userListShortestOrder;
 
     // Variable for the graph and path
@@ -84,7 +79,6 @@ public class DirectionsActivity extends AppCompatActivity {
         // Grabbing planned animals from planned list and inputting to new activity
         if( plannedAnimalDao.getAll().size() > 0 ){
             Log.d("Zoo Nodes", plannedAnimalDao.getAll().toString());
-            loadGraph(); // will initialize graph, vInfo, and eInfo variables
 
             // Our old algorithm
             algorithm = new ShortestPathZooAlgorithm(
@@ -273,21 +267,6 @@ public class DirectionsActivity extends AppCompatActivity {
                 userListShortestOrder.get(currIndex + 1)));
         setDirections.setDirectionsText(directionsDetailedText);
         canCheckReplan = true;
-    }
-
-    /**
-     * Loads graph information from files. Initializes graph, vInfo, and eInfo instance variables.
-     */
-    private void loadGraph() {
-        // For loading in resources
-        var context = getApplication().getApplicationContext();
-
-        // 1. Load the graph...
-        setDirections.setGraph(ZooData.loadZooGraphJSON(context, ZOO_GRAPH_JSON));
-
-        // 2. Load the information about our nodes and edges...
-        setDirections.setvInfo(ZooData.loadVertexInfoJSON(context, NODE_INFO_JSON));
-        setDirections.seteInfo(ZooData.loadEdgeInfoJSON(context, EDGE_INFO_JSON));
     }
 
     /**
