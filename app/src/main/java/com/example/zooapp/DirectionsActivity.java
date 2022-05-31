@@ -1,7 +1,6 @@
 package com.example.zooapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
 
@@ -21,8 +20,6 @@ import android.widget.Button;
 import org.jgrapht.GraphPath;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * This class is for when the user is now seeing the directions for each exhibit
@@ -324,50 +321,7 @@ public class DirectionsActivity extends AppCompatActivity {
             return;
         }
 
-        Log.d("SkipButton", "Skip Button Clicked");
-        Log.d("SkipButton", "List planned animal BEFORE: " + plannedAnimalDao.getAll().toString());
-        Log.d("SkipButton", "Current view exhibit: " + userListShortestOrder.get(currIndex+1).toString());
-        plannedAnimalDao.delete(userListShortestOrder.get(currIndex+1));
-
-        var nearestZooNode =
-                exhibitLocations.getZooNodeClosestToCurrentLocation(locationHandler.getLocationToUse());
-
-        var reorderedExhibits = algorithm
-                .runChangedLocationAlgorithm(nearestZooNode,
-                        userListShortestOrder.subList(currIndex+2,
-                                userListShortestOrder.size()-1));
-        Log.d("Check Location", "New Graph Path: " + reorderedExhibits.toString());
-        var originalVisitedExhibits =
-                setDirections.getGraphPaths().subList(0, currIndex);
-        Log.d("Check Location", "Old Graph Path: " + originalVisitedExhibits);
-        setDirections.setGraphPaths(Stream.concat(originalVisitedExhibits.stream(),
-                reorderedExhibits.stream()).collect(Collectors.toList()));
-
-        // Get the new List of zoo nodes in the new shortest order of the remaining
-        // exhibits
-        Log.d("Check Location", "Graph Plan Replan: " + setDirections.getGraphPaths().toString());
-        var reorderedShortestOrder = algorithm.getNewUserListShortestOrder();
-        Log.d("Check Location", "New Order: " + reorderedShortestOrder.toString());
-        var originalVisitedShortestOrder = userListShortestOrder
-                .subList(0, currIndex+1);
-        Log.d("Check Location", "Old Beginning: " + originalVisitedShortestOrder.toString());
-        userListShortestOrder = Stream.concat(originalVisitedShortestOrder.stream(),
-                reorderedShortestOrder.stream()).collect(Collectors.toList());
-        Log.d("Check Location", "Replan Complete: " + userListShortestOrder.toString());
-        Log.d("Location", userListShortestOrder.toString());
-
-        // Set up for the exhibitLocations class
-        var subListSize = (currIndex >= userListShortestOrder.size() - 2) ?
-                userListShortestOrder.size() : userListShortestOrder.size() - 1;
-        exhibitLocations.setupExhibitLocations(userListShortestOrder
-                .subList(currIndex+1, subListSize));
-        Log.d("Check Location", exhibitLocations.exhibitsSubList.toString());
-        nearestZooNode =
-                exhibitLocations.getZooNodeClosestToCurrentLocation(locationHandler.getLocationToUse());
-
-        // Find the new path to display
-        setDirections.setGraphPath(algorithm.runPathAlgorithm(nearestZooNode,
-                exhibitLocations.exhibitsSubList));
+        locationHandler.handleLocationSkip();
 
         skipButtonVisibilityCheck();
 
