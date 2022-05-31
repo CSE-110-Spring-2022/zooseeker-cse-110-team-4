@@ -23,7 +23,7 @@ import java.util.List;
  * This class is for when the user is now seeing the directions for each exhibit
  */
 public class DirectionsActivity extends AppCompatActivity {
-    private final SetDirections setDirections = new SetDirections(this);
+    private SetDirections setDirections;
     private final LocationHandler locationHandler = new LocationHandler(this);
     //index that is incremented/decremented by next/back buttons
     //used to traverse through planned exhibits
@@ -33,11 +33,6 @@ public class DirectionsActivity extends AppCompatActivity {
     public static boolean canCheckReplan = true;
     public static boolean recentlyYesReplan = false;
     public static boolean directionsDetailedText;
-
-    // Graph Information Files
-    final String ZOO_GRAPH_JSON = "sample_zoo_graph.json";
-    final String NODE_INFO_JSON = "sample_node_info.json";
-    final String EDGE_INFO_JSON = "sample_edge_info.json";
 
     public List<ZooNode> userListShortestOrder;
 
@@ -65,7 +60,8 @@ public class DirectionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
-
+        setDirections = new SetDirections(this,
+                getApplication().getApplicationContext());
         locationHandler.resetMockLocation();
 
         // Get boolean, default false
@@ -84,7 +80,6 @@ public class DirectionsActivity extends AppCompatActivity {
         // Grabbing planned animals from planned list and inputting to new activity
         if( plannedAnimalDao.getAll().size() > 0 ){
             Log.d("Zoo Nodes", plannedAnimalDao.getAll().toString());
-            loadGraph(); // will initialize graph, vInfo, and eInfo variables
 
             // Our old algorithm
             algorithm = new ShortestPathZooAlgorithm(
@@ -107,10 +102,10 @@ public class DirectionsActivity extends AppCompatActivity {
             setDirections.setDirectionsText(directionsDetailedText);
 
             // Testing Replan Button
-//            Location mockBenchlyPlaza = new Location("Mock Benchly Plaza");
-//            mockBenchlyPlaza.setLatitude(32.74476120197887);
-//            mockBenchlyPlaza.setLongitude(-117.18369973246877);
-//            setMockLocation(mockBenchlyPlaza);
+            Location mockEntrance = new Location("Mock Entrance");
+            mockEntrance.setLatitude(32.73459618734685);
+            mockEntrance.setLongitude(-117.14936);
+            setMockLocation(mockEntrance);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -273,21 +268,6 @@ public class DirectionsActivity extends AppCompatActivity {
                 userListShortestOrder.get(currIndex + 1)));
         setDirections.setDirectionsText(directionsDetailedText);
         canCheckReplan = true;
-    }
-
-    /**
-     * Loads graph information from files. Initializes graph, vInfo, and eInfo instance variables.
-     */
-    private void loadGraph() {
-        // For loading in resources
-        var context = getApplication().getApplicationContext();
-
-        // 1. Load the graph...
-        setDirections.setGraph(ZooData.loadZooGraphJSON(context, ZOO_GRAPH_JSON));
-
-        // 2. Load the information about our nodes and edges...
-        setDirections.setvInfo(ZooData.loadVertexInfoJSON(context, NODE_INFO_JSON));
-        setDirections.seteInfo(ZooData.loadEdgeInfoJSON(context, EDGE_INFO_JSON));
     }
 
     /**
