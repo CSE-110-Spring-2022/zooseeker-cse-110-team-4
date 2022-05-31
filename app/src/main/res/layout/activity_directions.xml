@@ -67,8 +67,8 @@
 
     <TextView
         android:id="@+id/directions_header"
-        android:layout_width="384dp"
-        android:layout_height="79dp"
+        android:layout_width="369dp"
+        android:layout_height="46dp"
         android:text="Directions to ___"
         android:textAlignment="center"
         android:textColor="@color/black"
