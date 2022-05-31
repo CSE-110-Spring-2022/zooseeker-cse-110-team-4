@@ -19,7 +19,7 @@ public class ExhibitsSetup {
     /**
      * Constructor
      *
-     * @param Activity The activity where we need the list of exhibits
+     * @param a The activity where we need the list of exhibits
      */
     public ExhibitsSetup(Activity a) {
         this.activity = a;
@@ -56,7 +56,7 @@ public class ExhibitsSetup {
      * Checks if the selected animal from the search bar has already been added to the list of planned animals.
      * If so, do nothing, else add the selected animal to the plannedAnimalDao
      *
-     * @param int position of the item in the recycler view in SearchActivity
+     * @param position of the item in the recycler view in SearchActivity
      */
     void addAnimalPlannedList(int position){
 
@@ -102,7 +102,7 @@ public class ExhibitsSetup {
     /**
      * Sets the dao storing the list of planned animals to the new given list
      *
-     * @param List of ZooNodes to plan
+     * @param e of ZooNodes to plan
      */
     void setUserExhibits(List<ZooNode> e){
         PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(activity).plannedAnimalDao();

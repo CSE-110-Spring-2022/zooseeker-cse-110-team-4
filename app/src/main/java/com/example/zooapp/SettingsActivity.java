@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * When the switch button is clicked, change the directions from detailed to brief or vice versa
      *
-     * @param View
+     * @param view
      */
     public void onDirectionsSwitchClick(View view) {
 

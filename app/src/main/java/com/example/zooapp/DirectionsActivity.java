@@ -317,6 +317,12 @@ public class DirectionsActivity extends AppCompatActivity {
         Log.d("SkipButton", "List planned animal AFTER: " + plannedAnimalDao.getAll().toString());
     }
 
+    /**
+     * Replans route based on the user's current location and the next closest exhibit when the user clicks
+     * the replan button
+     *
+     * @param view
+     */
     public void onReplanButtonClicked(View view) {
         if(locationHandler.getLocationToUse() == null) {
             runOnUiThread(() -> {

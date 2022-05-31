@@ -42,7 +42,7 @@ public abstract class PlannedAnimalDatabase extends RoomDatabase{
     /**
      * Creates a new Room database if one has not yet been created
      *
-     * @param Context
+     * @param context
      * @return PlannedAnimalDatabase the created or existing database
      */
     public synchronized static PlannedAnimalDatabase getSingleton(Context context) {
@@ -55,7 +55,7 @@ public abstract class PlannedAnimalDatabase extends RoomDatabase{
     /**
      * Creates a new Room database to store the list of planned animals
      *
-     * @param PlannedAnimalDatabase
+     * @param context
      * @return PlannedAnimalDatabase the created database
      */
     private static PlannedAnimalDatabase makeDatabase(Context context) {

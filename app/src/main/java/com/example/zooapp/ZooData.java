@@ -58,8 +58,8 @@ public class ZooData {
     /**
      * Loads information about each vertex in the graph from a JSON file
      *
-     * @param Context
-     * @param String the path to the information file
+     * @param context
+     * @param path the path to the information file
      *
      * @return Map of edges and their information
      */
@@ -95,8 +95,8 @@ public class ZooData {
     /**
      * Loads information about each edge in the graph from a JSON file
      *
-     * @param Context
-     * @param String the path to the information file
+     * @param context
+     * @param path the path to the information file
      *
      * @return Map of edges and their information
      */
@@ -125,8 +125,8 @@ public class ZooData {
     /**
      * Loads the zoo graph from a JSON file
      *
-     * @param Context
-     * @param String the path to the information file
+     * @param context
+     * @param path the path to the information file
      *
      * @return Graph
      */

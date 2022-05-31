@@ -24,7 +24,7 @@ public class PermissionChecker {
     /**
      * Constructor
      *
-     * @param ComponentActivity the activity where permissions are required
+     * @param activity the activity where permissions are required
      */
     public PermissionChecker(ComponentActivity activity) {
         this.activity = activity;

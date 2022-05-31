@@ -38,7 +38,7 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
     /**
      * Creates a new Room database if one has not yet been created
      *
-     * @param Context
+     * @param context
      * @return ZooNodeDatabase the created or existing database
      */
     public synchronized static ZooNodeDatabase getSingleton(Context context) {
@@ -51,7 +51,7 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
     /**
      * Creates a new Room database to store the list of zoo exhibits
      *
-     * @param Context
+     * @param context
      * @return ZooNodeDatabase the created database
      */
     private static ZooNodeDatabase makeDatabase(Context context) {
@@ -75,7 +75,7 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
     /**
      * Creates a new test database if one has not already been made
      *
-     * @param ZooNodeDatabase
+     * @param testDatabase
      */
     @VisibleForTesting
     public static void injectTestDatabase(ZooNodeDatabase testDatabase) {
