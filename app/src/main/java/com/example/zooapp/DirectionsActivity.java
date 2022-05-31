@@ -1,6 +1,7 @@
 package com.example.zooapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
 
@@ -40,11 +41,9 @@ public class DirectionsActivity extends AppCompatActivity {
     public GraphAlgorithm algorithm;
     public ActionBar actionBar;
     public AlertDialog alertMessage;
-    public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
-            .plannedAnimalDao();
-    public ZooNodeDao zooNodeDao = ZooNodeDatabase.getSingleton(this)
-            .ZooNodeDao();
-    private ExhibitLocations exhibitLocations = new ExhibitLocations(zooNodeDao);
+    public PlannedAnimalDao plannedAnimalDao;
+    public ZooNodeDao zooNodeDao;
+    private ExhibitLocations exhibitLocations;
     private Button previous, skip;
     private boolean backwards = false;
     private ZooNode previousClosestZooNode;
@@ -62,6 +61,11 @@ public class DirectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_directions);
         setDirections = new SetDirections(this,
                 getApplication().getApplicationContext());
+        plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
+                .plannedAnimalDao();
+        zooNodeDao = ZooNodeDatabase.getSingleton(this)
+                .ZooNodeDao();
+        exhibitLocations = new ExhibitLocations(zooNodeDao);
         locationHandler.resetMockLocation();
 
         // Get boolean, default false
@@ -102,10 +106,10 @@ public class DirectionsActivity extends AppCompatActivity {
             setDirections.setDirectionsText(directionsDetailedText);
 
             // Testing Replan Button
-            Location mockEntrance = new Location("Mock Entrance");
-            mockEntrance.setLatitude(32.72109826903826);
-            mockEntrance.setLongitude(-117.15952052282296);
-            setMockLocation(mockEntrance);
+//            Location mockEntrance = new Location("Mock Entrance");
+//            mockEntrance.setLatitude(32.72109826903826);
+//            mockEntrance.setLongitude(-117.15952052282296);
+//            setMockLocation(mockEntrance);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -387,5 +391,10 @@ public class DirectionsActivity extends AppCompatActivity {
 
     public void setMockLocation(Location mockLocation) {
         locationHandler.setMockLocation(mockLocation);
+    }
+
+    @VisibleForTesting
+    public LocationListenerImplementation getLocationListenerImplementation() {
+        return locationHandler.getLocationListenerImplementation();
     }
 }
