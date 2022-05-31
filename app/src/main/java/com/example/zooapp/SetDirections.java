@@ -187,7 +187,7 @@ public class SetDirections {
      */
     private void loadGraph(DirectionsActivity directionsActivity) {
         // For loading in resources
-        var context = directionsActivity.getApplication().getApplicationContext();
+        var context = directionsActivity.getApplicationContext();
 
         // 1. Load the graph...
         setGraph(ZooData.loadZooGraphJSON(context, ZOO_GRAPH_JSON));
