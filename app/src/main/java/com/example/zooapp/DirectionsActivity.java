@@ -23,8 +23,7 @@ import java.util.List;
  * This class is for when the user is now seeing the directions for each exhibit
  */
 public class DirectionsActivity extends AppCompatActivity {
-    private final SetDirections setDirections = new SetDirections(this,
-            getApplication().getApplicationContext());
+    private SetDirections setDirections;
     private final LocationHandler locationHandler = new LocationHandler(this);
     //index that is incremented/decremented by next/back buttons
     //used to traverse through planned exhibits
@@ -61,7 +60,8 @@ public class DirectionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
-
+        setDirections = new SetDirections(this,
+                getApplication().getApplicationContext());
         locationHandler.resetMockLocation();
 
         // Get boolean, default false
@@ -102,10 +102,10 @@ public class DirectionsActivity extends AppCompatActivity {
             setDirections.setDirectionsText(directionsDetailedText);
 
             // Testing Replan Button
-//            Location mockBenchlyPlaza = new Location("Mock Benchly Plaza");
-//            mockBenchlyPlaza.setLatitude(32.74476120197887);
-//            mockBenchlyPlaza.setLongitude(-117.18369973246877);
-//            setMockLocation(mockBenchlyPlaza);
+            Location mockEntrance = new Location("Mock Entrance");
+            mockEntrance.setLatitude(32.73459618734685);
+            mockEntrance.setLongitude(-117.14936);
+            setMockLocation(mockEntrance);
         }
         else{
             Log.d("null input", "User exhibits was null");
