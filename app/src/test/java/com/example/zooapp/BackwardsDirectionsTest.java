@@ -80,9 +80,9 @@ public class BackwardsDirectionsTest {
 
             assertEquals(1, activity.plannedAnimalDao.getAll().size());
             assertEquals(3, activity.userListShortestOrder.size());
-            activity.locationToUse = new Location("Mock Location");
-            activity.locationToUse.setLatitude(32.73459618734685);
-            activity.locationToUse.setLongitude(-117.14936);
+            activity.setLocationToUse(new Location("Mock Location"));
+            activity.getLocationToUse().setLatitude(32.73459618734685);
+            activity.getLocationToUse().setLongitude(-117.14936);
             assertEquals(1, planDao.getAll().size());
 
             //Next should be visible, Previous should be invisible
@@ -120,9 +120,9 @@ public class BackwardsDirectionsTest {
             //Two animals in planned list, but path should be length four including entrance and exit
             assertEquals(3, activity2.plannedAnimalDao.getAll().size());
             assertEquals(5, activity2.userListShortestOrder.size());
-            activity2.locationToUse = new Location("Mock Location");
-            activity2.locationToUse.setLatitude(32.73459618734685);
-            activity2.locationToUse.setLongitude(-117.14936);
+            activity2.setLocationToUse(new Location("Mock Location"));
+            activity2.getLocationToUse().setLatitude(32.73459618734685);
+            activity2.getLocationToUse().setLongitude(-117.14936);
 
             //currIndex starts at first animal, index at 0
             //Previous should be invisible, Next should be visible
@@ -132,9 +132,9 @@ public class BackwardsDirectionsTest {
             assertEquals(name.getText().toString(), "Flamingos");
 
             //set new location to at first exhibit
-            activity2.locationToUse = new Location("Mock Flamingos");
-            activity2.locationToUse.setLatitude(32.7440416465169);
-            activity2.locationToUse.setLongitude(-117.15952052282296);
+            activity2.setLocationToUse(new Location("Mock Flamingos"));
+            activity2.getLocationToUse().setLatitude(32.7440416465169);
+            activity2.getLocationToUse().setLongitude(-117.15952052282296);
 
             //click Next to move to the second animal, currIndex at 1
             next.performClick();
@@ -145,9 +145,9 @@ public class BackwardsDirectionsTest {
             assertEquals("Gorillas", name.getText().toString());
 
             //set new location to at the second exhibit
-            activity2.locationToUse = new Location("Mock Gorillas");
-            activity2.locationToUse.setLatitude(32.74711745394194);
-            activity2.locationToUse.setLongitude(-117.18047982358976);
+            activity2.setLocationToUse(new Location("Mock Gorillas"));
+            activity2.getLocationToUse().setLatitude(32.74711745394194);
+            activity2.getLocationToUse().setLongitude(-117.18047982358976);
 
             //click Next to move to the third animal, currIndex at 2
             next.performClick();
@@ -157,9 +157,9 @@ public class BackwardsDirectionsTest {
             assertEquals("Orangutans", name.getText().toString());
 
             //set new location to at the third exhibit
-            activity2.locationToUse = new Location("Mock Orangutans");
-            activity2.locationToUse.setLatitude(32.735851415117665);
-            activity2.locationToUse.setLongitude(-117.16626781198586);
+            activity2.setLocationToUse(new Location("Mock Orangutans"));
+            activity2.getLocationToUse().setLatitude(32.735851415117665);
+            activity2.getLocationToUse().setLongitude(-117.16626781198586);
 
             //click Previous to return to third animal, Previous button is invisible
             previous.performClick();
@@ -176,9 +176,9 @@ public class BackwardsDirectionsTest {
             assertEquals(backwardsThreeToTwo, directions.getText().toString());
 
             //set new location to at the second exhibit
-            activity2.locationToUse = new Location("Mock Gorillas");
-            activity2.locationToUse.setLatitude(32.74711745394194);
-            activity2.locationToUse.setLongitude(-117.18047982358976);
+            activity2.setLocationToUse(new Location("Mock Gorillas"));
+            activity2.getLocationToUse().setLatitude(32.74711745394194);
+            activity2.getLocationToUse().setLongitude(-117.18047982358976);
 
             //click Previous to return to first animal, Previous button is invisible
             previous.performClick();

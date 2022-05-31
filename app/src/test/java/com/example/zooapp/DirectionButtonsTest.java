@@ -116,9 +116,9 @@ public class DirectionButtonsTest {
         scenario2.onActivity(activity2 -> {
             Button next = activity2.findViewById(R.id.next_button);
             Button previous = activity2.findViewById(R.id.previous_button);
-            activity2.locationToUse = new Location("Mock Location");
-            activity2.locationToUse.setLatitude(32.73459618734685);
-            activity2.locationToUse.setLongitude(-117.14936);
+            activity2.setLocationToUse(new Location("Mock Location"));
+            activity2.getLocationToUse().setLatitude(32.73459618734685);
+            activity2.getLocationToUse().setLongitude(-117.14936);
 
             //Two animals in planned list, but path should be length four to go back to entrance
             assertEquals(2, planDao.getAll().size());
@@ -160,9 +160,9 @@ public class DirectionButtonsTest {
         scenario2.onActivity(activity2 -> {
             Button next = activity2.findViewById(R.id.next_button);
             Button previous = activity2.findViewById(R.id.previous_button);
-            activity2.locationToUse = new Location("Mock Location");
-            activity2.locationToUse.setLatitude(32.73459618734685);
-            activity2.locationToUse.setLongitude(-117.14936);
+            activity2.setLocationToUse(new Location("Mock Location"));
+            activity2.getLocationToUse().setLatitude(32.73459618734685);
+            activity2.getLocationToUse().setLongitude(-117.14936);
             assertEquals(2, planDao.getAll().size());
 
             //Two animals in planned list, but path should be length four including going back to entrance/exit

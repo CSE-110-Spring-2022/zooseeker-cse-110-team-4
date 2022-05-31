@@ -83,9 +83,9 @@ public class SkipButtonTest {
             Button next = activity.findViewById(R.id.next_button);
             TextView name = activity.findViewById(R.id.directions_header);
 
-            activity.locationToUse = new Location("Mock Location");
-            activity.locationToUse.setLatitude(32.73459618734685);
-            activity.locationToUse.setLongitude(-117.14936);
+            activity.setLocationToUse(new Location("Mock Location"));
+            activity.getLocationToUse().setLatitude(32.73459618734685);
+            activity.getLocationToUse().setLongitude(-117.14936);
 
             assertEquals(0, activity.currIndex);
             assertEquals("Koi Fish", name.getText().toString());
@@ -126,9 +126,9 @@ public class SkipButtonTest {
             Button skip = activity2.findViewById(R.id.skip_button);
             TextView name = activity2.findViewById(R.id.directions_header);
 
-            activity2.locationToUse = new Location("Mock Location");
-            activity2.locationToUse.setLatitude(32.73459618734685);
-            activity2.locationToUse.setLongitude(-117.14936);
+            activity2.setLocationToUse(new Location("Mock Location"));
+            activity2.getLocationToUse().setLatitude(32.73459618734685);
+            activity2.getLocationToUse().setLongitude(-117.14936);
 
             //Two animals in planned list, but path should be length four including entrance and exit
             assertEquals(2, planDao.getAll().size());
