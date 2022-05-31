@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Data;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.example.zooapp.Ultility.TagsConverter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

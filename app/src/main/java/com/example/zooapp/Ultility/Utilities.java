@@ -1,9 +1,10 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.text.Layout;
+
+import com.example.zooapp.Viewer.DirectionsActivity;
 
 import java.util.Optional;
 

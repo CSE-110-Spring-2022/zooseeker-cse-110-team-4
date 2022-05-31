@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Adapter;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ public class AnimalListViewAdapter extends RecyclerView.Adapter<AnimalListViewAd
      * @param zooNodeList List of all the exhibits in the zoo
      * @param clickListener Click listener for when the recycler view is clicked
      */
-    AnimalListViewAdapter(List<ZooNode> zooNodeList, ClickListener clickListener) {
+    public AnimalListViewAdapter(List<ZooNode> zooNodeList, ClickListener clickListener) {
         this.zooNodeList = zooNodeList;
         this.zooNodeListFull = new ArrayList<>(zooNodeList);
         this.clickListener = clickListener;

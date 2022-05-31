@@ -1,4 +1,5 @@
-package com.example.zooapp;
+package com.example.zooapp.Data;
+
 
 import android.content.Context;
 
@@ -10,16 +11,22 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.zooapp.Interface.PlannedAnimalDao;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 
 /**
- * This class creates the database to store the list of exhibits in the zoo
+ * This class creates the database to store the list of planned animals
  */
-@Database(entities = {ZooNode.class},
-        version = 2)
-public abstract class ZooNodeDatabase extends RoomDatabase {
-    public static ZooNodeDatabase singleton = null;
+@Database(entities = {ZooNode.class}, version = 2)
+public abstract class PlannedAnimalDatabase extends RoomDatabase{
+
+    //Public fields
+    public abstract PlannedAnimalDao plannedAnimalDao();
+
+    //Private fields
+    private static PlannedAnimalDatabase singleton = null;
 
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
@@ -33,40 +40,38 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
         }
     };
 
-    public abstract ZooNodeDao ZooNodeDao();
-
     /**
      * Creates a new Room database if one has not yet been created
      *
      * @param Context
-     * @return ZooNodeDatabase the created or existing database
+     * @return PlannedAnimalDatabase the created or existing database
      */
-    public synchronized static ZooNodeDatabase getSingleton(Context context) {
+    public synchronized static PlannedAnimalDatabase getSingleton(Context context) {
         if( singleton == null ) {
-            singleton = ZooNodeDatabase.makeDatabase(context);
+            singleton = PlannedAnimalDatabase.makeDatabase(context);
         }
         return singleton;
     }
 
     /**
-     * Creates a new Room database to store the list of zoo exhibits
+     * Creates a new Room database to store the list of planned animals
      *
-     * @param Context
-     * @return ZooNodeDatabase the created database
+     * @param PlannedAnimalDatabase
+     * @return PlannedAnimalDatabase the created database
      */
-    private static ZooNodeDatabase makeDatabase(Context context) {
-        return Room.databaseBuilder(context, ZooNodeDatabase.class, "zoo_app.db")
+    private static PlannedAnimalDatabase makeDatabase(Context context) {
+        return Room.databaseBuilder(context, PlannedAnimalDatabase.class, "planned_list.db")
                 .allowMainThreadQueries()
                 .addMigrations(MIGRATION_1_2)
-                .addCallback(new Callback() {
+                .addCallback(new RoomDatabase.Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         super.onCreate(db);
-                        Executors.newSingleThreadScheduledExecutor().execute(() -> {
-                            List<ZooNode> zooNodeList = ZooNode
-                                    .loadJSON(context, "sample_node_info.json");
-                            getSingleton(context).ZooNodeDao().insertAll(zooNodeList);
-                        });
+                        List<ZooNode> plannedList = new ArrayList<>();
+//                        Executors.newSingleThreadScheduledExecutor().execute(() -> {
+//                            List<ZooNode> plannedList = new ArrayList<>();
+//                            //getSingleton(context).plannedAnimalDao().
+//                        });
                     }
                 })
                 .build();
@@ -75,10 +80,10 @@ public abstract class ZooNodeDatabase extends RoomDatabase {
     /**
      * Creates a new test database if one has not already been made
      *
-     * @param ZooNodeDatabase
+     * @param PlannedAnimalDatabase
      */
     @VisibleForTesting
-    public static void injectTestDatabase(ZooNodeDatabase testDatabase) {
+    public static void injectTestDatabase(PlannedAnimalDatabase testDatabase) {
         if( singleton != null ) {
             singleton.close();
         }

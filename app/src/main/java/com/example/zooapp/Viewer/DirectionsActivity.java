@@ -1,8 +1,4 @@
-package com.example.zooapp;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.ActionBar;
+package com.example.zooapp.Viewer;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -17,6 +13,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.zooapp.Data.PlannedAnimalDatabase;
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Data.ZooNodeDatabase;
+import com.example.zooapp.Interface.GraphAlgorithm;
+import com.example.zooapp.Interface.PlannedAnimalDao;
+import com.example.zooapp.Interface.ZooNodeDao;
+import com.example.zooapp.R;
+import com.example.zooapp.Ultility.ExhibitLocations;
+import com.example.zooapp.Ultility.LocationHandler;
+import com.example.zooapp.Ultility.SetDirections;
+import com.example.zooapp.Ultility.ShortestPathZooAlgorithm;
+import com.example.zooapp.Ultility.Utilities;
+
 import java.util.List;
 
 /**
@@ -27,7 +40,7 @@ public class DirectionsActivity extends AppCompatActivity {
     private final LocationHandler locationHandler = new LocationHandler(this);
     //index that is incremented/decremented by next/back buttons
     //used to traverse through planned exhibits
-    int currIndex = 0;
+    public int currIndex = 0;
     public static boolean check = false;
     public static boolean replanAlertShown = false;
     public static boolean canCheckReplan = true;

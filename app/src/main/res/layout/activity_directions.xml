@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DirectionsActivity">
+    tools:context=".Viewer.DirectionsActivity">
 
     <Button
         android:id="@+id/skip_button"
