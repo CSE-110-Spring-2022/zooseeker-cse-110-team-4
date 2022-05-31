@@ -10,6 +10,7 @@
         android:id="@+id/skip_button"
         android:layout_width="100dp"
         android:layout_height="55dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#8BC34A"
         android:fontFamily="monospace"
         android:onClick="onSkipButtonClicked"
@@ -17,15 +18,16 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.819"
+        app:layout_constraintHorizontal_bias="0.818"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.952" />
+        app:layout_constraintTop_toBottomOf="@+id/next_button"
+        app:layout_constraintVertical_bias="0.012" />
 
     <Button
         android:id="@+id/start_over_button"
         android:layout_width="100dp"
         android:layout_height="55dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#8BC34A"
         android:fontFamily="monospace"
         android:onClick="onStartOverButtonClicked"
@@ -33,15 +35,17 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.176"
+        app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.952" />
+        app:layout_constraintTop_toBottomOf="@+id/previous_button"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/next_button"
         android:layout_width="100dp"
         android:layout_height="55dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="152dp"
         android:backgroundTint="#8BC34A"
         android:fontFamily="monospace"
         android:onClick="onNextButtonClicked"
@@ -50,13 +54,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.641"
         app:layout_constraintStart_toEndOf="@+id/previous_button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.851" />
+        app:layout_constraintTop_toBottomOf="@+id/directions_text" />
 
     <Button
         android:id="@+id/previous_button"
         android:layout_width="100dp"
         android:layout_height="55dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="152dp"
         android:backgroundTint="#8BC34A"
         android:fontFamily="monospace"
         android:onClick="onPreviousButtonClicked"
@@ -64,10 +69,9 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.176"
+        app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.851" />
+        app:layout_constraintTop_toBottomOf="@+id/directions_text" />
 
     <TextView
         android:id="@+id/directions_header"
@@ -86,8 +90,8 @@
 
     <TextView
         android:id="@+id/directions_text"
-        android:layout_width="352dp"
-        android:layout_height="470dp"
+        android:layout_width="345dp"
+        android:layout_height="415dp"
         android:text="proceed _____"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -97,5 +101,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/directions_header"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/replan_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="164dp"
+        android:layout_marginBottom="22dp"
+        android:backgroundTint="#8BC34A"
+        android:onClick="onReplanButtonClicked"
+        android:text="Replan"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/directions_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

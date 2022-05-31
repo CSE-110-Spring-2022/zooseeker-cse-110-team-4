@@ -105,10 +105,12 @@ public class DirectionsActivity extends AppCompatActivity {
             previousClosestZooNode = zooNodeDao.getById("entrance_exit_gate");
 
             setDirections.setDirectionsText(directionsDetailedText);
-            // Used for live testing
-//            mockLocation = new Location("Mock Entrance");
-//            mockLocation.setLatitude(32.73459618734685);
-//            mockLocation.setLongitude(-117.14936);
+
+            // Testing Replan Button
+//            Location mockBenchlyPlaza = new Location("Mock Benchly Plaza");
+//            mockBenchlyPlaza.setLatitude(32.74476120197887);
+//            mockBenchlyPlaza.setLongitude(-117.18369973246877);
+//            setMockLocation(mockBenchlyPlaza);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -329,6 +331,24 @@ public class DirectionsActivity extends AppCompatActivity {
         setDirections.setDirectionsText(directionsDetailedText);
 
         Log.d("SkipButton", "List planned animal AFTER: " + plannedAnimalDao.getAll().toString());
+    }
+
+    public void onReplanButtonClicked(View view) {
+        if(locationHandler.getLocationToUse() == null) {
+            runOnUiThread(() -> {
+                alertMessage = Utilities.showAlert(this,"Please wait until " +
+                        "your location has started updating.");
+                alertMessage.show();
+                //alertMessage.isShowing();
+            });
+            return;
+        }
+
+        Log.d("Replan", "Replan was clicked");
+
+        var nearestZooNode =
+                exhibitLocations.getZooNodeClosestToCurrentLocation(getLocationToUse());
+        locationHandler.replanRoute(nearestZooNode);
     }
 
     private void skipButtonVisibilityCheck() {
