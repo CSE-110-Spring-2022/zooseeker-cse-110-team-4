@@ -101,7 +101,8 @@ public class SetDirections {
     }
 
     /**
-     * Creates the brief directions text for the directions activity and stores it in the variable directions
+     * Creates the brief directions text for the directions activity and stores it in the variable
+     * directions
      *
      * @param GraphPath
      */
@@ -242,16 +243,21 @@ public class SetDirections {
 
     public void skipNewDirections() {
         Log.d("SkipButton", "Skip Button Clicked");
-        Log.d("SkipButton", "List planned animal BEFORE: " + directionsActivity.plannedAnimalDao.getAll().toString());
-        Log.d("SkipButton", "Current view exhibit: " + directionsActivity.userListShortestOrder.get(directionsActivity.currIndex+1).toString());
-        directionsActivity.plannedAnimalDao.delete(directionsActivity.userListShortestOrder.get(directionsActivity.currIndex+1));
+        Log.d("SkipButton", "List planned animal BEFORE: " +
+                directionsActivity.plannedAnimalDao.getAll().toString());
+        Log.d("SkipButton", "Current view exhibit: " + directionsActivity
+                .userListShortestOrder.get(directionsActivity.currIndex+1).toString());
+        directionsActivity.plannedAnimalDao.delete(
+                directionsActivity.userListShortestOrder.get(directionsActivity.currIndex+1));
 
         var nearestZooNode =
-                directionsActivity.getExhibitLocations().getZooNodeClosestToCurrentLocation(directionsActivity.getLocationToUse());
+                directionsActivity.getExhibitLocations()
+                        .getZooNodeClosestToCurrentLocation(directionsActivity.getLocationToUse());
 
         var reorderedExhibits = directionsActivity.algorithm
                 .runChangedLocationAlgorithm(nearestZooNode,
-                        directionsActivity.userListShortestOrder.subList(directionsActivity.currIndex+2,
+                        directionsActivity.userListShortestOrder.subList(
+                                directionsActivity.currIndex+2,
                                 directionsActivity.userListShortestOrder.size()-1));
         Log.d("Check Location", "New Graph Path: " + reorderedExhibits.toString());
         var originalVisitedExhibits =
@@ -263,24 +269,32 @@ public class SetDirections {
         // Get the new List of zoo nodes in the new shortest order of the remaining
         // exhibits
         Log.d("Check Location", "Graph Plan Replan: " + getGraphPaths().toString());
-        var reorderedShortestOrder = directionsActivity.algorithm.getNewUserListShortestOrder();
+        var reorderedShortestOrder = directionsActivity.algorithm
+                .getNewUserListShortestOrder();
         Log.d("Check Location", "New Order: " + reorderedShortestOrder.toString());
         var originalVisitedShortestOrder = directionsActivity.userListShortestOrder
                 .subList(0, directionsActivity.currIndex+1);
-        Log.d("Check Location", "Old Beginning: " + originalVisitedShortestOrder.toString());
-        directionsActivity.userListShortestOrder = Stream.concat(originalVisitedShortestOrder.stream(),
-                reorderedShortestOrder.stream()).collect(Collectors.toList());
-        Log.d("Check Location", "Replan Complete: " + directionsActivity.userListShortestOrder.toString());
+        Log.d("Check Location", "Old Beginning: " +
+                originalVisitedShortestOrder.toString());
+        directionsActivity.userListShortestOrder = Stream.concat(originalVisitedShortestOrder
+                        .stream(), reorderedShortestOrder.stream()).collect(Collectors.toList());
+        Log.d("Check Location", "Replan Complete: " +
+                directionsActivity.userListShortestOrder.toString());
         Log.d("Location", directionsActivity.userListShortestOrder.toString());
 
         // Set up for the exhibitLocations class
-        var subListSize = (directionsActivity.currIndex >= directionsActivity.userListShortestOrder.size() - 2) ?
-                directionsActivity.userListShortestOrder.size() : directionsActivity.userListShortestOrder.size() - 1;
-        directionsActivity.getExhibitLocations().setupExhibitLocations(directionsActivity.userListShortestOrder
-                .subList(directionsActivity.currIndex+1, subListSize));
-        Log.d("Check Location", directionsActivity.getExhibitLocations().exhibitsSubList.toString());
+        var subListSize = (directionsActivity.currIndex >=
+                directionsActivity.userListShortestOrder.size() - 2) ?
+                directionsActivity.userListShortestOrder.size() :
+                directionsActivity.userListShortestOrder.size() - 1;
+        directionsActivity.getExhibitLocations().setupExhibitLocations(
+                directionsActivity.userListShortestOrder.subList(directionsActivity.currIndex+1,
+                        subListSize));
+        Log.d("Check Location", directionsActivity.getExhibitLocations()
+                .exhibitsSubList.toString());
         nearestZooNode =
-                directionsActivity.getExhibitLocations().getZooNodeClosestToCurrentLocation(directionsActivity.getLocationToUse());
+                directionsActivity.getExhibitLocations().getZooNodeClosestToCurrentLocation(
+                        directionsActivity.getLocationToUse());
 
         // Find the new path to display
         setGraphPath(directionsActivity.algorithm.runPathAlgorithm(nearestZooNode,
