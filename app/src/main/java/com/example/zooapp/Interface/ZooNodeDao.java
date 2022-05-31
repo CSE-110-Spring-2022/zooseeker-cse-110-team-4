@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Interface;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -6,8 +6,13 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.zooapp.Data.ZooNode;
+
 import java.util.List;
 
+/**
+ * This interface is used to store and manage the list of exhibits
+ */
 @Dao
 public interface ZooNodeDao {
     @Insert

@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.R;
 
 import java.util.Collections;
 import java.util.List;

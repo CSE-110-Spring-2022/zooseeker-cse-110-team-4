@@ -26,6 +26,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.GrantPermissionRule;
 
+import com.example.zooapp.Viewer.MainActivity;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -60,7 +62,7 @@ public class PlanAndDirectionsButtonTest {
         appCompatButton.perform(click());
 
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -81,7 +83,7 @@ public class PlanAndDirectionsButtonTest {
         appCompatImageButton.perform(click());
 
         ViewInteraction actionMenuItemView2 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),
@@ -120,7 +122,7 @@ public class PlanAndDirectionsButtonTest {
         recyclerView.perform(actionOnItemAtPosition(1, click()));
 
         ViewInteraction actionMenuItemView3 = onView(
-                allOf(withId(R.id.actions_search), withContentDescription("Search"),
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(androidx.appcompat.R.id.action_bar),

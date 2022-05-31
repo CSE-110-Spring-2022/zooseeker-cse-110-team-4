@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Data;
 
 import android.content.Context;
 
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.example.zooapp.Ultility.IdentifiedWeightedEdge;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -19,8 +20,19 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultUndirectedWeightedGraph;
 import org.jgrapht.nio.json.JSONImporter;
 
+/**
+ * This class loads in data about the zoo graph from JSON files
+ */
 public class ZooData {
+
+    /**
+     * This class loads in data about the zoo exhibits from JSON files
+     */
     public static class VertexInfo {
+
+        /**
+         * This method sets up how to convert from JSON strings into type Enum
+         */
         public static enum Kind {
             // The SerializedName annotation tells GSON how to convert
             // from the strings in our JSON to this Enum.
@@ -29,19 +41,31 @@ public class ZooData {
             @SerializedName("intersection") INTERSECTION
         }
 
+        //Public fields
         public String id;
         public Kind kind;
         public String name;
         public List<String> tags;
     }
 
+    /**
+     * This class handles storing information about each edge in the zoo graph
+     */
     public static class EdgeInfo {
         public String id;
         public String street;
     }
 
+    /**
+     * Loads information about each vertex in the graph from a JSON file
+     *
+     * @param Context
+     * @param String the path to the information file
+     *
+     * @return Map of edges and their information
+     */
     public static Map<String, ZooData.VertexInfo> loadVertexInfoJSON(Context context, String path) {
-        //InputStream inputStream = App.class.getClassLoader().getResourceAsStream(path);
+
         InputStream inputStream = null;
         try {
             inputStream = context.getAssets().open(path);
@@ -69,6 +93,14 @@ public class ZooData {
         return indexedZooData;
     }
 
+    /**
+     * Loads information about each edge in the graph from a JSON file
+     *
+     * @param Context
+     * @param String the path to the information file
+     *
+     * @return Map of edges and their information
+     */
     public static Map<String, ZooData.EdgeInfo> loadEdgeInfoJSON(Context context, String path) {
         //InputStream inputStream = App.class.getClassLoader().getResourceAsStream(path);
         InputStream inputStream = null;
@@ -91,6 +123,14 @@ public class ZooData {
         return indexedZooData;
     }
 
+    /**
+     * Loads the zoo graph from a JSON file
+     *
+     * @param Context
+     * @param String the path to the information file
+     *
+     * @return Graph
+     */
     public static Graph<String, IdentifiedWeightedEdge> loadZooGraphJSON(Context context, String path) {
         // Create an empty graph to populate.
         Graph<String, IdentifiedWeightedEdge> g = new DefaultUndirectedWeightedGraph<>(IdentifiedWeightedEdge.class);

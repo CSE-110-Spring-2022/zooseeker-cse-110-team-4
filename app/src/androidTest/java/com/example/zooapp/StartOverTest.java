@@ -34,13 +34,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Test RoutePlanSummary Page.
- * Searches for and adds Bali Mynah and Emerald Dove to the planned list.
- * Navigate to RoutePlanSummary by clicking the "directions" button
+ * Clear the route plan test. Test start over button in directions activity.
  */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RoutePlanSummaryTest {
+public class StartOverTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
@@ -53,7 +51,17 @@ public class RoutePlanSummaryTest {
                     "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
-    public void routePlanSummaryTest() {
+    public void startOverTest() {
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.clear_button), withText("CLEAR"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
@@ -107,32 +115,27 @@ public class RoutePlanSummaryTest {
                         childAtPosition(
                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
                                 0)));
-        recyclerView2.perform(actionOnItemAtPosition(4, click()));
+        recyclerView2.perform(actionOnItemAtPosition(2, click()));
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.plan_button), withText("plan"),
+        ViewInteraction actionMenuItemView4 = onView(
+                allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
+                                        withId(androidx.appcompat.R.id.action_bar),
+                                        1),
                                 0),
                         isDisplayed()));
-        appCompatButton.perform(click());
+        actionMenuItemView4.perform(click());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.planned_animal_text), withText("Bali Mynah (8700 ft)"),
-                        withParent(withParent(withId(R.id.route_plan_summary))),
-                        isDisplayed()));
-        textView.check(matches(withText("Bali Mynah (8700 ft)")));
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.planned_animal_text), withText("Emerald Dove (8700 ft)"),
-                        withParent(withParent(withId(R.id.route_plan_summary))),
-                        isDisplayed()));
-        textView2.check(matches(withText("Emerald Dove (8700 ft)")));
+        ViewInteraction recyclerView3 = onView(
+                allOf(withId(R.id.animalListView),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                0)));
+        recyclerView3.perform(actionOnItemAtPosition(4, click()));
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.directions_button), withText("directions"),
+                allOf(withId(R.id.plan_button), withText("plan"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -141,13 +144,17 @@ public class RoutePlanSummaryTest {
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.directions_header), withText("Bali Mynah"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView3.check(matches(withText("Bali Mynah")));
-
         ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.directions_button), withText("directions"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatButton3.perform(click());
+
+        ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.start_over_button), withText("Start Over"),
                         childAtPosition(
                                 childAtPosition(
@@ -155,9 +162,9 @@ public class RoutePlanSummaryTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatButton3.perform(click());
+        appCompatButton4.perform(click());
 
-        ViewInteraction appCompatButton4 = onView(
+        ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.clear_button), withText("CLEAR"),
                         childAtPosition(
                                 childAtPosition(
@@ -165,7 +172,13 @@ public class RoutePlanSummaryTest {
                                         0),
                                 4),
                         isDisplayed()));
-        appCompatButton4.perform(click());
+        appCompatButton5.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.added_counter), withText("(0)"),
+                        withParent(withParent(withId(android.R.id.content))),
+                        isDisplayed()));
+        textView.check(matches(withText("(0)")));
     }
 
     private static Matcher<View> childAtPosition(

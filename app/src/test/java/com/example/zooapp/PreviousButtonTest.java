@@ -1,32 +1,29 @@
 package com.example.zooapp;
 import android.content.Context;
-import android.content.Intent;
+import android.location.Location;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
-import static org.robolectric.RuntimeEnvironment.getApplication;
 
-import com.google.gson.Gson;
+import com.example.zooapp.Data.PlannedAnimalDatabase;
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Data.ZooNodeDatabase;
+import com.example.zooapp.Interface.PlannedAnimalDao;
+import com.example.zooapp.Interface.ZooNodeDao;
+import com.example.zooapp.Viewer.DirectionsActivity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
@@ -57,7 +54,6 @@ public class PreviousButtonTest {
         dao.insertAll(allZooNodes);
         planDao = testPlanDb.plannedAnimalDao();
         allExhibits = dao.getZooNodeKind("exhibit");
-
     }
 
     @Test
@@ -80,7 +76,7 @@ public class PreviousButtonTest {
 
             //Next should be visible, Previous should be invisible
             Button previous = activity.findViewById(R.id.previous_button);
-            assertEquals(previous.getVisibility(), View.INVISIBLE);
+            assertEquals(View.INVISIBLE, previous.getVisibility());
         });
 
     }
@@ -103,15 +99,19 @@ public class PreviousButtonTest {
             TextView name = activity2.findViewById(R.id.directions_header);
 
             //Two animals in planned list, but path should be length four including entrance and exit
-            assertEquals(2, activity2.userExhibits.size());
+            assertEquals(2, planDao.getAll().size());
             assertEquals(4, activity2.userListShortestOrder.size());
+
+            activity2.setLocationToUse(new Location("Mock Location"));
+            activity2.getLocationToUse().setLatitude(32.73459618734685);
+            activity2.getLocationToUse().setLongitude(-117.14936);
 
             //currIndex starts at first animal, index at 0
             //Previous should be invisible, Next should be visible
             assertEquals(0, activity2.currIndex);
 
             //make sure first animal is correct
-            assertEquals(name.getText().toString(), "Koi Fish");
+            assertEquals(name.getText().toString(), "Flamingos");
 
             //click Next to move to the second animal, currIndex at 1
             next.performClick();
@@ -119,28 +119,28 @@ public class PreviousButtonTest {
             assertEquals(View.VISIBLE, previous.getVisibility());
 
             //make sure second animal name is correct
-            assertEquals(name.getText().toString(), "Flamingos");
+            assertEquals(name.getText().toString(), "Koi Fish");
 
             //click Next to move to the third animal, currIndex at 2
             next.performClick();
             assertEquals(2, activity2.currIndex);
             assertEquals(View.VISIBLE, previous.getVisibility());
             //make sure end name is correct
-            assertEquals(name.getText().toString(), "Entrance and Exit Gate");
+            assertEquals( "Entrance and Exit Gate", name.getText().toString());
 
             //click Previous to return to third animal, Previous button is invisible
             previous.performClick();
             assertEquals(View.VISIBLE, previous.getVisibility());
             assertEquals(1, activity2.currIndex);
             //make sure second animal name is correct
-            assertEquals(name.getText().toString(), "Flamingos");
+            assertEquals(name.getText().toString(), "Koi Fish");
 
             //click Previous to return to first animal, Previous button is invisible
             previous.performClick();
             assertEquals(View.INVISIBLE, previous.getVisibility());
             assertEquals(0, activity2.currIndex);
             //make sure first animal is correct
-            assertEquals(name.getText().toString(), "Koi Fish");
+            assertEquals(name.getText().toString(), "Flamingos");
 
         });
         scenario2.close();

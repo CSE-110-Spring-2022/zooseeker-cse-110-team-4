@@ -1,4 +1,4 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -11,10 +11,21 @@ import androidx.core.content.ContextCompat;
 
 import java.util.Arrays;
 
+/**
+ * This class is used to handle location permissions with the user
+ */
 public class PermissionChecker {
-    private ComponentActivity activity;
+
     final ActivityResultLauncher<String[]> requestPermissionLauncher;
 
+    //Private fields
+    private ComponentActivity activity;
+
+    /**
+     * Constructor
+     *
+     * @param ComponentActivity the activity where permissions are required
+     */
     public PermissionChecker(ComponentActivity activity) {
         this.activity = activity;
         requestPermissionLauncher = activity.registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), perms -> {
@@ -24,7 +35,12 @@ public class PermissionChecker {
         });
     }
 
-    boolean ensurePermissions() {
+    /**
+     * Checks if location permissions have been allowed
+     *
+     * @return returns if permissions are granted
+     */
+    public boolean ensurePermissions() {
         var requiredPermissions = new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION

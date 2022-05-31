@@ -1,7 +1,13 @@
-package com.example.zooapp;
+package com.example.zooapp.Ultility;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.example.zooapp.Data.ZooData;
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.Data.ZooNodeDatabase;
+import com.example.zooapp.Interface.GraphAlgorithm;
+import com.example.zooapp.Interface.ZooNodeDao;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -20,6 +26,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
     private ZooNode newStart;
     private Context context;
     private ZooNodeDao dao;
+    private String closestExhibit;
 
     /**
      * Constructor
@@ -70,7 +77,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         while( !userListExhibits.isEmpty() ) {
             // Find shortest path for each zooNode available from current node
             for(var zooNode: userListExhibits ) {
-                var zooNodeName = (zooNode.parent_id != null) ? zooNode.parent_id : zooNode.id;
+                var zooNodeName = (zooNode.group_id != null) ? zooNode.group_id : zooNode.id;
                 var tempPath =
                         DijkstraShortestPath.findPathBetween(g,start, zooNodeName);
                 // Setting the shortest path
@@ -83,7 +90,7 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
             // Finalize shortest path and add to result
             resultPath.add(minDistPath);
             exhibitDistanceFromStart.add(minDistance);
-            start = (shortestZooNodeStart.parent_id != null) ? shortestZooNodeStart.parent_id :
+            start = (shortestZooNodeStart.group_id != null) ? shortestZooNodeStart.group_id :
                     shortestZooNodeStart.id;
             userListExhibits.remove(shortestZooNodeStart);
             userListShortestOrder.add(shortestZooNodeStart);
@@ -95,6 +102,50 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         exhibitDistanceFromStart.add(finalPath.getWeight());
         // Return a list of all shortest paths to complete cycle
         return resultPath;
+    }
+
+    public GraphPath<String, IdentifiedWeightedEdge> runPathAlgorithm(ZooNode closestZooNode,
+                                                                      List<ZooNode> toVisit) {
+        var g = ZooData.loadZooGraphJSON(context,
+                "sample_zoo_graph.json");
+        return runPathAlgorithm(g, closestZooNode, toVisit);
+    }
+
+    private GraphPath<String, IdentifiedWeightedEdge> runPathAlgorithm(Graph<String,
+            IdentifiedWeightedEdge> g, ZooNode closestZooNode, List<ZooNode> toVisit) {
+        double minDistance = Double.MAX_VALUE;
+        GraphPath<String, IdentifiedWeightedEdge> resultPath = null;
+        for(var zooNode: toVisit) {
+            String zooNodeName = (zooNode.group_id != null) ? zooNode.group_id : zooNode.id;
+            var tempPath =
+                    DijkstraShortestPath.findPathBetween(g, closestZooNode.id, zooNodeName);
+            if( tempPath.getWeight() < minDistance ) {
+                resultPath = tempPath;
+                minDistance = tempPath.getWeight();
+                closestExhibit = zooNodeName;
+            }
+        }
+        return resultPath;
+    }
+
+    public GraphPath<String, IdentifiedWeightedEdge> runReversePathAlgorithm(
+            ZooNode closestZooNode, ZooNode previousZooNode) {
+        var g = ZooData.loadZooGraphJSON(context,
+                "sample_zoo_graph.json");
+        return runReversePathAlgorithm(g, closestZooNode, previousZooNode);
+    }
+
+    private GraphPath<String, IdentifiedWeightedEdge> runReversePathAlgorithm(
+            Graph<String, IdentifiedWeightedEdge> g, ZooNode closestZooNode,
+            ZooNode previousZooNode){
+        String zooNodeName = (previousZooNode.group_id != null) ? previousZooNode.group_id :
+                previousZooNode.id;
+        closestExhibit = zooNodeName;
+        return DijkstraShortestPath.findPathBetween(g, closestZooNode.id, zooNodeName);
+    }
+
+    public String getClosestExhibitId() {
+        return closestExhibit;
     }
 
     public List<GraphPath<String, IdentifiedWeightedEdge>> runChangedLocationAlgorithm(
@@ -114,12 +165,13 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
         var minDistance = Double.POSITIVE_INFINITY;
         this.newStart = newStart;
         ZooNode shortestZooNodeStart = newStart;
+        newUserListShortestOrder.clear();
 
         // Finding all shortest paths
         while( !newList.isEmpty() ) {
             // Find shortest path for each zooNode available from current node
             for(var zooNode: newList ) {
-                var zooNodeName = (zooNode.parent_id != null) ? zooNode.parent_id : zooNode.id;
+                var zooNodeName = (zooNode.group_id != null) ? zooNode.group_id : zooNode.id;
                 var tempPath =
                         DijkstraShortestPath.findPathBetween(g,start, zooNodeName);
                 // Setting the shortest path
@@ -130,8 +182,9 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
                 }
             }
             // Finalize shortest path and add to result
+            Log.d("Algorithm", shortestZooNodeStart.toString());
             resultPath.add(minDistPath);
-            start = (shortestZooNodeStart.parent_id != null) ? shortestZooNodeStart.parent_id :
+            start = (shortestZooNodeStart.group_id != null) ? shortestZooNodeStart.group_id :
                     shortestZooNodeStart.id;
             newList.remove(shortestZooNodeStart);
             newUserListShortestOrder.add(shortestZooNodeStart);
@@ -158,8 +211,8 @@ public class ShortestPathZooAlgorithm implements GraphAlgorithm {
 
     public List<ZooNode> getNewUserListShortestOrder() {
         var entrance = dao.getByName("Entrance and Exit Gate");
-        newUserListShortestOrder.add(0, newStart);
         newUserListShortestOrder.add(newUserListShortestOrder.size(), entrance);
+        Log.d("Algorithm", newUserListShortestOrder.toString());
         return newUserListShortestOrder;
     }
 

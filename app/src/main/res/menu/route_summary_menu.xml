@@ -3,13 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/main_actions_search"
-        android:icon="@drawable/ic_baseline_search_24"
-        android:title="Search"
-        app:showAsAction="ifRoom|collapseActionView" />
-
-    <item
-        android:id="@+id/main_settings_button"
+        android:id="@+id/route_settings_button"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="Settings"
         app:showAsAction="ifRoom|collapseActionView" />

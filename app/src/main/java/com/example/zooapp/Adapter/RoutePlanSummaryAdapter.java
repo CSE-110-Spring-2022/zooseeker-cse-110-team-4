@@ -1,5 +1,6 @@
-package com.example.zooapp;
+package com.example.zooapp.Adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
+
+import com.example.zooapp.Data.ZooNode;
+import com.example.zooapp.R;
 
 import java.util.Collections;
 import java.util.List;
@@ -102,8 +105,6 @@ public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSumma
             super(itemView);
             this.textView = itemView.findViewById(R.id.planned_animal_text);
         }
-//        public ZooNode getAnimal(){ return userAnimal; }
-//        public double getDistanceToAnimal(){ return distanceToAnimal; }
 
         /**
          * Set animal with correct values
@@ -112,9 +113,6 @@ public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSumma
          * @param distanceToAnimal distance to animal exhibit
          */
         public void setAnimal(ZooNode userAnimal, double distanceToAnimal){
-//            this.userAnimal = userAnimal;
-//            this.distanceToAnimal = distanceToAnimal;
-            //this.textDisplay = userAnimal.name + " (" + distanceToAnimal + " m)";
             this.textDisplay = String.format(TEXT_VIEW_FORMAT, userAnimal.name, distanceToAnimal);
             this.textView.setText(textDisplay);
         }

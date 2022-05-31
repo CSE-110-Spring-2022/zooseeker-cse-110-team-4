@@ -1,10 +1,4 @@
-package com.example.zooapp;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.zooapp.Viewer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,16 +6,21 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Type;
-import java.util.List;
+import com.example.zooapp.Adapter.AnimalListViewAdapter;
+import com.example.zooapp.Ultility.ExhibitsSetup;
+import com.example.zooapp.R;
+import com.google.gson.Gson;
 
 /**
  * This activity is for when we search for an animal to add into our list
  */
-public class SearchActivity extends AppCompatActivity implements AnimalListViewAdapter.ClickListener{
+public class SearchActivity extends AppCompatActivity implements AnimalListViewAdapter.ClickListener {
     // Public fields
     public RecyclerView recyclerView;
     public ExhibitsSetup exhibitsSetup = new ExhibitsSetup(this);
@@ -44,13 +43,9 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         actionBar.setTitle("Search for an Animal Exhibit");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //Get information from Main Activity
-//        Gson gson = new Gson();
-//        Type type = new TypeToken<List<ZooNode>>() {}.getType();
-//        exhibitsSetup.setUserExhibits(gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type));
-//
         //Set up information about the zoo exhibits
         exhibitsSetup.getExhibitInformation();
+
 
         //Set up view for the list of exhibits
         setUpRecyclerView();
@@ -70,6 +65,15 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
                 return false;
             }
         });
+    }
+
+    /**
+     * Sets up the recycler view when the activity is resumed
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpRecyclerView();
     }
 
 
@@ -93,10 +97,6 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
     public void onItemClick(int position) {
         exhibitsSetup.addAnimalPlannedList(position);
 
-        /*TODO make it so we can add multiple animals in one go? can just comment out this block but
-          theres no visual indicator when an animal gets added rn
-        */
-
         Gson gson = new Gson();
         Intent refresh = new Intent(this, MainActivity.class);
         refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(exhibitsSetup.getUserExhibits()));
@@ -112,10 +112,6 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Gson gson = new Gson();
-        Intent refresh = new Intent(this, MainActivity.class);
-        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(exhibitsSetup.getUserExhibits()));
-        setResult(RESULT_OK, refresh);
         Log.d("Search View", "Back button has been clicked");
         finish();
         return super.onOptionsItemSelected(item);
