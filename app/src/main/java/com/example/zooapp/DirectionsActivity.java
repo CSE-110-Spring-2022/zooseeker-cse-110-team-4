@@ -17,8 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import org.jgrapht.GraphPath;
-
 import java.util.List;
 
 /**
@@ -106,12 +104,7 @@ public class DirectionsActivity extends AppCompatActivity {
                     userListShortestOrder.subList(currIndex + 1, userListShortestOrder.size() - 1)));
             previousClosestZooNode = zooNodeDao.getById("entrance_exit_gate");
 
-            GraphPath<String, IdentifiedWeightedEdge> graphPath = setDirections.getGraphPath();
-            if(directionsDetailedText) {
-                setDirections.setDetailedDirectionsText(graphPath);
-            } else {
-                setDirections.setBriefDirectionsText(graphPath);
-            }
+            setDirections.setDirectionsText(directionsDetailedText);
             // Used for live testing
 //            mockLocation = new Location("Mock Entrance");
 //            mockLocation.setLatitude(32.73459618734685);
@@ -228,12 +221,7 @@ public class DirectionsActivity extends AppCompatActivity {
 //            default:
 //                break;
 //        }
-        GraphPath<String, IdentifiedWeightedEdge> graphPath = setDirections.getGraphPath();
-        if(directionsDetailedText) {
-            setDirections.setDetailedDirectionsText(graphPath);
-        } else {
-            setDirections.setBriefDirectionsText(graphPath);
-        }
+        setDirections.setDirectionsText(directionsDetailedText);
 
         canCheckReplan = true;
     }
@@ -281,12 +269,7 @@ public class DirectionsActivity extends AppCompatActivity {
         setDirections.setGraphPath(algorithm.runReversePathAlgorithm(exhibitLocations
                         .getZooNodeClosestToCurrentLocation(locationHandler.getLocationToUse()),
                 userListShortestOrder.get(currIndex + 1)));
-        GraphPath<String, IdentifiedWeightedEdge> graphPath = setDirections.getGraphPath();
-        if(directionsDetailedText) {
-            setDirections.setDetailedDirectionsText(graphPath);
-        } else {
-            setDirections.setBriefDirectionsText(graphPath);
-        }
+        setDirections.setDirectionsText(directionsDetailedText);
         canCheckReplan = true;
     }
 
@@ -306,37 +289,6 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     /**
-     * Skips exhibit currently navigating to and moves onto next exhibit
-     *
-     * @param view
-     */
-    public void onSkipButtonClicked(View view) {
-        if(locationHandler.getLocationToUse() == null) {
-            runOnUiThread(() -> {
-                alertMessage = Utilities.showAlert(this,"Please wait until " +
-                        "your location has started updating.");
-                alertMessage.show();
-                //alertMessage.isShowing();
-            });
-            return;
-        }
-
-        locationHandler.handleLocationSkip();
-
-        skipButtonVisibilityCheck();
-
-        GraphPath<String, IdentifiedWeightedEdge> graphPath = setDirections.getGraphPath();
-        if(directionsDetailedText) {
-            setDirections.setDetailedDirectionsText(graphPath);
-        } else {
-            setDirections.setBriefDirectionsText(graphPath);
-        }
-
-        Log.d("SkipButton", "List planned animal AFTER: " + plannedAnimalDao.getAll().toString());
-    }
-
-
-    /**
      * Clears animals from planned list and returns to home screen
      *
      * @param view the current view
@@ -354,6 +306,30 @@ public class DirectionsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Skips exhibit currently navigating to and moves onto next exhibit
+     *
+     * @param view
+     */
+    public void onSkipButtonClicked(View view) {
+        if(locationHandler.getLocationToUse() == null) {
+            runOnUiThread(() -> {
+                alertMessage = Utilities.showAlert(this,"Please wait until " +
+                        "your location has started updating.");
+                alertMessage.show();
+                //alertMessage.isShowing();
+            });
+            return;
+        }
+
+        setDirections.skipNewDirections();
+
+        skipButtonVisibilityCheck();
+
+        setDirections.setDirectionsText(directionsDetailedText);
+
+        Log.d("SkipButton", "List planned animal AFTER: " + plannedAnimalDao.getAll().toString());
+    }
 
     private void skipButtonVisibilityCheck() {
         // Check if the currIndex is at "Entrance and Exit" node
