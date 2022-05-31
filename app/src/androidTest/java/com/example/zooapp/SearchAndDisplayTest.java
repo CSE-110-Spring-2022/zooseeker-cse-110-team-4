@@ -33,6 +33,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Display Selected Exhibits user story test
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class SearchAndDisplayTest {

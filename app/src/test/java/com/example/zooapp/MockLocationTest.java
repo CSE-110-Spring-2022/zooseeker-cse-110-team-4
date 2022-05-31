@@ -19,6 +19,9 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+/**
+ * Mock location test
+ */
 @RunWith(AndroidJUnit4.class)
 public class MockLocationTest {
     Context context;

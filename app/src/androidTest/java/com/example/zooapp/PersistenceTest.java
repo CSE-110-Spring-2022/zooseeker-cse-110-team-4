@@ -35,6 +35,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Check retain selected exhibits.
+ * Adds 3 animals to planned list then restarts app to see if they are there
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class PersistenceTest {
