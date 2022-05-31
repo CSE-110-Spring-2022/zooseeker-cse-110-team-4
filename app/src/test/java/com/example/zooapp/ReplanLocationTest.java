@@ -1,11 +1,6 @@
 package com.example.zooapp;
 
-import static android.location.LocationManager.NETWORK_PROVIDER;
-import static org.junit.Assert.assertEquals;
-import static org.robolectric.Shadows.shadowOf;
-
 import android.content.Context;
-import android.location.Location;
 
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
@@ -27,7 +22,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
-public class ActualLocationTest {
+public class ReplanLocationTest {
     private DirectionsActivity directionsActivity;
     private Context context;
     private ZooNodeDao dao;
@@ -61,21 +56,7 @@ public class ActualLocationTest {
     }
 
     @Test
-    public void actualLocationTest() {
-        Location expectedLocation = location(NETWORK_PROVIDER, 32.8801, -117.2340);
+    public void replanPromptAppearTest() {
 
-        locationListenerImplementation.onLocationChanged(expectedLocation);
-
-        Location actualLocation = directionsActivity.getLocationToUse();
-
-        assertEquals(expectedLocation, actualLocation);
-    }
-
-    private Location location(String provider, double lat, double lng) {
-        Location location = new Location(provider);
-        location.setLatitude(lat);
-        location.setLongitude(lng);
-        location.setTime(System.currentTimeMillis());
-        return location;
     }
 }
