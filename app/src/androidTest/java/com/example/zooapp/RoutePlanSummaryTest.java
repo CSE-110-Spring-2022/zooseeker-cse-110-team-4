@@ -31,6 +31,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Test RoutePlanSummary Page.
+ * Searches for and adds Bali Mynah and Emerald Dove to the planned list.
+ * Navigate to RoutePlanSummary by clicking the "directions" button
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class RoutePlanSummaryTest {

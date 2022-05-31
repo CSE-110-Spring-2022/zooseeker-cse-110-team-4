@@ -30,6 +30,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Step backwards in plan test & Reverse directions to previous exhibit test
+ */
 @RunWith(AndroidJUnit4.class)
 public class BackwardsDirectionsTest {
     Context context;

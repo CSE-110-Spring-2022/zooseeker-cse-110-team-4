@@ -26,6 +26,9 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tests on MainActivity adding animals to the planned list and corresponding count
+ */
 @RunWith(AndroidJUnit4.class)
 public class PlannedListTest {
 

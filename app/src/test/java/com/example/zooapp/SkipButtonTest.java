@@ -30,6 +30,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Skip exhibit test
+ */
 @RunWith(AndroidJUnit4.class)
 public class SkipButtonTest {
     Context context;

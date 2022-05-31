@@ -31,6 +31,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Clear the route plan test. Test start over button in directions activity.
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class StartOverTest {
