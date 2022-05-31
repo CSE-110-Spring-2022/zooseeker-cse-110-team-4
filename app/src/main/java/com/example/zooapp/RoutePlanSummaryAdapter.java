@@ -102,8 +102,6 @@ public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSumma
             super(itemView);
             this.textView = itemView.findViewById(R.id.planned_animal_text);
         }
-//        public ZooNode getAnimal(){ return userAnimal; }
-//        public double getDistanceToAnimal(){ return distanceToAnimal; }
 
         /**
          * Set animal with correct values
@@ -112,9 +110,6 @@ public class RoutePlanSummaryAdapter extends RecyclerView.Adapter<RoutePlanSumma
          * @param distanceToAnimal distance to animal exhibit
          */
         public void setAnimal(ZooNode userAnimal, double distanceToAnimal){
-//            this.userAnimal = userAnimal;
-//            this.distanceToAnimal = distanceToAnimal;
-            //this.textDisplay = userAnimal.name + " (" + distanceToAnimal + " m)";
             this.textDisplay = String.format(TEXT_VIEW_FORMAT, userAnimal.name, distanceToAnimal);
             this.textView.setText(textDisplay);
         }

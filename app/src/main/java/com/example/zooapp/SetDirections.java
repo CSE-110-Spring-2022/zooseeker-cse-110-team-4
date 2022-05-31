@@ -11,8 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This class handles setting the correct set of directions onto the screen
+ */
 public class SetDirections {
-    private final DirectionsActivity directionsActivity;
+
+    //Public fields
     public Graph<String, IdentifiedWeightedEdge> graph;
     public GraphPath<String, IdentifiedWeightedEdge> graphPath;
     public Map<String, ZooData.VertexInfo> vInfo;
@@ -20,14 +24,18 @@ public class SetDirections {
     public List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
     public ZooNode display;
 
+    //Private fields
     private TextView header, directions;
+    private final DirectionsActivity directionsActivity;
 
     public SetDirections(DirectionsActivity directionsActivity) {
         this.directionsActivity = directionsActivity;
     }
 
     /**
-     * Sets the text for the directions activity
+     * Creates the detailed directions text for the directions activity and stores it in the variable directions
+     *
+     * @param GraphPath
      */
     @SuppressLint("DefaultLocale")
     public void setDetailedDirectionsText(
@@ -91,6 +99,11 @@ public class SetDirections {
         directions.setText(direction);
     }
 
+    /**
+     * Creates the brief directions text for the directions activity and stores it in the variable directions
+     *
+     * @param GraphPath
+     */
     @SuppressLint("DefaultLocale")
     public void setBriefDirectionsText(
             GraphPath<String, IdentifiedWeightedEdge> directionsToExhibit) {
@@ -163,10 +176,20 @@ public class SetDirections {
         directions.setText(direction);
     }
 
+    /**
+     * Sets the correct animal header that matches the directions
+     *
+     * @param TextView header
+     */
     public void setHeader(TextView header) {
         this.header = header;
     }
 
+    /**
+     * Sets the directions TextView to the correct type of directions
+     *
+     * @param TextView directions
+     */
     public void setDirections(TextView directions) {
         this.directions = directions;
     }

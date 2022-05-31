@@ -8,6 +8,9 @@ import androidx.room.Update;
 
 import java.util.List;
 
+/**
+ * This interface is used to store and manage the planned list of animals
+ */
 @Dao
 public interface PlannedAnimalDao {
     @Insert

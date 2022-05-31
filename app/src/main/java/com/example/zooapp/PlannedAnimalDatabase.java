@@ -15,8 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+/**
+ * This class creates the database to store the list of planned animals
+ */
 @Database(entities = {ZooNode.class}, version = 2)
 public abstract class PlannedAnimalDatabase extends RoomDatabase{
+
+    //Public fields
+    public abstract PlannedAnimalDao plannedAnimalDao();
+
+    //Private fields
     private static PlannedAnimalDatabase singleton = null;
 
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
@@ -31,8 +39,12 @@ public abstract class PlannedAnimalDatabase extends RoomDatabase{
         }
     };
 
-    public abstract PlannedAnimalDao plannedAnimalDao();
-
+    /**
+     * Creates a new Room database if one has not yet been created
+     *
+     * @param Context
+     * @return PlannedAnimalDatabase the created or existing database
+     */
     public synchronized static PlannedAnimalDatabase getSingleton(Context context) {
         if( singleton == null ) {
             singleton = PlannedAnimalDatabase.makeDatabase(context);
@@ -40,6 +52,12 @@ public abstract class PlannedAnimalDatabase extends RoomDatabase{
         return singleton;
     }
 
+    /**
+     * Creates a new Room database to store the list of planned animals
+     *
+     * @param PlannedAnimalDatabase
+     * @return PlannedAnimalDatabase the created database
+     */
     private static PlannedAnimalDatabase makeDatabase(Context context) {
         return Room.databaseBuilder(context, PlannedAnimalDatabase.class, "planned_list.db")
                 .allowMainThreadQueries()
@@ -58,6 +76,11 @@ public abstract class PlannedAnimalDatabase extends RoomDatabase{
                 .build();
     }
 
+    /**
+     * Creates a new test database if one has not already been made
+     *
+     * @param PlannedAnimalDatabase
+     */
     @VisibleForTesting
     public static void injectTestDatabase(PlannedAnimalDatabase testDatabase) {
         if( singleton != null ) {

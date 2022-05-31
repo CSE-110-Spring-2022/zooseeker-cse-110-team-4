@@ -32,6 +32,11 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
 
     private List<GraphPath<String, IdentifiedWeightedEdge>> graphPaths;
 
+    /**
+     * Method for onCreate of the activity
+     *
+     * @param savedInstanceState State of activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

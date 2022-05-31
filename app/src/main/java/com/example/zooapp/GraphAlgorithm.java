@@ -4,6 +4,9 @@ import org.jgrapht.GraphPath;
 
 import java.util.List;
 
+/**
+ * This interface is used when needing to run algorithms to get information from our graph of exhibits
+ */
 public interface GraphAlgorithm {
     List<GraphPath<String, IdentifiedWeightedEdge>> runAlgorithm();
     List<GraphPath<String, IdentifiedWeightedEdge>> runChangedLocationAlgorithm(

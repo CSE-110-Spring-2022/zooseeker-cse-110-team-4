@@ -44,11 +44,6 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         actionBar.setTitle("Search for an Animal Exhibit");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //Get information from Main Activity
-//        Gson gson = new Gson();
-//        Type type = new TypeToken<List<ZooNode>>() {}.getType();
-//        exhibitsSetup.setUserExhibits(gson.fromJson(getIntent().getStringExtra("userExhibitsJSON"), type));
-//
         //Set up information about the zoo exhibits
         exhibitsSetup.getExhibitInformation();
 
@@ -72,6 +67,9 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
         });
     }
 
+    /**
+     * Sets up the recycler view when the activity is resumed
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -99,10 +97,6 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
     public void onItemClick(int position) {
         exhibitsSetup.addAnimalPlannedList(position);
 
-        /*TODO make it so we can add multiple animals in one go? can just comment out this block but
-          theres no visual indicator when an animal gets added rn
-        */
-
         Gson gson = new Gson();
         Intent refresh = new Intent(this, MainActivity.class);
         refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(exhibitsSetup.getUserExhibits()));
@@ -118,10 +112,6 @@ public class SearchActivity extends AppCompatActivity implements AnimalListViewA
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        Gson gson = new Gson();
-//        Intent refresh = new Intent(this, MainActivity.class);
-//        refresh.putExtra("userExhibitsJSONUpdated", gson.toJson(exhibitsSetup.getUserExhibits()));
-//        setResult(RESULT_OK, refresh);
         Log.d("Search View", "Back button has been clicked");
         finish();
         return super.onOptionsItemSelected(item);

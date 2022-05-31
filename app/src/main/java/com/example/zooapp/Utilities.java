@@ -7,7 +7,18 @@ import android.text.Layout;
 
 import java.util.Optional;
 
+/**
+ * This class is used to show alerts on the app screen
+ */
 public class Utilities {
+
+    /**
+     * Displays an alert on screen
+     *
+     * @param Activity the activity the alert will appear in
+     * @param String the message that will be displayed on the alert
+     * @return AlertDialog
+     */
     public static AlertDialog showAlert(Activity activity, String message){
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(activity);
 
@@ -24,6 +35,13 @@ public class Utilities {
 
     }
 
+    /**
+     * Displays an alert on screen with a clickable yes or no option
+     *
+     * @param Activity the activity the alert will appear in
+     * @param String the message that will be displayed on the alert
+     * @return AlertDialog
+     */
     public static AlertDialog optionalAlert(Activity activity, String message){
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(activity);
         alertBuilder
@@ -31,6 +49,7 @@ public class Utilities {
                 .setMessage(message)
                 .setCancelable(true);
 
+        //Clicking the Yes option
         alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
@@ -43,6 +62,7 @@ public class Utilities {
             }
         });
 
+        //Clicking the No option
         alertBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
@@ -58,7 +78,12 @@ public class Utilities {
 
     }
 
-
+    /**
+     * Takes in a string and converts it to an Optional of type Integer
+     *
+     * @param String
+     * @return Optional<Integer>
+     */
     public static Optional<Integer> parseCount(String str){
         try{
             int maxCount = Integer.parseInt(str);
