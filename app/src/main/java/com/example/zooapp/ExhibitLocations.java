@@ -60,7 +60,6 @@ public class ExhibitLocations {
         }
     }
 
-<<<<<<< HEAD
     /**
      * Get the location of a single ZooNode
      *
@@ -89,8 +88,6 @@ public class ExhibitLocations {
      * @param Location the user's current location
      * @return a Location of the closest zooNode
      */
-=======
->>>>>>> 44286bdae97414060a0ef53c6cf350e503f6c1a4
     public ZooNode getZooNodeClosestToCurrentLocation(Location currentLocation) {
         double minDistance = Double.MAX_VALUE;
         Location minLocation = currentLocation;
