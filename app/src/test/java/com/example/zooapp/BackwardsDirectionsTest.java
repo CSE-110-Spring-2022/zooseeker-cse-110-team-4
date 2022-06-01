@@ -57,7 +57,6 @@ public class BackwardsDirectionsTest {
         dao.insertAll(allZooNodes);
         planDao = testPlanDb.plannedAnimalDao();
         allExhibits = dao.getZooNodeKind("exhibit");
-
     }
 
     @Test

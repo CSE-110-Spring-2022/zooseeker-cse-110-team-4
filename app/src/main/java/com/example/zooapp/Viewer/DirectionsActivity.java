@@ -1,5 +1,11 @@
 package com.example.zooapp.Viewer;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -26,6 +32,7 @@ import com.example.zooapp.Interface.ZooNodeDao;
 import com.example.zooapp.R;
 import com.example.zooapp.Ultility.ExhibitLocations;
 import com.example.zooapp.Ultility.LocationHandler;
+import com.example.zooapp.Ultility.LocationListenerImplementation;
 import com.example.zooapp.Ultility.SetDirections;
 import com.example.zooapp.Ultility.ShortestPathZooAlgorithm;
 import com.example.zooapp.Ultility.Utilities;
@@ -52,12 +59,10 @@ public class DirectionsActivity extends AppCompatActivity {
     // Variable for the graph and path
     public GraphAlgorithm algorithm;
     public ActionBar actionBar;
-    public AlertDialog alertMessage;
-    public PlannedAnimalDao plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
-            .plannedAnimalDao();
-    public ZooNodeDao zooNodeDao = ZooNodeDatabase.getSingleton(this)
-            .ZooNodeDao();
-    private ExhibitLocations exhibitLocations = new ExhibitLocations(zooNodeDao);
+    public AlertDialog alertMessage, locationMessage, replanMessage;
+    public PlannedAnimalDao plannedAnimalDao;
+    public ZooNodeDao zooNodeDao;
+    private ExhibitLocations exhibitLocations;
     private Button previous, skip;
     private boolean backwards = false;
     private ZooNode previousClosestZooNode;
@@ -75,6 +80,11 @@ public class DirectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_directions);
         setDirections = new SetDirections(this,
                 getApplication().getApplicationContext());
+        plannedAnimalDao = PlannedAnimalDatabase.getSingleton(this)
+                .plannedAnimalDao();
+        zooNodeDao = ZooNodeDatabase.getSingleton(this)
+                .ZooNodeDao();
+        exhibitLocations = new ExhibitLocations(zooNodeDao);
         locationHandler.resetMockLocation();
 
         // Get boolean, default false
@@ -115,10 +125,14 @@ public class DirectionsActivity extends AppCompatActivity {
             setDirections.setDirectionsText(directionsDetailedText);
 
             // Testing Replan Button
-            Location mockEntrance = new Location("Mock Entrance");
-            mockEntrance.setLatitude(32.72109826903826);
-            mockEntrance.setLongitude(-117.15952052282296);
-            setMockLocation(mockEntrance);
+//            Location mockEntrance = new Location("Mock Entrance");
+//            mockEntrance.setLatitude(32.72109826903826);
+//            mockEntrance.setLongitude(-117.15952052282296);
+//            setMockLocation(mockEntrance);
+//            Location mockBenchly = new Location("Mock Benchly");
+//            mockBenchly.setLatitude(32.74476120197887);
+//            mockBenchly.setLongitude(-117.18369973246877);
+//            setMockLocation(mockBenchly);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -128,10 +142,14 @@ public class DirectionsActivity extends AppCompatActivity {
         locationHandler.setUpLocationListener();
     }
 
+    /**
+     * Displays alert asking user to replan route
+     *
+     */
     public void promptReplan() {
         replanAlertShown = true;
         alertMessage = Utilities.optionalAlert(this,
-                    "Would You like to Replan your Route?");
+                "Would You like to Replan your Route?");
         alertMessage.show();
         return;
     }
@@ -176,9 +194,9 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onNextButtonClicked(View view) {
         if(locationHandler.getLocationToUse() == null) {
             runOnUiThread(() -> {
-                alertMessage = Utilities.showAlert(this,"Please wait until " +
+                locationMessage = Utilities.showAlert(this,"Please wait until " +
                         "your location has started updating.");
-                alertMessage.show();
+                locationMessage.show();
                 //alertMessage.isShowing();
             });
             return;
@@ -309,9 +327,9 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onSkipButtonClicked(View view) {
         if(locationHandler.getLocationToUse() == null) {
             runOnUiThread(() -> {
-                alertMessage = Utilities.showAlert(this,"Please wait until " +
+                locationMessage = Utilities.showAlert(this,"Please wait until " +
                         "your location has started updating.");
-                alertMessage.show();
+                locationMessage.show();
                 //alertMessage.isShowing();
             });
             return;
@@ -326,12 +344,18 @@ public class DirectionsActivity extends AppCompatActivity {
         Log.d("SkipButton", "List planned animal AFTER: " + plannedAnimalDao.getAll().toString());
     }
 
+    /**
+     * Replans route based on the user's current location and the next closest exhibit when the user clicks
+     * the replan button
+     *
+     * @param view
+     */
     public void onReplanButtonClicked(View view) {
         if(locationHandler.getLocationToUse() == null) {
             runOnUiThread(() -> {
-                alertMessage = Utilities.showAlert(this,"Please wait until " +
+                locationMessage = Utilities.showAlert(this,"Please wait until " +
                         "your location has started updating.");
-                alertMessage.show();
+                locationMessage.show();
                 //alertMessage.isShowing();
             });
             return;
@@ -400,5 +424,10 @@ public class DirectionsActivity extends AppCompatActivity {
 
     public void setMockLocation(Location mockLocation) {
         locationHandler.setMockLocation(mockLocation);
+    }
+
+    @VisibleForTesting
+    public LocationListenerImplementation getLocationListenerImplementation() {
+        return locationHandler.getLocationListenerImplementation();
     }
 }
