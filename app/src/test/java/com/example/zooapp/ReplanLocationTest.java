@@ -1,9 +1,12 @@
 package com.example.zooapp;
 
-import static android.location.LocationManager.NETWORK_PROVIDER;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
@@ -27,6 +30,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowAlertDialog;
+import org.robolectric.shadows.ShadowDialog;
+import org.robolectric.shadows.ShadowLooper;
 
 import java.util.List;
 
@@ -89,28 +95,37 @@ public class ReplanLocationTest {
         assertEquals(true, directionsActivity.alertMessage.isShowing());
     }
 
-//    @Test
-//    public void replanCompleteTest() {
-//        Location expectedLocation = location("Mock Benchly", 32.74476120197887,
-//                -117.18369973246877);
-//
-//        locationListenerImplementation.onLocationChanged(expectedLocation);
-//        assertEquals(true, directionsActivity.alertMessage.isShowing());
-//
-//        Button yesButton = directionsActivity.alertMessage.getButton(DialogInterface.BUTTON_POSITIVE);
-//        yesButton.performClick();
-//        assertEquals(true, directionsActivity.check);
-//        assertEquals(true, directionsActivity.canCheckReplan);
-//        assertEquals(false, directionsActivity.replanAlertShown);
-//        assertEquals(true, directionsActivity.recentlyYesReplan);
-//        locationListenerImplementation.onLocationChanged(expectedLocation);
-//        TextView directions = directionsActivity.findViewById(R.id.directions_text);
-//
-//        assertEquals(expectedLocation, directionsActivity.getLocationToUse());
-//
-//        String newDirections = " 1. Walk 1400 feet along Monkey Trail towards the 'Gorillas'\n";
-//        assertEquals(newDirections, directions.getText().toString());
-//    }
+    @Test
+    public void replanCompleteTest() {
+        Location expectedLocation = location("Mock Benchly", 32.74476120197887,
+                -117.18369973246877);
+
+       locationListenerImplementation.onLocationChanged(expectedLocation);
+       assertEquals(true, directionsActivity.alertMessage.isShowing());
+
+
+       // Get the alert dialog box
+        Dialog dialog = ShadowDialog.getLatestDialog();
+        // Ensure the alert is shown
+        assertTrue(dialog.isShowing());
+        // Click "Yes" on the alert box
+        dialog.findViewById(android.R.id.button1).performClick();
+        ShadowLooper.runUiThreadTasks();
+        assertFalse(dialog.isShowing());
+
+        // Check if the replan request goes through
+        assertEquals(true, directionsActivity.check);
+        assertEquals(true, directionsActivity.canCheckReplan);
+        assertEquals(false, directionsActivity.replanAlertShown);
+        assertEquals(true, directionsActivity.recentlyYesReplan);
+        locationListenerImplementation.onLocationChanged(expectedLocation);
+        TextView directions = directionsActivity.findViewById(R.id.directions_text);
+
+        assertEquals(expectedLocation, directionsActivity.getLocationToUse());
+
+       String newDirections = " 1. Walk 1400 feet along Monkey Trail towards the 'Gorillas'\n";
+        assertEquals(newDirections, directions.getText().toString());
+    }
 
     @Test
     public void replanButtonTest() {
