@@ -52,7 +52,6 @@ public class Utilities {
 
         //Clicking the Yes option
         alertBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing but close the dialog
                 DirectionsActivity.check = true;

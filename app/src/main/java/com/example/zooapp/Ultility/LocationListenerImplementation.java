@@ -47,7 +47,6 @@ public class LocationListenerImplementation implements LocationListener {
 
         var displayId = (directionsActivity.getSetDirections().getDisplay().group_id != null) ?
                 directionsActivity.getSetDirections().getDisplay().group_id : directionsActivity.getSetDirections().getDisplay().id;
-
         if (!closestExhibitId.equals(displayId) && DirectionsActivity.canCheckReplan) {
             Log.d("Check Location", "New Location: " + closestExhibitId
                     + " / Old Location: " + displayId);

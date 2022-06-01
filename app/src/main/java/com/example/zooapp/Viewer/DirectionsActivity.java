@@ -59,7 +59,7 @@ public class DirectionsActivity extends AppCompatActivity {
     // Variable for the graph and path
     public GraphAlgorithm algorithm;
     public ActionBar actionBar;
-    public AlertDialog alertMessage;
+    public AlertDialog alertMessage, locationMessage, replanMessage;
     public PlannedAnimalDao plannedAnimalDao;
     public ZooNodeDao zooNodeDao;
     private ExhibitLocations exhibitLocations;
@@ -129,6 +129,10 @@ public class DirectionsActivity extends AppCompatActivity {
 //            mockEntrance.setLatitude(32.72109826903826);
 //            mockEntrance.setLongitude(-117.15952052282296);
 //            setMockLocation(mockEntrance);
+//            Location mockBenchly = new Location("Mock Benchly");
+//            mockBenchly.setLatitude(32.74476120197887);
+//            mockBenchly.setLongitude(-117.18369973246877);
+//            setMockLocation(mockBenchly);
         }
         else{
             Log.d("null input", "User exhibits was null");
@@ -145,7 +149,7 @@ public class DirectionsActivity extends AppCompatActivity {
     public void promptReplan() {
         replanAlertShown = true;
         alertMessage = Utilities.optionalAlert(this,
-                    "Would You like to Replan your Route?");
+                "Would You like to Replan your Route?");
         alertMessage.show();
         return;
     }
@@ -190,9 +194,9 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onNextButtonClicked(View view) {
         if(locationHandler.getLocationToUse() == null) {
             runOnUiThread(() -> {
-                alertMessage = Utilities.showAlert(this,"Please wait until " +
+                locationMessage = Utilities.showAlert(this,"Please wait until " +
                         "your location has started updating.");
-                alertMessage.show();
+                locationMessage.show();
                 //alertMessage.isShowing();
             });
             return;
@@ -323,9 +327,9 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onSkipButtonClicked(View view) {
         if(locationHandler.getLocationToUse() == null) {
             runOnUiThread(() -> {
-                alertMessage = Utilities.showAlert(this,"Please wait until " +
+                locationMessage = Utilities.showAlert(this,"Please wait until " +
                         "your location has started updating.");
-                alertMessage.show();
+                locationMessage.show();
                 //alertMessage.isShowing();
             });
             return;
@@ -349,9 +353,9 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onReplanButtonClicked(View view) {
         if(locationHandler.getLocationToUse() == null) {
             runOnUiThread(() -> {
-                alertMessage = Utilities.showAlert(this,"Please wait until " +
+                locationMessage = Utilities.showAlert(this,"Please wait until " +
                         "your location has started updating.");
-                alertMessage.show();
+                locationMessage.show();
                 //alertMessage.isShowing();
             });
             return;
