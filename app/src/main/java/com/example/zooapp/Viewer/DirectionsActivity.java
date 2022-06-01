@@ -430,4 +430,6 @@ public class DirectionsActivity extends AppCompatActivity {
     public LocationListenerImplementation getLocationListenerImplementation() {
         return locationHandler.getLocationListenerImplementation();
     }
+
+
 }

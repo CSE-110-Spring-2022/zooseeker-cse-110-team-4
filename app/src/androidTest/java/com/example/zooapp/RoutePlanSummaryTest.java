@@ -54,6 +54,17 @@ public class RoutePlanSummaryTest {
 
     @Test
     public void routePlanSummaryTest() {
+
+        ViewInteraction appCompatButton0 = onView(
+                allOf(withId(R.id.clear_button), withText("CLEAR"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
+        appCompatButton0.perform(click());
+
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.main_actions_search), withContentDescription("Search"),
                         childAtPosition(
